@@ -41090,6 +41090,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawnpoint (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6864246497216340534, guid: 3549aec1696f3e3848f7721b7d245d82, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 2955995803462780358, guid: c484bd9e06507a849bf1d85cddfe376f, type: 3}
     - target: {fileID: 6981692873395671030, guid: 3549aec1696f3e3848f7721b7d245d82, type: 3}
       propertyPath: m_LocalPosition.x
       value: -20.76016
@@ -41244,6 +41248,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawnpoint
       objectReference: {fileID: 0}
+    - target: {fileID: 6864246497216340534, guid: 3549aec1696f3e3848f7721b7d245d82, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 2955995803462780358, guid: c484bd9e06507a849bf1d85cddfe376f, type: 3}
     - target: {fileID: 6981692873395671030, guid: 3549aec1696f3e3848f7721b7d245d82, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.018398
@@ -41301,6 +41309,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawnpoint (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6864246497216340534, guid: 3549aec1696f3e3848f7721b7d245d82, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 2955995803462780358, guid: c484bd9e06507a849bf1d85cddfe376f, type: 3}
     - target: {fileID: 6981692873395671030, guid: 3549aec1696f3e3848f7721b7d245d82, type: 3}
       propertyPath: m_LocalPosition.x
       value: -31.474245
@@ -41571,6 +41583,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawnpoint (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6864246497216340534, guid: 3549aec1696f3e3848f7721b7d245d82, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 2955995803462780358, guid: c484bd9e06507a849bf1d85cddfe376f, type: 3}
     - target: {fileID: 6981692873395671030, guid: 3549aec1696f3e3848f7721b7d245d82, type: 3}
       propertyPath: m_LocalPosition.x
       value: -24.039204
