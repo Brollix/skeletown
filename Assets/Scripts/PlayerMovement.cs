@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
 	[SerializeField] private float moveSpeed = 5f;
+	[SerializeField] private Animator animator;
 
 	private PlayerControls controls;
 	private Vector2 moveInput;
@@ -27,6 +28,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void OnMove(InputAction.CallbackContext ctx) {
 		moveInput = ctx.ReadValue<Vector2>();
+
+		if (moveInput.x != 0 || moveInput.y != 0) {
+			animator.SetBool("isWalking", true);
+		} else {
+			animator.SetBool("isWalking", false);
+		}
 	}
 
 	private void FixedUpdate() {
