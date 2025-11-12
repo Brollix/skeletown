@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour {
 	private PlayerControls controls;
 	private Vector2 moveInput;
 	private Rigidbody2D rb;
+	private bool facingRight = true;
 
 	private void Awake() {
 		controls = new PlayerControls();
@@ -29,14 +30,24 @@ public class PlayerMovement : MonoBehaviour {
 	private void OnMove(InputAction.CallbackContext ctx) {
 		moveInput = ctx.ReadValue<Vector2>();
 
-		if (moveInput.x != 0 || moveInput.y != 0) {
-			animator.SetBool("isWalking", true);
-		} else {
-			animator.SetBool("isWalking", false);
+		// Flip solo si cambia de dirección
+		if (moveInput.x > 0 && !facingRight) {
+			Flip();
+		} else if (moveInput.x < 0 && facingRight) {
+			Flip();
 		}
+
+		animator.SetBool("isWalking", moveInput != Vector2.zero);
 	}
 
 	private void FixedUpdate() {
 		rb.linearVelocity = moveInput * moveSpeed;
+	}
+
+	private void Flip() {
+		facingRight = !facingRight;
+		Vector3 scale = transform.localScale;
+		scale.x *= -1;
+		transform.localScale = scale;
 	}
 }
