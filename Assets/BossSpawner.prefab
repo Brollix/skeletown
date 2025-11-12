@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6981692873395671030}
   - component: {fileID: 6864246497216340534}
   m_Layer: 0
-  m_Name: MushroomSpawner
+  m_Name: BossSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a00983ae7b922e4a8713e4f7a34a9a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2955995803462780358, guid: 9ba7d87d4dccae94899726b60b251ec0, type: 3}
+  enemyPrefab: {fileID: 2955995803462780358, guid: a0a6a47fae4dfb046b88955d68ff0868, type: 3}
   player: {fileID: 0}
   spawnPoint: {fileID: 6981692873395671030}
-  numberToSpawn: 6
-  enemySpeed: 2
-  enemyHealth: 10
-  enemyDamage: 2
-  separationRadius: 0.4
-  separationForce: 0.2
+  numberToSpawn: 1
+  enemySpeed: 1.5
+  enemyHealth: 50
+  enemyDamage: 10
+  separationRadius: 1
+  separationForce: 2

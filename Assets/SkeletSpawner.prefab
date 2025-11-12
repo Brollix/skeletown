@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6981692873395671030}
   - component: {fileID: 6864246497216340534}
   m_Layer: 0
-  m_Name: MushroomSpawner
+  m_Name: SkeletSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,11 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a00983ae7b922e4a8713e4f7a34a9a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2955995803462780358, guid: 9ba7d87d4dccae94899726b60b251ec0, type: 3}
+  enemyPrefab: {fileID: 2955995803462780358, guid: c484bd9e06507a849bf1d85cddfe376f, type: 3}
   player: {fileID: 0}
   spawnPoint: {fileID: 6981692873395671030}
-  numberToSpawn: 6
-  enemySpeed: 2
+  numberToSpawn: 10
+  enemySpeed: 4
   enemyHealth: 10
   enemyDamage: 2
   separationRadius: 0.4
