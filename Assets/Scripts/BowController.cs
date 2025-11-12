@@ -1,50 +1,40 @@
-using System;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class BowController : MonoBehaviour
-{
-    public Transform player;
-    //Vector3 mousePos;
+public class BowController : MonoBehaviour {
+	[SerializeField] private Camera mainCamera;
+	[SerializeField] private Transform playerTransform;
+	[SerializeField] private PlayerMovement playerMovement;
+	[SerializeField] private float radius = 0.5f; // distancia del arco al jugador
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-       
-    }
+	private void Awake() {
+		if (mainCamera == null)
+			mainCamera = Camera.main;
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        // Mouse position in world space
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(
-            Input.mousePosition.x,
-            Input.mousePosition.y,
-            Camera.main.nearClipPlane
-            ));
-        mousePos.z = 0f;
+	private void Update() {
+		RotateAroundPlayer();
+	}
 
-        // Direction player to mouse
-        Vector3 direction = mousePos - player.position;
+	private void RotateAroundPlayer() {
+		float zDist = Mathf.Abs(mainCamera.transform.position.z - playerTransform.position.z);
+		Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(
+			new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, zDist)
+		);
 
-        // Calculate the angle
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        //Debug.Log("Angle: " + angle);
+		// dirección del mouse desde el jugador
+		Vector2 dir = (mouseWorld - playerTransform.position).normalized;
 
-        // Rotate the bow
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+		// posición del arco orbitando alrededor del jugador
+		transform.position = playerTransform.position + (Vector3) (dir * radius);
 
-        // Flip the bow when facing left...
-        Vector3 scale = transform.localScale;
-        if (direction.x < 0)
-        {
-            scale.y = -1; //flip vertically if needed
-        }
-        else
-        {
-            scale.y = 1;
-        }
-        transform.localScale = scale;
-        Debug.Log("Mouse: " + mousePos);
-    }
+		// rotación del arco mirando hacia el mouse
+		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+		// si el jugador mira a la izquierda, invertí el ángulo
+		if (!playerMovement.IsFacingRight())
+			angle += 180f;
+
+		transform.rotation = Quaternion.Euler(0, 0, angle);
+	}
 }

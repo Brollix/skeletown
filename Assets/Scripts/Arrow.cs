@@ -4,7 +4,6 @@ public class Arrow : MonoBehaviour
 {
 
     public float speed = 10f;
-    public float lifetime = 3f;
 
     private Vector2 direction;
 
@@ -17,7 +16,7 @@ public class Arrow : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Destroy(gameObject, lifetime);
+        
     }
 
     // Update is called once per frame
