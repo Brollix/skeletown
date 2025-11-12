@@ -41241,7 +41241,7 @@ Transform:
   m_GameObject: {fileID: 1693912222}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.123, z: 0}
+  m_LocalPosition: {x: -0.339, y: 0.113, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41260,7 +41260,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  lifetime: 3
 --- !u!61 &1693912225
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -54562,7 +54561,7 @@ Transform:
   m_GameObject: {fileID: 7820315217552734814}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.161, y: -0.063, z: 0}
+  m_LocalPosition: {x: 0.69, y: -0.049, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -54609,6 +54608,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  animator: {fileID: 0}
+  mainCamera: {fileID: 0}
 --- !u!81 &3976625778270920991
 AudioListener:
   m_ObjectHideFlags: 0
@@ -54888,7 +54889,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff5cf55c4fc0b64a950d36c9a669cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 4205645334287714586}
+  mainCamera: {fileID: 0}
+  playerTransform: {fileID: 0}
+  playerMovement: {fileID: 0}
+  radius: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
