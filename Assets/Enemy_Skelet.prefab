@@ -52,8 +52,8 @@ MonoBehaviour:
   speed: 2
   health: 10
   damage: 2
-  separationRadius: 1
-  separationForce: 2
+  separationRadius: 0.5
+  separationForce: 0.2
   isVisible: 0
 --- !u!50 &2244095885766789809
 Rigidbody2D:
