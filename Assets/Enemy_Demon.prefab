@@ -50,10 +50,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   speed: 2
-  health: 10
+  health: 50
   damage: 2
-  separationRadius: 1
-  separationForce: 2
+  separationRadius: 0.5
+  separationForce: 0.2
   isVisible: 0
 --- !u!50 &2244095885766789809
 Rigidbody2D:
@@ -128,7 +128,7 @@ Animator:
   m_GameObject: {fileID: 2955995803462780358}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 622f20895e6f2b845ade9b85f5d40374, type: 2}
+  m_Controller: {fileID: 9100000, guid: c354e181dd39e354d94cb2e9dac6c675, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

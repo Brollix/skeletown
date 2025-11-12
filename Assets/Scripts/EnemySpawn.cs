@@ -1,6 +1,7 @@
 using UnityEngine;
+using System.Collections;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawn : MonoBehaviour
 {
     public GameObject enemyPrefab;   // Enemy prefab to spawn
     public Transform player;         // Player reference for enemies
@@ -9,26 +10,33 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        SpawnAllEnemies();
+        StartCoroutine(SpawnEnemies());
     }
 
-    void SpawnAllEnemies()
+    IEnumerator SpawnEnemies()
     {
         if (enemyPrefab == null || spawnPoint == null)
         {
             Debug.LogWarning("Enemy prefab or spawn point not set.");
-            return;
+            yield break;
         }
 
         for (int i = 0; i < numberToSpawn; i++)
         {
-            // Instantiate the enemy at the spawn point
-            GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+            // Add a small random offset so colliders don't overlap perfectly
+            Vector2 offset = Random.insideUnitCircle * 0.5f;
+            Vector2 spawnPos = (Vector2)spawnPoint.position + offset;
 
-            // Assign player reference so the enemy can follow
+            // Instantiate the enemy
+            GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+
+            // Assign player reference
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript != null)
                 enemyScript.player = player;
+
+            // Wait one frame before spawning the next enemy
+            yield return null;
         }
     }
 }
