@@ -5,7 +5,6 @@ public class EnemySpawn : MonoBehaviour
 {
     [Header("Spawning")]
     public GameObject enemyPrefab;   // Enemy prefab to spawn
-    public Transform player;         // Player reference for enemies
     public Transform spawnPoint;     // Single spawn point
     public int numberToSpawn = 5;    // Total enemies to spawn
 
@@ -39,8 +38,6 @@ public class EnemySpawn : MonoBehaviour
             Enemy enemyScript = enemyObj.GetComponent<Enemy>();
             if (enemyScript != null)
             {
-                enemyScript.player = player;
-
                 // 🟢 Apply custom stats from this spawner instance
                 enemyScript.speed = enemySpeed;
                 enemyScript.health = enemyHealth;
