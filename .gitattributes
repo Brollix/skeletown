@@ -1,2 +1,70 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# ================== GENERAL ==================
+# Forzar LF en TODOS los archivos de texto
+* text=auto eol=lf
+
+# ================== UNITY TEXT ASSETS (forzar explícitamente) ==================
+*.cs text eol=lf
+*.meta text eol=lf
+*.prefab text eol=lf
+*.unity text eol=lf
+*.asset text eol=lf
+*.anim text eol=lf
+*.controller text eol=lf
+*.shader text eol=lf
+*.uss text eol=lf
+*.uxml text eol=lf
+*.mat text eol=lf
+*.physicMaterial text eol=lf
+*.overrideController text eol=lf
+*.mask text eol=lf
+*.renderTexture text eol=lf
+
+# ================== OTROS TEXTOS ==================
+*.txt text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.csv text eol=lf
+*.html text eol=lf
+*.htm text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.jsx text eol=lf
+*.tsx text eol=lf
+
+# ================== BINARIOS (no tocar) ==================
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.psd binary
+*.tga binary
+*.bmp binary
+*.tiff binary
+*.fbx binary
+*.obj binary
+*.dae binary
+*.3ds binary
+*.blend binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.mp4 binary
+*.avi binary
+*.mov binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.exe binary
+*.apk binary
+*.aab binary
+*.zip binary
+*.rar binary
+*.7z binary
+*.unitypackage binary
+*.pdb binary
+*.mdb binary
