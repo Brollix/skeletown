@@ -1,7 +1,6 @@
-<<<<<<< Updated upstream
-=======
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 
 public class BowController : MonoBehaviour
 {
@@ -28,20 +27,19 @@ public class BowController : MonoBehaviour
             new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, zDist)
         );
 
-        // dirección del mouse desde el jugador
+        // direcciï¿½n del mouse desde el jugador
         Vector2 dir = (mouseWorld - playerTransform.position).normalized;
 
-        // posición del arco orbitando alrededor del jugador
+        // posiciï¿½n del arco orbitando alrededor del jugador
         transform.position = playerTransform.position + (Vector3)(dir * radius);
 
-        // rotación del arco mirando hacia el mouse
+        // rotaciï¿½n del arco mirando hacia el mouse
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        // si el jugador mira a la izquierda, invertí el ángulo
+        // si el jugador mira a la izquierda, invertï¿½ el ï¿½ngulo
         if (!playerMovement.IsFacingRight())
             angle += 180f;
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }
->>>>>>> Stashed changes
