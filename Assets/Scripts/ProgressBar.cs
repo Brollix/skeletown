@@ -71,7 +71,7 @@ public class ProgressBar : MonoBehaviour
     /// </summary>
     public void CalculateTotalEnemiesFromSpawners()
     {
-        EnemySpawn[] spawners = FindObjectsOfType<EnemySpawn>();
+        EnemySpawn[] spawners = FindObjectsByType<EnemySpawn>(FindObjectsSortMode.None);
         int total = 0;
         
         foreach (EnemySpawn spawner in spawners)
@@ -117,7 +117,14 @@ public class ProgressBar : MonoBehaviour
             RectTransform progressRect = progressBar.GetComponent<RectTransform>();
             if (progressRect != null)
             {
-                float x = percentTime * progressRect.rect.width;
+                // Calculate position from left edge (0) to right edge (width)
+                float targetX = percentTime * progressRect.rect.width;
+                
+                // Adjust for timeLine's pivot: if pivot is at center (0.5), subtract half width
+                // This ensures the line starts at the left edge when percentTime = 0
+                float pivotOffset = timeLine.pivot.x * timeLine.rect.width;
+                float x = targetX - pivotOffset;
+                
                 Vector2 pos = timeLine.anchoredPosition;
                 pos.x = x;
                 timeLine.anchoredPosition = pos;
@@ -181,6 +188,22 @@ public class ProgressBar : MonoBehaviour
     {
         enemiesKilled = 0;
         elapsedTime = 0f;
+        
+        // Reset time line position to left edge
+        if (timeLine != null && progressBar != null)
+        {
+            RectTransform progressRect = progressBar.GetComponent<RectTransform>();
+            if (progressRect != null)
+            {
+                // Position at left edge (0), adjusting for timeLine's pivot
+                float pivotOffset = timeLine.pivot.x * timeLine.rect.width;
+                float x = 0f - pivotOffset;
+                
+                Vector2 pos = timeLine.anchoredPosition;
+                pos.x = x;
+                timeLine.anchoredPosition = pos;
+            }
+        }
     }
 
     /// <summary>
