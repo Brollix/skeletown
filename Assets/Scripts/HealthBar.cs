@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class HealthBar : MonoBehaviour
 {
-    [Header("Referencia del enemigo")]
-    public Enemy targetEnemy;  // Asignar en el inspector o por script
+    [Header("Enemy Reference")]
+    public Enemy targetEnemy;  // Assign in inspector or by script
 
-    [Header("Barra visual")]
-    public Transform bar;      // El transform gráfico hijo que se escala
+    [Header("Visual Bar")]
+    public Transform bar;      // Child graphic transform that scales
 
     private float maxHealth;
 
@@ -17,7 +17,7 @@ public class HealthBar : MonoBehaviour
         if (targetEnemy != null)
             maxHealth = targetEnemy.health;
         else
-            Debug.LogError("HealthBar: No se encontró Enemy en el objeto asignado.");
+            Debug.LogError("HealthBar: Enemy not found on assigned object.");
     }
 
     void Update()

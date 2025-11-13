@@ -86,6 +86,13 @@ public class Enemy : MonoBehaviour
     // Destroy enemy when health reaches zero
     void Die()
     {
+        // Notify progress bar that enemy was killed
+        ProgressBar progressBar = ProgressBar.GetInstance();
+        if (progressBar != null)
+        {
+            progressBar.OnEnemyKilled();
+        }
+
         // You can add particle effects, sounds, or animations here
         Destroy(gameObject);
     }

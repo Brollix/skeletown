@@ -5,7 +5,7 @@ public class BowController : MonoBehaviour {
 	[SerializeField] private Camera mainCamera;
 	[SerializeField] private Transform playerTransform;
 	[SerializeField] private PlayerMovement playerMovement;
-	[SerializeField] private float radius = 0.5f; // distancia del arco al jugador
+	[SerializeField] private float radius = 0.5f; // distance from bow to player
 
 	private void Awake() {
 		if (mainCamera == null)
@@ -22,16 +22,16 @@ public class BowController : MonoBehaviour {
 			new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, zDist)
 		);
 
-		// dirección del mouse desde el jugador
+		// mouse direction from player
 		Vector2 dir = (mouseWorld - playerTransform.position).normalized;
 
-		// posición del arco orbitando alrededor del jugador
+		// bow position orbiting around player
 		transform.position = playerTransform.position + (Vector3) (dir * radius);
 
-		// rotación del arco mirando hacia el mouse
+		// bow rotation facing mouse
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-		// si el jugador mira a la izquierda, invertí el ángulo
+		// if player faces left, invert angle
 		if (!playerMovement.IsFacingRight())
 			angle += 180f;
 
