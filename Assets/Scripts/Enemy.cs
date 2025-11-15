@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;  // For Action delegate
 
 public class Enemy : MonoBehaviour {
 	[Header("References")]
@@ -6,7 +7,11 @@ public class Enemy : MonoBehaviour {
 
 	[Header("Stats")]
 	public float speed = 2f;
+	[Tooltip("Current health of the enemy")]
 	public float health = 10f;
+	[Tooltip("Maximum health of the enemy")]
+	public float maxHealth = 10f;
+	[Tooltip("Damage dealt by the enemy")]
 	public float damage = 2f;
 
 	[Header("Flocking Settings")]
@@ -18,8 +23,11 @@ public class Enemy : MonoBehaviour {
 
 	private Rigidbody2D rb;
 
-	void Start() {
+	private void Start() {
 		rb = GetComponent<Rigidbody2D>();
+
+		// Initialize health to max health at start
+		health = maxHealth;
 
 		// If player reference is not set, try to find it by tag
 		if (player == null) {
@@ -67,12 +75,15 @@ public class Enemy : MonoBehaviour {
 		return separationMove * separationForce;
 	}
 
+	// Event for health changes
+	public event Action<float> OnHealthChanged;
+
 	// Public method to receive damage
+
 	public void TakeDamage(float amount) {
-		health -= amount;
-		if (health <= 0) {
-			Die();
-		}
+		health = Mathf.Clamp(health - amount, 0, maxHealth);
+		OnHealthChanged?.Invoke(health);
+		if (health <= 0) Die();
 	}
 
 	// Destroy enemy when health reaches zero

@@ -8,9 +8,28 @@ public class Arrow : MonoBehaviour
     [SerializeField] private float lifetime = 5f;
 
     private Vector2 direction;
+    private GameObject player;  // Add reference to player
+    private Collider2D arrowCollider;
 
     private void Start()
     {
+        // Get reference to the player and its colliders
+        player = GameObject.FindGameObjectWithTag("Player");
+        arrowCollider = GetComponent<Collider2D>();
+        
+        // Ignore collision with player if it exists
+        if (player != null)
+        {
+            Collider2D[] playerColliders = player.GetComponentsInChildren<Collider2D>();
+            foreach (Collider2D playerCollider in playerColliders)
+            {
+                if (playerCollider != null && arrowCollider != null)
+                {
+                    Physics2D.IgnoreCollision(arrowCollider, playerCollider);
+                }
+            }
+        }
+        
         // Auto-destroy in case it never hits anything
         Destroy(gameObject, lifetime);
     }
@@ -31,16 +50,25 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Ignore collisions with the player or the bow itself
-        if (collision.GetComponent<PlayerMovement>() != null) return;
-        if (collision.GetComponent<BowController>() != null) return;
+        // Skip if this is a player-related object
+        if (collision.CompareTag("Player") || 
+            collision.GetComponent<PlayerMovement>() != null || 
+            collision.GetComponent<BowController>() != null ||
+            (player != null && collision.transform.IsChildOf(player.transform)))
+        {
+            return;
+        }
 
-        // (Optional) Handle enemy collisions
-        var enemy = collision.GetComponent<Enemy>();
+        // Handle enemy collisions
+        var enemy = collision.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            // Example: deal damage
-            // enemy.TakeDamage(1);
+            Debug.Log($"Arrow hit enemy! Dealing 1 damage. Enemy health: {enemy.health}");
+            enemy.TakeDamage(1);
+        }
+        else
+        {
+            Debug.Log($"Arrow hit: {collision.gameObject.name}");
         }
 
         // Destroy the arrow upon any valid collision

@@ -6,13 +6,15 @@ public class BowController : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private PlayerMovement playerMovement;
+    private PlayerFacing playerFacing;
     [SerializeField] private float radius = 0.5f; // distancia del arco al jugador
 
     private void Awake()
     {
         if (mainCamera == null)
             mainCamera = Camera.main;
+
+        playerFacing = GetComponentInParent<PlayerFacing>();
     }
 
     private void Update()
@@ -37,7 +39,7 @@ public class BowController : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         // si el jugador mira a la izquierda, invert� el �ngulo
-        if (!playerMovement.IsFacingRight())
+        if (!playerFacing.IsFacingRight())
             angle += 180f;
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
