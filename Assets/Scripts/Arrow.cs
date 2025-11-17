@@ -7,6 +7,7 @@ public class Arrow : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float rotationOffset = -90f;
     [SerializeField] private float lifetime = 5f;
+    private float damage = 1f; // Set from PlayerShooting
 
     private Vector2 direction;
     private GameObject player;  // Add reference to player
@@ -45,6 +46,12 @@ public class Arrow : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle + rotationOffset);
     }
 
+    // Set damage from the shooting player
+    public void SetDamage(float value)
+    {
+        damage = value;
+    }
+
     // Move the arrow forward every frame
     private void Update()
     {
@@ -66,8 +73,8 @@ public class Arrow : MonoBehaviour
         var enemy = collision.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            Debug.Log($"Arrow hit enemy! Dealing 1 damage. Enemy health: {enemy.health}");
-            enemy.TakeDamage(player.GetComponent<PlayerShooting>().damage);
+            Debug.Log($"Arrow hit enemy! Dealing {damage} damage. Enemy health: {enemy.health}");
+            enemy.TakeDamage(damage);
         }
         else
         {

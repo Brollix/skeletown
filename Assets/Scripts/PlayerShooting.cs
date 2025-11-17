@@ -7,6 +7,7 @@ public class PlayerShooting : Player
     [Header("Shooting")]
     [SerializeField] private float shootCooldown = 0.3f;
     [SerializeField] private GameObject arrowTemplate;
+    [SerializeField] private float damage = 1f; // Damage dealt by each arrow
     
     private float cooldownTimer;
     private BowController bowController;
@@ -57,6 +58,9 @@ public class PlayerShooting : Player
         {
             // Set the direction based on player-to-mouse aiming, but spawn at bow position
             arrowScript.setDirection(aimDirection);
+
+            // Pass player damage into the arrow
+            arrowScript.SetDamage(damage);
         }
     }
 }

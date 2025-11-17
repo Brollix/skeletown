@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2244095885766789809}
   - component: {fileID: 3183961276897200027}
   - component: {fileID: 2133116004303538237}
-  - component: {fileID: -7222510272743120381}
+  - component: {fileID: 7608550258947343983}
   m_Layer: 0
-  m_Name: Enemy_Skelet
+  m_Name: zombie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8081714562032394418}
+  - {fileID: 5184577917078820355}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8235931814449171491
@@ -52,10 +52,12 @@ MonoBehaviour:
   player: {fileID: 0}
   speed: 2
   health: 10
+  maxHealth: 10
   damage: 2
-  separationRadius: 0.5
-  separationForce: 0.2
+  separationRadius: 1
+  separationForce: 2
   isVisible: 0
+  floorNumber: 0
 --- !u!50 &2244095885766789809
 Rigidbody2D:
   serializedVersion: 5
@@ -129,7 +131,7 @@ Animator:
   m_GameObject: {fileID: 2955995803462780358}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7a276113bec9f7941937b19d570c3576, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5afc6fcbe6094b143b9e94969dfc5038, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -141,7 +143,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!212 &-7222510272743120381
+--- !u!212 &7608550258947343983
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,20 +185,20 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1926948713
-  m_SortingLayer: 2
+  m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3801395117379775012, guid: ae924ff9e21b3af40a0d81cde4d9b679, type: 3}
+  m_Sprite: {fileID: -2386536363059612362, guid: 70e74a7ef6f6d744c981820d4040765a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.375, y: 0.46875}
+  m_Size: {x: 0.5, y: 0.46875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &7017495745403665474
+--- !u!1001 &6248869303085566707
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -205,16 +207,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 2857901881022050717}
     m_Modifications:
     - target: {fileID: 1246128893938851056, guid: 241c53236674780468d1d0b68917c60e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1246128893938851056, guid: 241c53236674780468d1d0b68917c60e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1246128893938851056, guid: 241c53236674780468d1d0b68917c60e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 1246128893938851056, guid: 241c53236674780468d1d0b68917c60e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.093793385
       objectReference: {fileID: 0}
     - target: {fileID: 1246128893938851056, guid: 241c53236674780468d1d0b68917c60e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -253,8 +259,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 241c53236674780468d1d0b68917c60e, type: 3}
---- !u!4 &8081714562032394418 stripped
+--- !u!4 &5184577917078820355 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1246128893938851056, guid: 241c53236674780468d1d0b68917c60e, type: 3}
-  m_PrefabInstance: {fileID: 7017495745403665474}
+  m_PrefabInstance: {fileID: 6248869303085566707}
   m_PrefabAsset: {fileID: 0}
