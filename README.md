@@ -13,7 +13,7 @@ Skeletown es un juego de acción con elementos roguelike donde el jugador debe a
 
 ## Documentación del Juego
 - [Game Design Document (GDD)](GDD_Skeletown.md): Documento completo con todas las mecánicas, balance y progresión del juego.
-- [Pitch del Juego](pitch.md): Visión general, análisis de mercado y propuesta de valor.
+- [Pitch del Juego](PITCH.md): Visión general, análisis de mercado y propuesta de valor.
 
 ## Controles
 - **WASD/Flechas**: Mover personaje
