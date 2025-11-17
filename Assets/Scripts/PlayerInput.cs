@@ -20,6 +20,7 @@ public class PlayerInput : Player
 
     private void OnEnable()
     {
+        if (controls == null) controls = new PlayerControls();
         controls.Player.Enable();
         controls.Player.Move.performed += OnMove;
         controls.Player.Move.canceled += OnMove;
@@ -27,9 +28,12 @@ public class PlayerInput : Player
 
     private void OnDisable()
     {
-        controls.Player.Move.performed -= OnMove;
-        controls.Player.Move.canceled -= OnMove;
-        controls.Player.Disable();
+        if (controls != null)
+        {
+            controls.Player.Move.performed -= OnMove;
+            controls.Player.Move.canceled -= OnMove;
+            controls.Player.Disable();
+        }
     }
 
     private void OnMove(InputAction.CallbackContext ctx)

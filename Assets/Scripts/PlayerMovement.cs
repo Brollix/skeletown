@@ -35,6 +35,7 @@ public class PlayerMovement : Player
 
     private void OnEnable()
     {
+        if (controls == null) controls = new PlayerControls();
         controls.Player.Enable();
         controls.Player.Move.performed += OnMove;
         controls.Player.Move.canceled += OnMove;
@@ -42,9 +43,12 @@ public class PlayerMovement : Player
 
     private void OnDisable()
     {
-        controls.Player.Move.performed -= OnMove;
-        controls.Player.Move.canceled -= OnMove;
-        controls.Player.Disable();
+        if (controls != null)
+        {
+            controls.Player.Move.performed -= OnMove;
+            controls.Player.Move.canceled -= OnMove;
+            controls.Player.Disable();
+        }
     }
 
     private void OnMove(InputAction.CallbackContext ctx)
@@ -64,13 +68,35 @@ public class PlayerMovement : Player
 
     private void FixedUpdate()
     {
-        if (PauseManager.GamePaused)
+        if (PauseManager.GamePaused) return;
+
+        // Move the player
+        if (rb != null)
         {
-            rb.linearVelocity = Vector2.zero;
-            return;
+            Vector2 movement = moveInput.normalized * moveSpeed;
+            rb.linearVelocity = new Vector2(movement.x, movement.y);
         }
 
-        rb.linearVelocity = moveInput * moveSpeed;
+        // Update animation
+        if (animator != null)
+        {
+            bool isMoving = moveInput.magnitude > 0.1f;
+            animator.SetBool("isMoving", isMoving);
+        }
+
+        // Flip the player based on movement direction
+        if (moveInput.x != 0)
+        {
+            bool wasFacingRight = facingRight;
+            facingRight = moveInput.x > 0;
+            
+            if (facingRight != wasFacingRight)
+            {
+                Vector3 scale = transform.localScale;
+                scale.x = Mathf.Abs(scale.x) * (facingRight ? 1 : -1);
+                transform.localScale = scale;
+            }
+        }
     }
 
     private void Update()
@@ -84,7 +110,6 @@ public class PlayerMovement : Player
         Move(input.moveInput, moveSpeed);
         facing?.UpdateFacingDirection();
     }
-
 
     private void Flip()
     {
