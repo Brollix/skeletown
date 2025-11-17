@@ -9,6 +9,11 @@ public class BowController : MonoBehaviour
     private PlayerFacing playerFacing;
     [SerializeField] private float radius = 0.5f; // distancia del arco al jugador
 
+    private void Start()
+    {
+        Time.timeScale = 1f; // safety reset
+    }
+
     private void Awake()
     {
         if (mainCamera == null)
@@ -19,6 +24,8 @@ public class BowController : MonoBehaviour
 
     private void Update()
     {
+        if (PauseManager.GamePaused) return;
+
         RotateAroundPlayer();
     }
 
