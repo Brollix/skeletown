@@ -10,70 +10,33 @@ public class Door : MonoBehaviour
     public TileBase[] openTiles;
 
     [Header("Door Size & Position")]
-    public Vector2Int topLeft;
+    public Vector2Int topLeft; // Top-left corner of the door in tile coordinates
     public int width = 2;
     public int height = 3;
     public int floorNumber;
 
     [Header("Options")]
     public bool isOpen = false;
-    public bool showPreviewInEditor = true;
 
-    private Vector3Int[] positions;
-
-    // ================= EDITOR ONLY =================
-
-    void OnValidate()
-    {
-#if UNITY_EDITOR
-        if (tilemap == null) return;
-
-        GeneratePositions();
-
-        if (showPreviewInEditor)
-            ApplyEditorPreview();
-        else
-            tilemap.ClearAllEditorPreviewTiles();
-#endif
-    }
-
-#if UNITY_EDITOR
-    private void ApplyEditorPreview()
-    {
-        tilemap.ClearAllEditorPreviewTiles();
-
-        if (positions == null) return;
-
-        TileBase[] arr = isOpen ? openTiles : closedTiles;
-        if (arr == null || arr.Length == 0) return;
-
-        for (int i = 0; i < positions.Length; i++)
-        {
-            tilemap.SetEditorPreviewTile(positions[i], arr[i]);
-        }
-    }
-#endif
-
-    // ================= RUNTIME =================
+    private TilemapCollider2D tilemapCollider;
 
     void Awake()
     {
         if (tilemap == null)
         {
-            Debug.LogError("Door missing Tilemap!", this);
+            Debug.LogError("Tilemap is missing on Door!", this);
             return;
         }
 
-        GeneratePositions();
+        tilemapCollider = tilemap.GetComponent<TilemapCollider2D>();
+
+        ApplyTiles();
+        ApplyCollision();
     }
 
     void Start()
     {
         StartCoroutine(RegisterWhenReady());
-
-        // Apply actual gameplay tiles (not preview)
-        ApplyTiles();
-        ApplyCollision();
     }
 
     private IEnumerator RegisterWhenReady()
@@ -84,23 +47,19 @@ public class Door : MonoBehaviour
         GameManager.Instance.RegisterDoor(floorNumber, this);
     }
 
-    private void GeneratePositions()
-    {
-        positions = new Vector3Int[width * height];
-        int index = 0;
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                positions[index++] = new Vector3Int(topLeft.x + x, topLeft.y - y, 0);
-            }
-        }
-    }
-
     public void SetOpen(bool open)
     {
-        isOpen = open;
+        if (isOpen == open)
+            return;
+
+        if (open)
+        {
+            isOpen = true;
+        }
+        else
+        {
+            isOpen = false;
+        }
 
         ApplyTiles();
         ApplyCollision();
@@ -112,50 +71,55 @@ public class Door : MonoBehaviour
     }
 
     private void ApplyTiles()
-{
-    if (positions == null) return;
-
-    TileBase[] arr = isOpen ? openTiles : closedTiles;
-
-    for (int i = 0; i < positions.Length; i++)
     {
-        TileBase source = arr[i];
+        if (tilemap == null)
+            return;
 
-        // clear tile if null
-        if (source == null)
+        TileBase[] tilesToUse;
+        if (isOpen)
         {
-            tilemap.SetTile(positions[i], null);
-            continue;
+            tilesToUse = openTiles;
+        }
+        else
+        {
+            tilesToUse = closedTiles;
         }
 
-        // ---- FORCE TILE UPDATE ----
-        // Create a new Tile instance (required so Unity refreshes the sprite)
-        Tile newTile = ScriptableObject.CreateInstance<Tile>();
+        // Clear previous tiles
+        tilemap.ClearAllTiles();
 
-        if (source is Tile srcTile)
+        // Fill door area based on width and height starting from top-left
+        int index = 0;
+        for (int y = 0; y < height; y++)
         {
-            newTile.sprite       = srcTile.sprite;
-            newTile.color        = srcTile.color;
-            newTile.transform    = srcTile.transform;
-            newTile.gameObject   = srcTile.gameObject;
-            newTile.flags        = TileFlags.None;
-            newTile.colliderType = Tile.ColliderType.None; // collider controlled elsewhere
-        }
+            for (int x = 0; x < width; x++)
+            {
+                TileBase tile = null;
+                if (tilesToUse != null && index < tilesToUse.Length)
+                {
+                    tile = tilesToUse[index];
+                }
 
-        tilemap.SetTile(positions[i], newTile);
+                Vector3Int position = new Vector3Int(topLeft.x + x, topLeft.y - y, 0);
+                tilemap.SetTile(position, tile);
+
+                index++;
+            }
+        }
     }
-}
-
-
 
     private void ApplyCollision()
     {
-        TilemapCollider2D col = tilemap.GetComponent<TilemapCollider2D>();
-        if (col != null)
-            col.enabled = !isOpen;
-
-        CompositeCollider2D comp = tilemap.GetComponent<CompositeCollider2D>();
-        if (comp != null)
-            comp.enabled = !isOpen;
+        if (tilemapCollider != null)
+        {
+            if (isOpen)
+            {
+                tilemapCollider.enabled = false; // Door open → collider off
+            }
+            else
+            {
+                tilemapCollider.enabled = true;  // Door closed → collider on
+            }
+        }
     }
 }
