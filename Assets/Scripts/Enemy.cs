@@ -1,103 +1,125 @@
 using UnityEngine;
-using System;  // For Action delegate
+using System;
 
 public class Enemy : MonoBehaviour {
-	[Header("References")]
-	[HideInInspector] public Transform player;
+    [Header("References")]
+    [HideInInspector] public Transform player;
 
-	[Header("Stats")]
-	public float speed = 2f;
-	[Tooltip("Current health of the enemy")]
-	public float health = 10f;
-	[Tooltip("Maximum health of the enemy")]
-	public float maxHealth = 10f;
-	[Tooltip("Damage dealt by the enemy")]
-	public float damage = 2f;
+    [Header("Stats")]
+    public float speed = 2f;
+    public float health = 10f;
+    public float maxHealth = 10f;
+    public float damage = 2f;
 
-	[Header("Flocking Settings")]
-	public float separationRadius = 1f;   // Minimum distance between enemies
-	public float separationForce = 2f;    // Strength of separation
+    [Header("Flocking Settings")]
+    public float separationRadius = 1f;
+    public float separationForce = 2f;
 
-	[Header("Vision Settings")]
-	public bool isVisible = false; // Is the enemy currently visible on screen
+    [Header("Vision Settings")]
+    public bool isVisible = false;
 
-	private Rigidbody2D rb;
+    public int floorNumber;
 
-	private void Start() {
-		rb = GetComponent<Rigidbody2D>();
+    private Rigidbody2D rb;
 
-		// Initialize health to max health at start
-		health = maxHealth;
+    private void Start() {
+        rb = GetComponent<Rigidbody2D>();
 
-		// If player reference is not set, try to find it by tag
-		if (player == null) {
-			GameObject playerObj = GameObject.FindWithTag("Player");
-			if (playerObj != null)
-				player = playerObj.transform;
-		}
-	}
+        // Set health to full
+        health = maxHealth;
 
-	void Update() {
-		// Do not move if there is no player or enemy is off-screen
-		if (player == null || !isVisible)
-			return;
+        // Find player if missing
+        if (player == null) {
+            GameObject playerObj = GameObject.FindWithTag("Player");
+            if (playerObj != null) {
+                player = playerObj.transform;
+            }
+        }
+    }
 
-		Vector2 moveDirection = (player.position - transform.position).normalized;
+    void Update() {
+        if (player == null) {
+            return;
+        }
 
-		// Apply separation to avoid crowding
-		Vector2 separation = CalculateSeparation();
-		Vector2 finalDirection = (moveDirection + separation).normalized;
+        if (!isVisible) {
+            return;
+        }
 
-		rb.MovePosition(rb.position + finalDirection * speed * Time.deltaTime);
-	}
+        Vector2 moveDirection = (player.position - transform.position).normalized;
 
-	// Called when object becomes visible by any camera
-	void OnBecameVisible() => isVisible = true;
+        Vector2 separation = CalculateSeparation();
+        Vector2 finalDirection = moveDirection + separation;
 
-	// Called when object goes off-screen
-	void OnBecameInvisible() => isVisible = false;
+        finalDirection = finalDirection.normalized;
 
-	// Calculate separation vector to prevent enemies from stacking
-	Vector2 CalculateSeparation() {
-		Vector2 separationMove = Vector2.zero;
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        rb.MovePosition(rb.position + finalDirection * speed * Time.deltaTime);
+    }
 
-		foreach (GameObject other in enemies) {
-			if (other == gameObject)
-				continue;
-			float distance = Vector2.Distance(transform.position, other.transform.position);
-			if (distance < separationRadius) {
-				Vector2 pushDir = (transform.position - other.transform.position).normalized;
-				separationMove += pushDir / distance; // closer means stronger push
-			}
-		}
+    void OnBecameVisible() {
+        isVisible = true;
+    }
 
-		return separationMove * separationForce;
-	}
+    void OnBecameInvisible() {
+        isVisible = false;
+    }
 
-	// Event for health changes
-	public event Action<float> OnHealthChanged;
+    Vector2 CalculateSeparation() {
+        Vector2 separationMove = Vector2.zero;
 
-	// Public method to receive damage
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-	public void TakeDamage(float amount) {
-		health = Mathf.Clamp(health - amount, 0, maxHealth);
-		OnHealthChanged?.Invoke(health);
-		if (health <= 0) Die();
-	}
+        foreach (GameObject other in enemies) {
 
-	// Destroy enemy when health reaches zero
-	void Die() {
+            if (other == gameObject) {
+                continue;
+            }
 
-		// You can add particle effects, sounds, or animations here
-		Destroy(gameObject);
-	}
+            float distance = Vector2.Distance(transform.position, other.transform.position);
 
-	// Deal damage to player on collision (to implement later)
-	void OnCollisionEnter2D(Collision2D collision) {
-		if (collision.gameObject.CompareTag("Player")) {
-			// Example: call a method on the player to reduce health
-			// collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage);
-		}
-	}
+            if (distance < separationRadius) {
+                Vector2 pushDirection = (transform.position - other.transform.position).normalized;
+
+                separationMove += pushDirection / distance;
+            }
+        }
+
+        return separationMove * separationForce;
+    }
+
+    public void TakeDamage(float amount) {
+        float newHealth = health - amount;
+
+        if (newHealth < 0f) {
+            newHealth = 0f;
+        }
+
+        health = newHealth;
+        if (OnHealthChanged != null) {
+            OnHealthChanged(health);
+        }
+
+        if (health <= 0f) {
+            Die();
+        }
+    }
+
+    public event Action<float> OnHealthChanged;
+
+	void Die()
+{
+    if (GameManager.Instance != null)
+    {
+        GameManager.Instance.EnemyDied(floorNumber);
+    }
+
+    Destroy(gameObject);
+}
+
+
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Player")) {
+            // Damage player here later
+        }
+    }
 }

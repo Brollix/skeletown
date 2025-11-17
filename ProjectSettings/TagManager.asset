@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -41,8 +42,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: TileMap
+  - name: Floor
+    uniqueID: 1609676549
+    locked: 0
+  - name: Walls
+    uniqueID: 40588049
+    locked: 0
+  - name: Details
     uniqueID: 38844965
+    locked: 0
+  - name: Doors
+    uniqueID: 2467500951
     locked: 0
   - name: Player
     uniqueID: 2368018583
