@@ -100,71 +100,71 @@ public class GameManager : MonoBehaviour
     // ------------------------------------------------------
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            KillAllEnemiesOnAllFloors();
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            PrintFloorStates();
-        }
+        //if (Input.GetKeyDown(KeyCode.K))
+        //{
+        //    KillAllEnemiesOnAllFloors();
+        //}
+        //
+        // if (Input.GetKeyDown(KeyCode.L))
+        // {
+        //     PrintFloorStates();
+        // }
     }
 
     // ------------------------------------------------------
     // KILL ALL ENEMIES
     // ------------------------------------------------------
-    private void KillAllEnemiesOnAllFloors()
-    {
-        Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+    // private void KillAllEnemiesOnAllFloors()
+    // {
+    //     Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
 
-        int totalKilled = 0;
+    //     int totalKilled = 0;
 
-        foreach (Enemy e in enemies)
-        {
-            if (e != null)
-            {
-                e.TakeDamage(999999f);
-                totalKilled++;
-            }
-        }
+    //     foreach (Enemy e in enemies)
+    //     {
+    //         if (e != null)
+    //         {
+    //             e.TakeDamage(999999f);
+    //             totalKilled++;
+    //         }
+    //     }
 
-        Debug.Log("DEBUG: Killed all enemies. Total killed: " + totalKilled);
-    }
+    //     Debug.Log("DEBUG: Killed all enemies. Total killed: " + totalKilled);
+    // }
 
     // ------------------------------------------------------
     // DEBUG: PRINT FLOOR STATES
     // ------------------------------------------------------
-    public void PrintFloorStates()
-    {
-        Debug.Log("----- FLOOR STATES -----");
+    // public void PrintFloorStates()
+    // {
+    //     Debug.Log("----- FLOOR STATES -----");
 
-        // Collect all floors that exist either in doors or enemies
-        HashSet<int> allFloors = new HashSet<int>();
-        foreach (var floor in doorsPerFloor.Keys) allFloors.Add(floor);
-        foreach (var floor in enemiesRemaining.Keys) allFloors.Add(floor);
+    //     // Collect all floors that exist either in doors or enemies
+    //     HashSet<int> allFloors = new HashSet<int>();
+    //     foreach (var floor in doorsPerFloor.Keys) allFloors.Add(floor);
+    //     foreach (var floor in enemiesRemaining.Keys) allFloors.Add(floor);
 
-        foreach (int floor in allFloors)
-        {
-            int enemies = enemiesRemaining.ContainsKey(floor) ? enemiesRemaining[floor] : 0;
+    //     foreach (int floor in allFloors)
+    //     {
+    //         int enemies = enemiesRemaining.ContainsKey(floor) ? enemiesRemaining[floor] : 0;
 
-            string doorStates = "";
-            if (doorsPerFloor.ContainsKey(floor))
-            {
-                foreach (Door d in doorsPerFloor[floor])
-                {
-                    if (d != null)
-                        doorStates += d.isOpen ? "OPEN " : "CLOSED ";
-                }
-            }
-            else
-            {
-                doorStates = "No doors";
-            }
+    //         string doorStates = "";
+    //         if (doorsPerFloor.ContainsKey(floor))
+    //         {
+    //             foreach (Door d in doorsPerFloor[floor])
+    //             {
+    //                 if (d != null)
+    //                     doorStates += d.isOpen ? "OPEN " : "CLOSED ";
+    //             }
+    //         }
+    //         else
+    //         {
+    //             doorStates = "No doors";
+    //         }
 
-            Debug.Log($"Floor {floor}: Enemies remaining = {enemies}, Doors = {doorStates}");
-        }
+    //         Debug.Log($"Floor {floor}: Enemies remaining = {enemies}, Doors = {doorStates}");
+    //     }
 
-        Debug.Log("------------------------");
-    }
+    //     Debug.Log("------------------------");
+    // }
 }
