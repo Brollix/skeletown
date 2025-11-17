@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-// Spawns a group of enemies on a given floor and configures their stats.
 public class EnemySpawn : MonoBehaviour
 {
     public GameObject enemyPrefab;
@@ -18,7 +17,6 @@ public class EnemySpawn : MonoBehaviour
     
     private int floorNumber;
 
-    // Get the floor number and start spawning enemies
     void Start()
     {
         FloorID id = GetComponentInParent<FloorID>();
@@ -29,7 +27,6 @@ public class EnemySpawn : MonoBehaviour
         StartCoroutine(SpawnEnemies());
     }
 
-    // Spawn enemies one by one and notify listeners when done
     IEnumerator SpawnEnemies()
     {
         if (enemyPrefab == null) {
