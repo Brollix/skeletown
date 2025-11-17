@@ -1,21 +1,35 @@
 # Skeletown
 
-Proyecto de videojuego desarrollado en Unity como trabajo integrador de tres materias de la Licenciatura en Desarrollo de Videojuegos.
+Un juego de acción roguelike 2D desarrollado en Unity donde el jugador avanza a través de habitaciones llenas de enemigos, mejorando sus habilidades entre partidas para superar desafíos cada vez mayores.
 
-## Descripción
-Skeletown es un juego 2D desarrollado en Unity 6000.0.60f1 que combina exploración y combate ligero en una ambientación de calabozos. El jugador controla a un personaje con arco que se desplaza por el escenario mientras enfrenta oleadas de enemigos (como esqueletos, demonios y hongos) y practica fundamentos de diseño de sistemas de juego, control del personaje y feedback visual. El proyecto funciona como pieza integradora de contenidos: desde la concepción de la idea y sus reglas (diseño), hasta la implementación en tiempo real y la presentación/interacción con foco en UI/UX.
+## Visión General
+Skeletown es un juego de acción con elementos roguelike donde el jugador debe abrirse camino a través de habitaciones llenas de enemigos. Lo que hace único a Skeletown es su sistema de progresión permanente: aunque mueras, mantienes todas las mejoras obtenidas, permitiéndote volver más fuerte en cada intento.
 
-## Materias integradas
-- Desarrollo en Tiempo Real (Unity)
-- Diseño de Videojuegos (Documentacion)
-- UI/UX (Interfaces Graficas)
+## Características Principales
+- **Sistema de Progresión Permanente**: Mejora tu personaje entre partidas con puntos de habilidad.
+- **Combate Desafiante**: Enfrenta oleadas de enemigos que se vuelven más fuertes a medida que avanzas.
+- **Jefe Final**: Derrota al temible jefe final en la última habitación.
+- **Atributos Mejorables**: Aumenta tu vida, daño y velocidad para adaptarte a tu estilo de juego.
 
-## Enfoque del proyecto
-- Presentar una experiencia jugable corta que permita evaluar mecánicas esenciales (movimiento, orientación con mouse, disparo con arco, respuesta de enemigos).
-- Experimentar con balance básico (velocidad del jugador, salud/daño de enemigos, cadencia de ataque).
-- Explorar decisiones de diseño visual y de interacción (claridad de estados, legibilidad, microfeedbacks).
+## Documentación del Juego
+- [Game Design Document (GDD)](GDD_Skeletown.md): Documento completo con todas las mecánicas, balance y progresión del juego.
+- [Pitch del Juego](pitch.md): Visión general, análisis de mercado y propuesta de valor.
 
-## Aporte por materia
-- Desarrollo en Tiempo Real (Unity): implementación de mecánicas, control del jugador, comportamiento de enemigos y uso de sistemas de entrada.
-- Diseño de Videojuegos (Documentacion): definición de fantasía, objetivos, reglas, bucle principal y criterios de balance.
-- UI/UX (Interfaces Graficas): lineamientos de interfaz y retroalimentación, legibilidad y fluidez de la interacción.
+## Controles
+- **WASD/Flechas**: Mover personaje
+- **Mouse**: Apuntar
+- **Clic Izquierdo**: Disparar flechas
+- **ESC**: Menú de pausa
+
+## Instalación
+1. Descarga la última versión del juego
+2. Extrae el archivo .zip
+3. Ejecuta `skeletown.exe`
+
+## Desarrollado por
+- Agustin Murgia
+- Agustin Brollo
+- Franco Chialli
+
+## Licencia
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
