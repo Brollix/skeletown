@@ -1,35 +1,35 @@
 # Skeletown
 
-Un juego de acción roguelike 2D desarrollado en Unity donde el jugador avanza a través de habitaciones llenas de enemigos, mejorando sus habilidades entre partidas para superar desafíos cada vez mayores.
+A 2D action roguelike game developed in Unity where the player progresses through rooms filled with enemies, improving their abilities between runs to overcome increasingly difficult challenges.
 
-## Visión General
-Skeletown es un juego de acción con elementos roguelike donde el jugador debe abrirse camino a través de habitaciones llenas de enemigos. Lo que hace único a Skeletown es su sistema de progresión permanente: aunque mueras, mantienes todas las mejoras obtenidas, permitiéndote volver más fuerte en cada intento.
+## Overview
+Skeletown is an action game with roguelike elements where the player must fight their way through rooms full of enemies. What makes Skeletown unique is its permanent progression system: even if you die, you keep all the upgrades you have earned, allowing you to come back stronger on each attempt.
 
-## Características Principales
-- **Sistema de Progresión Permanente**: Mejora tu personaje entre partidas con puntos de habilidad.
-- **Combate Desafiante**: Enfrenta oleadas de enemigos que se vuelven más fuertes a medida que avanzas.
-- **Jefe Final**: Derrota al temible jefe final en la última habitación.
-- **Atributos Mejorables**: Aumenta tu vida, daño y velocidad para adaptarte a tu estilo de juego.
+## Key Features
+- **Permanent Progression System**: Upgrade your character between runs using skill points.
+- **Challenging Combat**: Face waves of enemies that become stronger as you advance.
+- **Final Boss**: Defeat the fearsome final boss in the last room.
+- **Upgradable Attributes**: Increase your health, damage, and speed to match your playstyle.
 
-## Documentación del Juego
-- [Game Design Document (GDD)](GDD_Skeletown.md): Documento completo con todas las mecánicas, balance y progresión del juego.
-- [Pitch del Juego](PITCH.md): Visión general, análisis de mercado y propuesta de valor.
+## Game Documentation
+- [Game Design Document (GDD)](GDD_Skeletown.md): Complete document with all game mechanics, balance, and progression.
+- [Game Pitch](PITCH.md): High-level overview, market analysis, and value proposition.
 
-## Controles
-- **WASD/Flechas**: Mover personaje
-- **Mouse**: Apuntar
-- **Clic Izquierdo**: Disparar flechas
-- **ESC**: Menú de pausa
+## Controls
+- **WASD/Arrow Keys**: Move character
+- **Mouse**: Aim
+- **Left Click**: Shoot arrows
+- **ESC**: Pause menu
 
-## Instalación
-1. Descarga la última versión del juego
-2. Extrae el archivo .zip
-3. Ejecuta `skeletown.exe`
+## Installation
+1. Download the latest version of the game
+2. Extract the `.zip` file
+3. Run `skeletown.exe`
 
-## Desarrollado por
+## Developed by
 - Agustin Murgia
 - Agustin Brollo
 - Franco Chialli
 
-## Licencia
-Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
