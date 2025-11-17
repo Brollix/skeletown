@@ -3,26 +3,39 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    // Todo público para acceso directo
-    public Rigidbody2D rb;
-    public PlayerInput input;
-    public PlayerFacing facing;
-    public Camera cam;
+    // Component references
+    private Rigidbody2D _rb;
+    private PlayerInput _input;
+    private PlayerFacing _facing;
+    private Camera _cam;
+
+    // Public properties with null checks and auto-get
+    public Rigidbody2D rb => _rb != null ? _rb : _rb = GetComponent<Rigidbody2D>();
+    public PlayerInput input => _input != null ? _input : _input = GetComponent<PlayerInput>();
+    public PlayerFacing facing => _facing != null ? _facing : _facing = GetComponent<PlayerFacing>();
+    public Camera cam => _cam != null ? _cam : _cam = Camera.main;
 
     protected virtual void Awake()
     {
-        // Obtener componentes si no están asignados
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-        if (input == null) input = GetComponent<PlayerInput>();
-        if (facing == null) facing = GetComponent<PlayerFacing>();
-        if (cam == null) cam = Camera.main;
-        
-        // Configuración básica del Rigidbody
-        if (rb != null)
+        // Configure Rigidbody if it exists
+        if (TryGetComponent<Rigidbody2D>(out var rbComponent))
         {
+            _rb = rbComponent;
             rb.gravityScale = 0;
             rb.freezeRotation = true;
         }
+        else
+        {
+            Debug.LogError("No Rigidbody2D found on Player. Adding one...");
+            _rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.gravityScale = 0;
+            rb.freezeRotation = true;
+        }
+
+        // Get other components if they exist
+        _input = GetComponent<PlayerInput>();
+        _facing = GetComponent<PlayerFacing>();
+        _cam = Camera.main;
     }
 
     // Métodos de utilidad

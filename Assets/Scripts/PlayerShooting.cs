@@ -4,20 +4,25 @@ using UnityEngine.InputSystem;
 public class PlayerShooting : Player
 {
     [Header("Shooting")]
-    [SerializeField] private GameObject arrowTemplate;
     [SerializeField] private float shootCooldown = 0.3f;
-
-    private BowController bowController;
+    [SerializeField] private GameObject arrowTemplate;
+    
     private float cooldownTimer;
+    private BowController bowController;
 
     protected override void Awake()
     {
         base.Awake();
         bowController = GetComponentInChildren<BowController>();
+        
+        if (arrowTemplate == null)
+            Debug.LogError("Assign the arrow prefab in the Inspector!");
     }
 
     private void Update()
     {
+        if (PauseManager.GamePaused) return;
+        
         cooldownTimer -= Time.deltaTime;
 
         if (Mouse.current.leftButton.wasPressedThisFrame && cooldownTimer <= 0f)
@@ -29,28 +34,25 @@ public class PlayerShooting : Player
 
     private void Shoot()
     {
-        if (bowController == null || arrowTemplate == null) return;
+        if (bowController == null || arrowTemplate == null) 
+        {
+            if (bowController == null) Debug.LogError("No BowController found!");
+            if (arrowTemplate == null) Debug.LogError("No arrow template assigned!");
+            return;
+        }
 
         Vector2 mousePos = GetMousePosition();
-        Vector2 bowPos = bowController.transform.position;
-        Vector2 direction = mousePos - bowPos;
+        // Get direction from player to mouse (for aiming)
+        Vector2 aimDirection = (mousePos - (Vector2)transform.position).normalized;
         
-        if (direction.magnitude < 0.5f) return;
-        
-        direction.Normalize();
-        
-        // Check if shooting direction is valid
-        Vector2 bowForward = bowController.transform.right;
-        if (!IsFacingRight()) bowForward *= -1f;
-        
-        if (Vector2.Dot(direction, bowForward) < 0.2f) return;
-
-        // Create arrow
-        GameObject arrow = Instantiate(arrowTemplate, bowPos, Quaternion.identity);
+        // Create arrow at bow's position
+        GameObject arrow = Instantiate(arrowTemplate, bowController.transform.position, Quaternion.identity);
         arrow.SetActive(true);
         
-        Arrow arrowScript = arrow.GetComponent<Arrow>();
-        if (arrowScript != null)
-            arrowScript.setDirection(direction);
+        if (arrow.TryGetComponent(out Arrow arrowScript))
+        {
+            // Set the direction based on player-to-mouse aiming, but spawn at bow position
+            arrowScript.setDirection(aimDirection);
+        }
     }
 }

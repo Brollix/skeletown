@@ -1,15 +1,21 @@
 using UnityEngine;
 
-public class PlayerFacing : Player
+public class PlayerFacing : MonoBehaviour
 {
+    private Player player;
     private bool facingRight = true;
+
+    private void Awake()
+    {
+        player = GetComponent<Player>();
+    }
 
     public void UpdateFacingDirection()
     {
-        if (cam == null) return;
+        if (player == null || player.cam == null) return;
         
         Vector2 mousePos = Input.mousePosition;
-        Vector2 worldPos = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, -cam.transform.position.z));
+        Vector2 worldPos = player.cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, -player.cam.transform.position.z));
         
         bool shouldFaceRight = worldPos.x > transform.position.x;
         
