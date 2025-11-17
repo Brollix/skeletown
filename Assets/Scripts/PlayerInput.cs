@@ -41,24 +41,6 @@ public class PlayerInput : Player
         moveInput = ctx.ReadValue<Vector2>();
         animator?.SetBool("isMoving", moveInput != Vector2.zero);
         
-        // Update bow rotation based on movement direction
-        if (moveInput != Vector2.zero && bowTransform != null)
-        {
-            float angle = Mathf.Atan2(moveInput.y, moveInput.x) * Mathf.Rad2Deg;
-            bowTransform.rotation = Quaternion.Euler(0f, 0f, angle);
-            
-            // Handle player sprite flipping
-            if (moveInput.x != 0)
-            {
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Sign(moveInput.x) * Mathf.Abs(scale.x);
-                transform.localScale = scale;
-                
-                // Keep bow's scale positive to prevent flipping
-                Vector3 bowScale = bowTransform.localScale;
-                bowScale.x = Mathf.Abs(bowScale.x);
-                bowTransform.localScale = bowScale;
-            }
-        }
+        // Movimiento solo actualiza animación; el flip horizontal lo maneja PlayerFacing según el mouse
     }
 }

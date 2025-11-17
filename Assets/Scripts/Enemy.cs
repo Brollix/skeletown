@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour {
     public float separationForce = 2f;
 
     [Header("Vision Settings")]
-    public bool isVisible = false;
+    public float visionRadius = 7f;
 
     public int floorNumber;
 
@@ -42,7 +42,8 @@ public class Enemy : MonoBehaviour {
             return;
         }
 
-        if (!isVisible) {
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        if (distanceToPlayer > visionRadius) {
             return;
         }
 
@@ -54,14 +55,6 @@ public class Enemy : MonoBehaviour {
         finalDirection = finalDirection.normalized;
 
         rb.MovePosition(rb.position + finalDirection * speed * Time.deltaTime);
-    }
-
-    void OnBecameVisible() {
-        isVisible = true;
-    }
-
-    void OnBecameInvisible() {
-        isVisible = false;
     }
 
     Vector2 CalculateSeparation() {

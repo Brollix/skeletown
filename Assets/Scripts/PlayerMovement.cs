@@ -17,7 +17,6 @@ public class PlayerMovement : Player
 
     private PlayerControls controls;
     private Vector2 moveInput;
-    private bool facingRight = true;
 
     private void Start()
     {
@@ -83,20 +82,6 @@ public class PlayerMovement : Player
             bool isMoving = moveInput.magnitude > 0.1f;
             animator.SetBool("isMoving", isMoving);
         }
-
-        // Flip the player based on movement direction
-        if (moveInput.x != 0)
-        {
-            bool wasFacingRight = facingRight;
-            facingRight = moveInput.x > 0;
-            
-            if (facingRight != wasFacingRight)
-            {
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Abs(scale.x) * (facingRight ? 1 : -1);
-                transform.localScale = scale;
-            }
-        }
     }
 
     private void Update()
@@ -109,18 +94,5 @@ public class PlayerMovement : Player
         
         Move(input.moveInput, moveSpeed);
         facing?.UpdateFacingDirection();
-    }
-
-    private void Flip()
-    {
-        facingRight = !facingRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
-    }
-
-    public bool IsFacingRight()
-    {
-        return facingRight;
     }
 }
