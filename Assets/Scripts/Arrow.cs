@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Controls arrow movement, lifetime and collision with enemies.
 public class Arrow : MonoBehaviour
 {
     [Header("Arrow Settings")]
@@ -11,6 +12,7 @@ public class Arrow : MonoBehaviour
     private GameObject player;  // Add reference to player
     private Collider2D arrowCollider;
 
+    // Initialize references and configure collisions
     private void Start()
     {
         // Get reference to the player and its colliders
@@ -43,6 +45,7 @@ public class Arrow : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle + rotationOffset);
     }
 
+    // Move the arrow forward every frame
     private void Update()
     {
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
@@ -64,7 +67,7 @@ public class Arrow : MonoBehaviour
         if (enemy != null)
         {
             Debug.Log($"Arrow hit enemy! Dealing 1 damage. Enemy health: {enemy.health}");
-            enemy.TakeDamage(1);
+            enemy.TakeDamage(player.GetComponent<PlayerShooting>().damage);
         }
         else
         {

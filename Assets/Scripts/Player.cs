@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// Base player component that provides shared movement and input helpers.
 public class Player : MonoBehaviour
 {
     // Component references
@@ -38,7 +39,7 @@ public class Player : MonoBehaviour
         _cam = Camera.main;
     }
 
-    // Métodos de utilidad
+    // Utility methods
     public Vector2 GetMousePosition()
     {
         if (cam == null) return Vector2.zero;

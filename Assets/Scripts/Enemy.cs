@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 
+// Basic enemy that moves towards the player with simple flocking and health.
 public class Enemy : MonoBehaviour {
     [Header("References")]
     [HideInInspector] public Transform player;
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour {
 
     private Rigidbody2D rb;
 
+    // Initialize components and find the player if needed
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
 
@@ -37,6 +39,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    // Move towards the player while applying separation from other enemies
     void Update() {
         if (player == null) {
             return;
@@ -64,6 +67,7 @@ public class Enemy : MonoBehaviour {
         isVisible = false;
     }
 
+    // Calculate a separation vector from nearby enemies to avoid clustering
     Vector2 CalculateSeparation() {
         Vector2 separationMove = Vector2.zero;
 
@@ -87,6 +91,7 @@ public class Enemy : MonoBehaviour {
         return separationMove * separationForce;
     }
 
+    // Apply damage, invoke health changed event and check for death
     public void TakeDamage(float amount) {
         float newHealth = health - amount;
 

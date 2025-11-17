@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Handles flipping the player sprite so it faces the mouse position.
 public class PlayerFacing : MonoBehaviour
 {
     private Player player;
@@ -10,6 +11,7 @@ public class PlayerFacing : MonoBehaviour
         player = GetComponent<Player>();
     }
 
+    // Update facing direction based on mouse world position
     public void UpdateFacingDirection()
     {
         if (player == null || player.cam == null) return;

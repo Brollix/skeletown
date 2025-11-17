@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
+// Handles player movement input, physics movement and flipping the sprite.
 public class PlayerMovement : Player
 {
     [Header("Movement")]
@@ -19,12 +20,14 @@ public class PlayerMovement : Player
     private Vector2 moveInput;
     private bool facingRight = true;
 
+    // Ensure time scale is reset when this script is active
     private void Start()
     {
         Time.timeScale = 1f; // safety reset
     }
 
 
+        // Cache required components and input actions
         private void Awake()
     {
         base.Awake();

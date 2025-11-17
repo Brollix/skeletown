@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
+// Handles bow position and rotation around the player based on mouse position.
 public class BowController : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Transform playerTransform;
     private PlayerFacing playerFacing;
-    [SerializeField] private float radius = 0.5f; // distancia del arco al jugador
+    [SerializeField] private float radius = 0.5f; // Distance from the player to the bow (orbit radius)
 
     private void Start()
     {
-        Time.timeScale = 1f; // safety reset
+        // Ensure normal time scale when entering this scene
+        Time.timeScale = 1f; // Safety reset
     }
 
     private void Awake()
@@ -40,16 +41,16 @@ public class BowController : MonoBehaviour
             new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, zDist)
         );
 
-        // dirección del mouse desde el jugador
+        // Mouse direction from the player
         Vector2 dir = (mouseWorld - playerTransform.position).normalized;
 
-        // posición del arco orbitando alrededor del jugador
+        // Bow position orbiting around the player
         transform.position = playerTransform.position + (Vector3)(dir * radius);
 
-        // ángulo mirando hacia el mouse
+        // Angle facing towards the mouse
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         
-        // rotación del arco: solo depende del mouse, no del flip del jugador
+        // Bow rotation: depends only on the mouse, not on the player's flip
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }

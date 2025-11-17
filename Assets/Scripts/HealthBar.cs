@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Scales a child bar based on the associated enemy's current health.
 public class HealthBar : MonoBehaviour
 {
     private Enemy enemy;
@@ -15,6 +16,7 @@ public class HealthBar : MonoBehaviour
         UpdateHealth(enemy.health);
     }
 
+    // Adjust bar scale based on health percentage
     private void UpdateHealth(float currentHealth)
     {
         float healthPercent = Mathf.Clamp01(currentHealth / enemy.maxHealth);

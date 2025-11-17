@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// Handles shooting arrows towards the mouse position.
 public class PlayerShooting : Player
 {
     [Header("Shooting")]
@@ -10,6 +11,7 @@ public class PlayerShooting : Player
     private float cooldownTimer;
     private BowController bowController;
 
+    // Initialize bow reference and validate arrow prefab
     protected override void Awake()
     {
         base.Awake();
@@ -19,6 +21,7 @@ public class PlayerShooting : Player
             Debug.LogError("Assign the arrow prefab in the Inspector!");
     }
 
+    // Handle cooldown and input for shooting
     private void Update()
     {
         if (PauseManager.GamePaused) return;
@@ -32,6 +35,7 @@ public class PlayerShooting : Player
         }
     }
 
+    // Spawn an arrow and shoot it towards the mouse position
     private void Shoot()
     {
         if (bowController == null || arrowTemplate == null) 
