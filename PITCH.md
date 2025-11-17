@@ -62,11 +62,10 @@ Un juego de acción desafiante con progresión permanente, donde cada intento ac
 
 ## Modelo de Monetización
 
-### Versión Base (Gratuita/De Pago)
-- **Modelo Premium Único**:
+### Versión Base
+- **Modelo Pago**:
   - Precio único de lanzamiento
   - Sin compras dentro de la aplicación
-  - Contenido completo desde el primer día
 
 ### Posibles Expansiones (Opcional)
 - **Paquete de Aspectos**:
@@ -78,15 +77,15 @@ Un juego de acción desafiante con progresión permanente, donde cada intento ac
   - Modos de juego alternativos
 
 ### Estrategia de Precios
-- **Versión Base**: $4.99 - $7.99 (precio final según análisis de mercado)
-- **Paquetes de Contenido**: $1.99 - $3.99 cada uno
-- **Edición Especial**: Versión con contenido adicional por $9.99
+- **Versión Base**: $2.99
+- **Paquetes de Contenido**: $0.99 cada uno
+- **Edición Especial**: Versión con contenido adicional por $4.99
 
 ## Próximos Pasos
 - Implementar el sistema de habilidades
 - Crear más variedad de enemigos y habitaciones
 - Desarrollar el sistema de sonido y efectos visuales
-- Realizar pruebas de jugabilidad y balanceo
+- Realizar más pruebas de jugabilidad y balanceo
 
 ## Equipo
 - **Agustin Brollo**: Diseño del Juego, Programación
