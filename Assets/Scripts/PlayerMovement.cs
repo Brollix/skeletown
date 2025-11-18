@@ -21,6 +21,7 @@ public class PlayerMovement : Player
     private void Start()
     {
         Time.timeScale = 1f; // safety reset
+        Debug.Log($"🏃 Player speed: {moveSpeed} (base: 5, upgrades: {UpgradeManager.Instance?.Speed ?? 5f})");
     }
 
 
