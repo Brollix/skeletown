@@ -85,6 +85,8 @@ public class UpgradeManager : MonoBehaviour
         healthUpgrades = PlayerPrefs.GetInt("HealthUpgrades", 0);
         damageUpgrades = PlayerPrefs.GetInt("DamageUpgrades", 0);
         speedUpgrades = PlayerPrefs.GetInt("SpeedUpgrades", 0);
+
+        Debug.Log($"⬆️ Upgrades loaded - Health: {healthUpgrades}, Damage: {damageUpgrades}, Speed: {speedUpgrades}");
     }
 
     private void SaveUpgrades()
