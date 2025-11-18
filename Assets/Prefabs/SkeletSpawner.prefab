@@ -45,11 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2955995803462780358, guid: c484bd9e06507a849bf1d85cddfe376f, type: 3}
-  player: {fileID: 0}
   spawnPoint: {fileID: 6981692873395671030}
-  numberToSpawn: 10
-  enemySpeed: 4
+  numberToSpawn: 12
+  enemySpeed: 7
   enemyHealth: 10
   enemyDamage: 2
-  separationRadius: 0.4
+  separationRadius: 2.2
   separationForce: 0.2

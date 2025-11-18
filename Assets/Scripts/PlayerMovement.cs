@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : Player
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;
+    private float moveSpeed => UpgradeManager.Instance?.Speed ?? 5f;
     
     // Automatic component references
     private Animator _animator;

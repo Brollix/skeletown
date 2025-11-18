@@ -58,30 +58,26 @@ public class Arrow : MonoBehaviour
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         // Skip if this is a player-related object
-        if (collision.CompareTag("Player") || 
-            collision.GetComponent<PlayerMovement>() != null || 
-            collision.GetComponent<BowController>() != null ||
-            (player != null && collision.transform.IsChildOf(player.transform)))
+        if (collision.gameObject.CompareTag("Player") ||
+            collision.gameObject.GetComponent<PlayerMovement>() != null ||
+            collision.gameObject.GetComponent<BowController>() != null ||
+            (player != null && collision.gameObject.transform.IsChildOf(player.transform)))
         {
             return;
         }
 
         // Handle enemy collisions
-        var enemy = collision.GetComponentInParent<Enemy>();
+        var enemy = collision.gameObject.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            Debug.Log($"Arrow hit enemy! Dealing {damage} damage. Enemy health: {enemy.health}");
+            // Enemy hit - deal damage
             enemy.TakeDamage(damage);
         }
-        else
-        {
-            Debug.Log($"Arrow hit: {collision.gameObject.name}");
-        }
 
-        // Destroy the arrow upon any valid collision
+        // Destroy the arrow upon any collision
         Destroy(gameObject);
     }
 }

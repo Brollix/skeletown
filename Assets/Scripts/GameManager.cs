@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
         }
 
         doorsPerFloor[floor].Add(door);
-        Debug.Log("Registered door on floor " + floor);
     }
 
     // ------------------------------------------------------
@@ -56,7 +55,6 @@ public class GameManager : MonoBehaviour
         }
 
         enemiesRemaining[floor] += amount;
-        Debug.Log("Floor " + floor + ": now has " + enemiesRemaining[floor] + " enemies.");
     }
 
     // ------------------------------------------------------
@@ -66,17 +64,14 @@ public class GameManager : MonoBehaviour
     {
         if (!enemiesRemaining.ContainsKey(floor))
         {
-            Debug.LogWarning("Enemy died but floor " + floor + " is not registered!");
+            
             return;
         }
 
         enemiesRemaining[floor] = Mathf.Max(0, enemiesRemaining[floor] - 1);
 
-        Debug.Log("Enemy on floor " + floor + " died. Remaining: " + enemiesRemaining[floor]);
-
         if (enemiesRemaining[floor] == 0)
         {
-            Debug.Log("Floor " + floor + " cleared! Opening doors.");
 
             if (doorsPerFloor.ContainsKey(floor))
             {
@@ -87,10 +82,6 @@ public class GameManager : MonoBehaviour
                         d.SetOpen(true);
                     }
                 }
-            }
-            else
-            {
-                Debug.LogWarning("There are no doors registered for floor " + floor);
             }
         }
     }

@@ -8,12 +8,14 @@ public class Player : MonoBehaviour
     private PlayerInput _input;
     private PlayerFacing _facing;
     private Camera _cam;
+    private PlayerHealth _health;
 
     // Public properties with null checks and auto-get
     public Rigidbody2D rb => _rb != null ? _rb : _rb = GetComponent<Rigidbody2D>();
     public PlayerInput input => _input != null ? _input : _input = GetComponent<PlayerInput>();
     public PlayerFacing facing => _facing != null ? _facing : _facing = GetComponent<PlayerFacing>();
     public Camera cam => _cam != null ? _cam : _cam = Camera.main;
+    public PlayerHealth health => _health != null ? _health : _health = GetComponent<PlayerHealth>();
 
     protected virtual void Awake()
     {

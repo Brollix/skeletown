@@ -81,6 +81,7 @@ public class Enemy : MonoBehaviour {
     }
 
     public void TakeDamage(float amount) {
+        float oldHealth = health;
         float newHealth = health - amount;
 
         if (newHealth < 0f) {
@@ -88,6 +89,7 @@ public class Enemy : MonoBehaviour {
         }
 
         health = newHealth;
+
         if (OnHealthChanged != null) {
             OnHealthChanged(health);
         }
@@ -106,13 +108,28 @@ public class Enemy : MonoBehaviour {
         GameManager.Instance.EnemyDied(floorNumber);
     }
 
+    // Give XP to player
+    if (PlayerExperience.Instance != null)
+    {
+        float xpToGive = 10f; // Base XP, could be modified based on enemy type
+        // Debug.Log($"🎯 Enemy died, giving {xpToGive} XP to player");
+        PlayerExperience.Instance.AddXP(xpToGive);
+    }
+
     Destroy(gameObject);
 }
 
 
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
-            // Damage player here later
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                if (!playerHealth.IsInvincible)
+                {
+                    playerHealth.TakeDamage(damage);
+                }
+            }
         }
     }
 }

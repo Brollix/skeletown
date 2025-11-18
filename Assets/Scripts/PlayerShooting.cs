@@ -6,7 +6,7 @@ public class PlayerShooting : Player
     [Header("Shooting")]
     [SerializeField] private float shootCooldown = 0.3f;
     [SerializeField] private GameObject arrowTemplate;
-    [SerializeField] private float damage = 1f; // Damage dealt by each arrow
+    private float damage => UpgradeManager.Instance?.Damage ?? 1f;
     
     private float cooldownTimer;
     private BowController bowController;
@@ -49,7 +49,7 @@ public class PlayerShooting : Player
         // Create arrow at bow's position
         GameObject arrow = Instantiate(arrowTemplate, bowController.transform.position, Quaternion.identity);
         arrow.SetActive(true);
-        
+
         if (arrow.TryGetComponent(out Arrow arrowScript))
         {
             // Set the direction based on player-to-mouse aiming, but spawn at bow position
