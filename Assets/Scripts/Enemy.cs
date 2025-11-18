@@ -25,6 +25,9 @@ public class Enemy : MonoBehaviour {
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
 
+        // Apply level-based scaling (based on player level, but no player upgrades)
+        ScaleStatsByLevel();
+
         // Set health to full
         health = maxHealth;
 
@@ -37,13 +40,35 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    private void ScaleStatsByLevel() {
+        // For now, start enemies at level 1 - they will scale with player progress during gameplay
+        // TODO: Add proper level progression system for enemies
+        int enemyLevel = 1; // Always start at level 1 for new games
+
+        // Scale enemy stats based on enemy level (not player level to avoid save file issues)
+        float levelMultiplier = 1f + (enemyLevel - 1) * 0.2f; // 20% increase per level
+
+        // Apply level scaling to base stats
+        float originalSpeed = speed;
+        speed *= levelMultiplier;
+        maxHealth *= levelMultiplier;
+        damage *= levelMultiplier;
+
+        // Update current health to match max health
+        health = maxHealth;
+
+        Debug.Log($"🧟 Enemy stats scaled - Enemy Level: {enemyLevel}, Speed: {originalSpeed} → {speed}, Health: {maxHealth}, Damage: {damage}");
+    }
+
     void Update() {
         if (player == null) {
+            rb.linearVelocity = Vector2.zero;
             return;
         }
 
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         if (distanceToPlayer > visionRadius) {
+            rb.linearVelocity = Vector2.zero;
             return;
         }
 
@@ -54,7 +79,7 @@ public class Enemy : MonoBehaviour {
 
         finalDirection = finalDirection.normalized;
 
-        rb.MovePosition(rb.position + finalDirection * speed * Time.deltaTime);
+        rb.linearVelocity = finalDirection * speed;
     }
 
     Vector2 CalculateSeparation() {
