@@ -82,6 +82,7 @@ public class UpgradeUI : MonoBehaviour
 
     public void ResetUpgrades()
     {
+        Debug.Log("🔄 ResetUpgrades() called!");
         if (UpgradeManager.Instance != null && PlayerExperience.Instance != null)
         {
             // Calculate total skill points used
@@ -90,6 +91,7 @@ public class UpgradeUI : MonoBehaviour
             int speedUpgrades = UpgradeManager.Instance.GetSpeedUpgrades();
 
             int totalPointsUsed = healthUpgrades + damageUpgrades + speedUpgrades;
+            Debug.Log($"🔄 Resetting upgrades - Health: {healthUpgrades}, Damage: {damageUpgrades}, Speed: {speedUpgrades}, Total points: {totalPointsUsed}");
 
             // Reset all upgrades to 0
             UpgradeManager.Instance.ResetAllUpgrades();
@@ -103,6 +105,11 @@ public class UpgradeUI : MonoBehaviour
 
             // Update UI
             UpdateUI();
+            Debug.Log("✅ Reset completed successfully!");
+        }
+        else
+        {
+            Debug.LogError("❌ Cannot reset: Managers not found");
         }
     }
 
