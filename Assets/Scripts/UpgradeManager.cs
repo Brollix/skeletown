@@ -80,7 +80,7 @@ public class UpgradeManager : MonoBehaviour
         speedUpgrades = 0;
     }
 
-    private void LoadUpgrades()
+    public void LoadUpgrades()
     {
         healthUpgrades = PlayerPrefs.GetInt("HealthUpgrades", 0);
         damageUpgrades = PlayerPrefs.GetInt("DamageUpgrades", 0);
@@ -89,7 +89,7 @@ public class UpgradeManager : MonoBehaviour
         Debug.Log($"⬆️ Upgrades loaded - Health: {healthUpgrades}, Damage: {damageUpgrades}, Speed: {speedUpgrades}");
     }
 
-    private void SaveUpgrades()
+    public void SaveUpgrades()
     {
         PlayerPrefs.SetInt("HealthUpgrades", healthUpgrades);
         PlayerPrefs.SetInt("DamageUpgrades", damageUpgrades);

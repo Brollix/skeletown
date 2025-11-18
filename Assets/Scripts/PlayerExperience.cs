@@ -78,7 +78,7 @@ public class PlayerExperience : MonoBehaviour
         return baseXPPerLevel * Mathf.Pow(xpMultiplier, level - 1);
     }
 
-    private void LoadProgress()
+    public void LoadProgress()
     {
         // Always start fresh - ignore saved progress for now
         currentLevel = 1;
@@ -89,7 +89,7 @@ public class PlayerExperience : MonoBehaviour
         Debug.Log("⬆️ Player upgrades preserved from previous sessions");
     }
 
-    private void SaveProgress()
+    public void SaveProgress()
     {
         PlayerPrefs.SetInt("PlayerLevel", currentLevel);
         PlayerPrefs.SetFloat("PlayerXP", currentXP);
