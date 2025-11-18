@@ -80,9 +80,13 @@ public class PlayerExperience : MonoBehaviour
 
     private void LoadProgress()
     {
-        currentLevel = PlayerPrefs.GetInt("PlayerLevel", 1);
-        currentXP = PlayerPrefs.GetFloat("PlayerXP", 0f);
-        skillPoints = PlayerPrefs.GetInt("SkillPoints", 5); // TEMP: 5 puntos para testing
+        // Always start fresh - ignore saved progress for now
+        currentLevel = 1;
+        currentXP = 0f;
+        skillPoints = 0;
+
+        Debug.Log("🎮 Player progress reset - Level: 1, XP: 0, Skill Points: 0");
+        Debug.Log("⬆️ Player upgrades preserved from previous sessions");
     }
 
     private void SaveProgress()
