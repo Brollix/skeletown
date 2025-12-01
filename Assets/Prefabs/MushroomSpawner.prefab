@@ -45,18 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2955995803462780358, guid: 9ba7d87d4dccae94899726b60b251ec0, type: 3}
-  player: {fileID: 0}
   spawnPoint: {fileID: 6981692873395671030}
-<<<<<<< Updated upstream
-  numberToSpawn: 6
-  enemySpeed: 2
-  enemyHealth: 10
-  enemyDamage: 2
-=======
   numberToSpawn: 3
   enemySpeed: 1
   enemyHealth: 3
   enemyDamage: 1
->>>>>>> Stashed changes
   separationRadius: 0.4
   separationForce: 0.2

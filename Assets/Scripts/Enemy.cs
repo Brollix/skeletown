@@ -30,14 +30,10 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-<<<<<<< Updated upstream
-        // Set health to full
-=======
         StartCoroutine(RegisterWhenReady());
 
         ScaleStatsByLevel();
 
->>>>>>> Stashed changes
         health = maxHealth;
 
         if (player == null)
@@ -48,10 +44,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    void Update() {
-        if (player == null) {
-=======
     private IEnumerator RegisterWhenReady()
     {
         while (GameManager.Instance == null)
@@ -80,18 +72,13 @@ public class Enemy : MonoBehaviour
         if (player == null)
         {
             if (rb != null) rb.linearVelocity = Vector2.zero;
->>>>>>> Stashed changes
             return;
         }
 
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-<<<<<<< Updated upstream
-        if (distanceToPlayer > visionRadius) {
-=======
         if (distanceToPlayer > visionRadius)
         {
             if (rb != null) rb.linearVelocity = Vector2.zero;
->>>>>>> Stashed changes
             return;
         }
 
@@ -99,13 +86,7 @@ public class Enemy : MonoBehaviour
         Vector2 separation = CalculateSeparation();
         Vector2 finalDirection = (moveDirection + separation).normalized;
 
-<<<<<<< Updated upstream
-        finalDirection = finalDirection.normalized;
-
-        rb.MovePosition(rb.position + finalDirection * speed * Time.deltaTime);
-=======
         if (rb != null) rb.linearVelocity = finalDirection * speed;
->>>>>>> Stashed changes
     }
 
     private Vector2 CalculateSeparation()
@@ -129,47 +110,13 @@ public class Enemy : MonoBehaviour
         return separationMove * separationForce;
     }
 
-<<<<<<< Updated upstream
-    public void TakeDamage(float amount) {
-        float newHealth = health - amount;
-
-        if (newHealth < 0f) {
-            newHealth = 0f;
-        }
-
-        health = newHealth;
-        if (OnHealthChanged != null) {
-            OnHealthChanged(health);
-        }
-
-        if (health <= 0f) {
-            Die();
-        }
-    }
-
-    public event Action<float> OnHealthChanged;
-
-	void Die()
-{
-    if (GameManager.Instance != null)
-=======
     public void TakeDamage(float amount)
->>>>>>> Stashed changes
     {
         health = Mathf.Max(0f, health - amount);
         OnHealthChanged?.Invoke(health);
         if (health <= 0f) Die();
     }
 
-<<<<<<< Updated upstream
-    Destroy(gameObject);
-}
-
-
-    void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Player")) {
-            // Damage player here later
-=======
     private void Die()
     {
         if (GameManager.Instance != null)
@@ -190,7 +137,6 @@ public class Enemy : MonoBehaviour
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null && !playerHealth.IsInvincible)
                 playerHealth.TakeDamage(damage);
->>>>>>> Stashed changes
         }
     }
 }

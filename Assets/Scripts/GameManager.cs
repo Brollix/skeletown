@@ -146,13 +146,8 @@ public class GameManager : MonoBehaviour
         if (!doorsPerFloor.ContainsKey(floor))
             doorsPerFloor[floor] = new List<Door>();
 
-<<<<<<< Updated upstream
-        doorsPerFloor[floor].Add(door);
-        Debug.Log("Registered door on floor " + floor);
-=======
         if (!doorsPerFloor[floor].Contains(door))
             doorsPerFloor[floor].Add(door);
->>>>>>> Stashed changes
     }
 
     public void RegisterEnemy(int floor)
@@ -168,50 +163,20 @@ public class GameManager : MonoBehaviour
     {
         if (!enemiesRemaining.ContainsKey(floor))
         {
-<<<<<<< Updated upstream
-            enemiesRemaining.Add(floor, 0);
-        }
-
-        enemiesRemaining[floor] += amount;
-        Debug.Log("Floor " + floor + ": now has " + enemiesRemaining[floor] + " enemies.");
-    }
-
-    // ------------------------------------------------------
-    // CALLED BY ENEMY WHEN IT DIES
-    // ------------------------------------------------------
-    public void EnemyDied(int floor)
-    {
-        if (!enemiesRemaining.ContainsKey(floor))
-        {
-            Debug.LogWarning("Enemy died but floor " + floor + " is not registered!");
-            return;
-=======
             enemiesRemaining[floor] = 0;
             Debug.LogWarning($"EnemyKilled called for unregistered floor {floor}. Clamping to 0.");
->>>>>>> Stashed changes
         }
 
         enemiesRemaining[floor] = Mathf.Max(0, enemiesRemaining[floor] - 1);
         Debug.Log($"[GM] Enemy killed on floor {floor}. Remaining = {enemiesRemaining[floor]}");
 
-        Debug.Log("Enemy on floor " + floor + " died. Remaining: " + enemiesRemaining[floor]);
-
         if (enemiesRemaining[floor] == 0)
         {
-<<<<<<< Updated upstream
-            Debug.Log("Floor " + floor + " cleared! Opening doors.");
-
-=======
->>>>>>> Stashed changes
             if (doorsPerFloor.ContainsKey(floor))
             {
                 foreach (Door d in doorsPerFloor[floor])
                     if (d != null)
                         d.SetOpen(true);
-            }
-            else
-            {
-                Debug.LogWarning("There are no doors registered for floor " + floor);
             }
         }
     }
