@@ -1,6 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections;
 
 public class Door : MonoBehaviour
 {
@@ -9,13 +8,13 @@ public class Door : MonoBehaviour
     public TileBase[] closedTiles;
     public TileBase[] openTiles;
 
-    [Header("Door Size & Position")]
-    public Vector2Int topLeft; // Top-left corner of the door in tile coordinates
+    [Header("Door Settings")]
+    public Vector2Int topLeft; // Top-left corner in tile coordinates
     public int width = 2;
     public int height = 3;
     public int floorNumber;
 
-    [Header("Options")]
+    [Header("State")]
     public bool isOpen = false;
 
     private TilemapCollider2D tilemapCollider;
@@ -30,36 +29,28 @@ public class Door : MonoBehaviour
 
         tilemapCollider = tilemap.GetComponent<TilemapCollider2D>();
 
+        // Force draw the current state immediately
         ApplyTiles();
         ApplyCollision();
     }
 
     void Start()
     {
-        StartCoroutine(RegisterWhenReady());
-    }
 
-    private IEnumerator RegisterWhenReady()
-    {
-        while (GameManager.Instance == null)
-            yield return null;
-
-        GameManager.Instance.RegisterDoor(floorNumber, this);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterDoor(floorNumber, this);
+        }
+        else
+        {
+            Debug.LogError("Door.Start: GameManager instance not found! Door won't register.", this);
+        }
+        Debug.Log($"[DEBUG] Door.Start registering floor {floorNumber} - isOpen={isOpen} - tilemapAssigned={(tilemap != null)}", this);
     }
 
     public void SetOpen(bool open)
     {
-        if (isOpen == open)
-            return;
-
-        if (open)
-        {
-            isOpen = true;
-        }
-        else
-        {
-            isOpen = false;
-        }
+        isOpen = open;   // ← FORCE STATE UPDATE, NO EARLY RETURN
 
         ApplyTiles();
         ApplyCollision();
@@ -72,37 +63,19 @@ public class Door : MonoBehaviour
 
     private void ApplyTiles()
     {
-        if (tilemap == null)
-            return;
+        if (tilemap == null) return;
 
-        TileBase[] tilesToUse;
-        if (isOpen)
-        {
-            tilesToUse = openTiles;
-        }
-        else
-        {
-            tilesToUse = closedTiles;
-        }
+        TileBase[] tilesToUse = isOpen ? openTiles : closedTiles;
 
-        // Clear previous tiles
         tilemap.ClearAllTiles();
 
-        // Fill door area based on width and height starting from top-left
         int index = 0;
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                TileBase tile = null;
-                if (tilesToUse != null && index < tilesToUse.Length)
-                {
-                    tile = tilesToUse[index];
-                }
-
-                Vector3Int position = new Vector3Int(topLeft.x + x, topLeft.y - y, 0);
-                tilemap.SetTile(position, tile);
-
+                TileBase tile = (tilesToUse != null && index < tilesToUse.Length) ? tilesToUse[index] : null;
+                tilemap.SetTile(new Vector3Int(topLeft.x + x, topLeft.y - y, 0), tile);
                 index++;
             }
         }
@@ -111,15 +84,6 @@ public class Door : MonoBehaviour
     private void ApplyCollision()
     {
         if (tilemapCollider != null)
-        {
-            if (isOpen)
-            {
-                tilemapCollider.enabled = false; // Door open → collider off
-            }
-            else
-            {
-                tilemapCollider.enabled = true;  // Door closed → collider on
-            }
-        }
+            tilemapCollider.enabled = !isOpen;
     }
 }

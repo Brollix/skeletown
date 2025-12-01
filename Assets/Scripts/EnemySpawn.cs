@@ -5,11 +5,11 @@ public class EnemySpawn : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public Transform spawnPoint;
-    public int numberToSpawn = 5;
+    public int numberToSpawn = 1;
 
-    public float enemySpeed = 2f;
-    public float enemyHealth = 10f;
-    public float enemyDamage = 2f;
+    public float enemySpeed = 1f;
+    public float enemyHealth = 3f;
+    public float enemyDamage = 1f;
     public float separationRadius = 1f;
     public float separationForce = 2f;
 
@@ -49,7 +49,7 @@ public class EnemySpawn : MonoBehaviour
             Enemy e = newEnemy.GetComponent<Enemy>();
             if (e != null)
             {
-                e.speed = enemySpeed;
+               // e.speed = enemySpeed;
                 e.maxHealth = enemyHealth;
                 e.health = enemyHealth;
                 e.damage = enemyDamage;

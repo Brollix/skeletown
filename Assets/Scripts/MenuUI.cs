@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MenuUI : MonoBehaviour
 {
@@ -19,7 +18,14 @@ public class MenuUI : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("DungeonScene");
+        if (GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.StartGame();
+        }
+        else
+        {
+            Debug.LogError("GameFlowManager not found. Cannot start game.");
+        }
     }
 
     public void QuitGame()

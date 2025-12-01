@@ -47,9 +47,17 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2955995803462780358, guid: c484bd9e06507a849bf1d85cddfe376f, type: 3}
   player: {fileID: 0}
   spawnPoint: {fileID: 6981692873395671030}
+<<<<<<< Updated upstream
   numberToSpawn: 10
   enemySpeed: 4
   enemyHealth: 10
   enemyDamage: 2
   separationRadius: 0.4
+=======
+  numberToSpawn: 4
+  enemySpeed: 2
+  enemyHealth: 4
+  enemyDamage: 1
+  separationRadius: 2.2
+>>>>>>> Stashed changes
   separationForce: 0.2
