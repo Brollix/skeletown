@@ -75,19 +75,20 @@ public class PlayerExperience : MonoBehaviour
 
     private float CalculateXPForLevel(int level)
     {
-        return baseXPPerLevel * Mathf.Pow(xpMultiplier, level - 1);
+        float xp = baseXPPerLevel * Mathf.Pow(xpMultiplier, level - 1);
+        return Mathf.Clamp(xp, 0, 250f); // NEVER require more than 250 XP
     }
+
 
     public void LoadProgress()
     {
-        // Always start fresh - ignore saved progress for now
-        currentLevel = 1;
-        currentXP = 0f;
-        skillPoints = 0;
+        currentLevel = PlayerPrefs.GetInt("PlayerLevel", 1);
+        currentXP = PlayerPrefs.GetFloat("PlayerXP", 0f);
+        skillPoints = PlayerPrefs.GetInt("SkillPoints", 0);
 
-        Debug.Log("🎮 Player progress reset - Level: 1, XP: 0, Skill Points: 0");
-        Debug.Log("⬆️ Player upgrades preserved from previous sessions");
+        Debug.Log($"Loaded progress - Level: {currentLevel}, XP: {currentXP}, Skill Points: {skillPoints}");
     }
+
 
     public void SaveProgress()
     {
@@ -96,4 +97,11 @@ public class PlayerExperience : MonoBehaviour
         PlayerPrefs.SetInt("SkillPoints", skillPoints);
         PlayerPrefs.Save();
     }
+
+    public void RefundAllSkillPoints(int amount)
+    {
+        skillPoints += amount;
+        SaveProgress();
+    }
+
 }

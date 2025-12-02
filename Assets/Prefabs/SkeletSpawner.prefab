@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2955995803462780358, guid: c484bd9e06507a849bf1d85cddfe376f, type: 3}
   spawnPoint: {fileID: 6981692873395671030}
-  numberToSpawn: 12
-  enemySpeed: 7
-  enemyHealth: 10
-  enemyDamage: 2
+  numberToSpawn: 4
+  enemySpeed: 1
+  enemyHealth: 3
+  enemyDamage: 1
   separationRadius: 2.2
   separationForce: 0.2

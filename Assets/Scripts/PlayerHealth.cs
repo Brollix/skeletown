@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour
     public float CurrentHealth => currentHealth;
     public float HealthPercentage => currentHealth / MaxHealth;
     public bool IsInvincible => invincible;
+    public bool IsDead { get; private set; } = false; // safer encapsulation
 
     public event Action<float> OnHealthChanged;
     public event Action OnDeath;
@@ -27,20 +28,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (invincible)
-        {
-            // Debug.Log("🛡️ Player is invincible, damage ignored");
+        if (invincible || IsDead)
             return;
-        }
 
-        float oldHealth = currentHealth;
         currentHealth = Mathf.Max(0, currentHealth - damage);
         OnHealthChanged?.Invoke(currentHealth);
-
-        // Debug.Log($"💥 Player took {damage} damage! Health: {oldHealth} → {currentHealth}");
-
-        // Efecto visual de daño (opcional)
-        // StartCoroutine(DamageFlash());
 
         if (currentHealth <= 0)
         {
@@ -48,48 +40,36 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            // Activar invencibilidad temporal
             StartCoroutine(InvincibilityCoroutine());
-        }
-    }
-
-    private System.Collections.IEnumerator DamageFlash()
-    {
-        // Flash rojo (si tienes sprite renderer)
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        if (sprite != null)
-        {
-            Color originalColor = sprite.color;
-            sprite.color = Color.red;
-            yield return new WaitForSeconds(0.1f);
-            sprite.color = originalColor;
         }
     }
 
     public void Heal(float amount)
     {
-        float oldHealth = currentHealth;
+        if (IsDead) return;
+
         currentHealth = Mathf.Min(MaxHealth, currentHealth + amount);
         OnHealthChanged?.Invoke(currentHealth);
     }
 
     private void Die()
     {
+        if (IsDead) return;
+
+        IsDead = true;
         OnDeath?.Invoke();
-        // Player defeated - game over screen will be shown by GameOverUI
+        // GameOverUI handles the game over screen
     }
 
     private System.Collections.IEnumerator InvincibilityCoroutine()
     {
         invincible = true;
-        // Aquí podrías añadir efectos visuales (parpadeo, etc.)
         float elapsed = 0f;
         while (elapsed < invincibilityDuration)
         {
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         invincible = false;
     }
 }

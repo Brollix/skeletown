@@ -78,7 +78,10 @@ public class UpgradeManager : MonoBehaviour
         healthUpgrades = 0;
         damageUpgrades = 0;
         speedUpgrades = 0;
+
+        SaveUpgrades();
     }
+
 
     public void LoadUpgrades()
     {

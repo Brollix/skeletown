@@ -17,6 +17,10 @@ public class EnemySpawn : MonoBehaviour
     
     private int floorNumber;
 
+    [Header("Boss Settings")]
+    public bool isBossSpawner = false;
+
+
     void Start()
     {
         FloorID id = GetComponentInParent<FloorID>();
@@ -56,6 +60,8 @@ public class EnemySpawn : MonoBehaviour
                 e.separationRadius = separationRadius;
                 e.separationForce = separationForce;
                 e.floorNumber = floorNumber;
+                if (isBossSpawner)
+                    e.isBoss = true;
             }
 
             yield return null;

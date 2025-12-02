@@ -12,25 +12,13 @@ public class UpgradeUI : MonoBehaviour
     [SerializeField] private Button resetButton;
 
     [Header("Level Display")]
-    [SerializeField] private TextMeshProUGUI healthLevelLabel;
     [SerializeField] private TextMeshProUGUI healthLevelValue;
-    [SerializeField] private TextMeshProUGUI damageLevelLabel;
     [SerializeField] private TextMeshProUGUI damageLevelValue;
-    [SerializeField] private TextMeshProUGUI speedLevelLabel;
     [SerializeField] private TextMeshProUGUI speedLevelValue;
 
     private void Start()
     {
-        InitializeLabels();
         UpdateUI();
-    }
-
-    private void InitializeLabels()
-    {
-        // Set static label texts
-        if (healthLevelLabel != null) healthLevelLabel.text = "Health Level:";
-        if (damageLevelLabel != null) damageLevelLabel.text = "Damage Level:";
-        if (speedLevelLabel != null) speedLevelLabel.text = "Speed Level:";
     }
 
     private void Update()
@@ -40,120 +28,56 @@ public class UpgradeUI : MonoBehaviour
 
     public void UpgradeHealth()
     {
-        if (UpgradeManager.Instance != null && PlayerExperience.Instance != null)
-        {
-            if (PlayerExperience.Instance.SkillPoints > 0)
-            {
-                if (UpgradeManager.Instance.UpgradeHealth())
-                {
-                    UpdateUI();
-                }
-            }
-        }
+        if (UpgradeManager.Instance.UpgradeHealth())
+            UpdateUI();
     }
 
     public void UpgradeDamage()
     {
-        if (UpgradeManager.Instance != null && PlayerExperience.Instance != null)
-        {
-            if (PlayerExperience.Instance.SkillPoints > 0)
-            {
-                if (UpgradeManager.Instance.UpgradeDamage())
-                {
-                    UpdateUI();
-                }
-            }
-        }
+        if (UpgradeManager.Instance.UpgradeDamage())
+            UpdateUI();
     }
 
     public void UpgradeSpeed()
     {
-        if (UpgradeManager.Instance != null && PlayerExperience.Instance != null)
-        {
-            if (PlayerExperience.Instance.SkillPoints > 0)
-            {
-                if (UpgradeManager.Instance.UpgradeSpeed())
-                {
-                    UpdateUI();
-                }
-            }
-        }
+        if (UpgradeManager.Instance.UpgradeSpeed())
+            UpdateUI();
     }
 
     public void ResetUpgrades()
     {
-        Debug.Log("🔄 ResetUpgrades() called!");
-        if (UpgradeManager.Instance != null && PlayerExperience.Instance != null)
-        {
-            // Calculate total skill points used
-            int healthUpgrades = UpgradeManager.Instance.GetHealthUpgrades();
-            int damageUpgrades = UpgradeManager.Instance.GetDamageUpgrades();
-            int speedUpgrades = UpgradeManager.Instance.GetSpeedUpgrades();
+        int total = UpgradeManager.Instance.GetHealthUpgrades()
+                 + UpgradeManager.Instance.GetDamageUpgrades()
+                 + UpgradeManager.Instance.GetSpeedUpgrades();
 
-            int totalPointsUsed = healthUpgrades + damageUpgrades + speedUpgrades;
-            Debug.Log($"🔄 Resetting upgrades - Health: {healthUpgrades}, Damage: {damageUpgrades}, Speed: {speedUpgrades}, Total points: {totalPointsUsed}");
+        UpgradeManager.Instance.ResetAllUpgrades();
+        PlayerExperience.Instance.AddSkillPoints(total);
 
-            // Reset all upgrades to 0
-            UpgradeManager.Instance.ResetAllUpgrades();
+        UpgradeManager.Instance.SaveUpgrades();
+        PlayerExperience.Instance.SaveProgress();
 
-            // Return skill points to player
-            PlayerExperience.Instance.AddSkillPoints(totalPointsUsed);
-
-            // Save changes
-            UpgradeManager.Instance.SaveUpgrades();
-            PlayerExperience.Instance.SaveProgress();
-
-            // Update UI
-            UpdateUI();
-            Debug.Log("✅ Reset completed successfully!");
-        }
-        else
-        {
-            Debug.LogError("❌ Cannot reset: Managers not found");
-        }
+        UpdateUI();
     }
 
     private void UpdateUI()
     {
-        if (PlayerExperience.Instance == null)
-        {
-            Debug.LogError("PlayerExperience.Instance is null!");
-            return;
-        }
-        if (UpgradeManager.Instance == null)
-        {
-            Debug.LogError("UpgradeManager.Instance is null!");
-            return;
-        }
+        skillPointsText.text = "Skill Points: " + PlayerExperience.Instance.SkillPoints;
 
-        // Update skill points
-        if (skillPointsText != null)
-        {
-            skillPointsText.text = $"Skill Points: {PlayerExperience.Instance.SkillPoints}";
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ skillPointsText is null!");
-        }
+        healthLevelValue.text = UpgradeManager.Instance.GetHealthUpgrades().ToString();
+        damageLevelValue.text = UpgradeManager.Instance.GetDamageUpgrades().ToString();
+        speedLevelValue.text = UpgradeManager.Instance.GetSpeedUpgrades().ToString();
 
-        // Update upgrade level values
-        if (healthLevelValue != null)
-            healthLevelValue.text = UpgradeManager.Instance.GetHealthUpgrades().ToString();
-        if (damageLevelValue != null)
-            damageLevelValue.text = UpgradeManager.Instance.GetDamageUpgrades().ToString();
-        if (speedLevelValue != null)
-            speedLevelValue.text = UpgradeManager.Instance.GetSpeedUpgrades().ToString();
+        bool hasPoints = PlayerExperience.Instance.SkillPoints > 0;
 
-        // Enable/disable buttons based on available skill points
-        bool hasSkillPoints = PlayerExperience.Instance.SkillPoints > 0;
-        if (healthButton != null) healthButton.interactable = hasSkillPoints;
-        if (damageButton != null) damageButton.interactable = hasSkillPoints;
-        if (speedButton != null) speedButton.interactable = hasSkillPoints;
+        healthButton.interactable = hasPoints;
+        damageButton.interactable = hasPoints;
+        speedButton.interactable = hasPoints;
 
-        // Enable reset button if there are any upgrades to reset
-        bool hasUpgrades = (UpgradeManager.Instance.GetHealthUpgrades() +
-                           UpgradeManager.Instance.GetDamageUpgrades() +
-                           UpgradeManager.Instance.GetSpeedUpgrades()) > 0;
-        if (resetButton != null) resetButton.interactable = hasUpgrades;
+        bool hasUpgrades =
+            (UpgradeManager.Instance.GetHealthUpgrades()
+            + UpgradeManager.Instance.GetDamageUpgrades()
+            + UpgradeManager.Instance.GetSpeedUpgrades()) > 0;
+
+        resetButton.interactable = hasUpgrades;
     }
 }

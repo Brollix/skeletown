@@ -52,3 +52,4 @@ MonoBehaviour:
   enemyDamage: 10
   separationRadius: 1
   separationForce: 2
+  isBossSpawner: 1

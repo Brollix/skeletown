@@ -284,7 +284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &112125142
 RectTransform:
   m_ObjectHideFlags: 0
@@ -364,11 +364,9 @@ MonoBehaviour:
   healthButton: {fileID: 446329357}
   damageButton: {fileID: 1600671945}
   speedButton: {fileID: 1677471427}
-  healthLevelLabel: {fileID: 1959416892}
+  resetButton: {fileID: 1968264384}
   healthLevelValue: {fileID: 305182673}
-  damageLevelLabel: {fileID: 600141029}
   damageLevelValue: {fileID: 902304962}
-  speedLevelLabel: {fileID: 1637969281}
   speedLevelValue: {fileID: 514469554}
 --- !u!1 &131568977
 GameObject:
@@ -4845,13 +4843,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 112125141}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 112125146}
+        m_TargetAssemblyTypeName: UpgradeUI, Assembly-CSharp
+        m_MethodName: ResetUpgrades
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

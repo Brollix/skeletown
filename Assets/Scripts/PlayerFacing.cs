@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerFacing : MonoBehaviour
 {
@@ -13,8 +14,8 @@ public class PlayerFacing : MonoBehaviour
     public void UpdateFacingDirection()
     {
         if (player == null || player.cam == null) return;
-        
-        Vector2 mousePos = Input.mousePosition;
+
+        Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 worldPos = player.cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, -player.cam.transform.position.z));
         
         bool shouldFaceRight = worldPos.x > transform.position.x;

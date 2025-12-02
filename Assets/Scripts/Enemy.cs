@@ -6,10 +6,10 @@ public class Enemy : MonoBehaviour {
     [HideInInspector] public Transform player;
 
     [Header("Stats")]
-    public float speed = 2f;
-    public float health = 10f;
-    public float maxHealth = 10f;
-    public float damage = 2f;
+    public float speed = 1f;
+    public float health = 2f;
+    public float maxHealth = 2f;
+    public float damage = 1f;
 
     [Header("Flocking Settings")]
     public float separationRadius = 1f;
@@ -19,6 +19,8 @@ public class Enemy : MonoBehaviour {
     public float visionRadius = 7f;
 
     public int floorNumber;
+
+    public bool isBoss = false;
 
     private Rigidbody2D rb;
 
@@ -43,7 +45,7 @@ public class Enemy : MonoBehaviour {
     private void ScaleStatsByLevel() {
         // For now, start enemies at level 1 - they will scale with player progress during gameplay
         // TODO: Add proper level progression system for enemies
-        int enemyLevel = 1; // Always start at level 1 for new games
+        int enemyLevel = floorNumber; // Always start at level 1 for new games
 
         // Scale enemy stats based on enemy level (not player level to avoid save file issues)
         float levelMultiplier = 1f + (enemyLevel - 1) * 0.2f; // 20% increase per level
@@ -57,7 +59,7 @@ public class Enemy : MonoBehaviour {
         // Update current health to match max health
         health = maxHealth;
 
-        Debug.Log($"🧟 Enemy stats scaled - Enemy Level: {enemyLevel}, Speed: {originalSpeed} → {speed}, Health: {maxHealth}, Damage: {damage}");
+        Debug.Log($"Enemy stats scaled - Enemy Level: {enemyLevel}, Speed: {originalSpeed} → {speed}, Health: {maxHealth}, Damage: {damage}");
     }
 
     void Update() {
@@ -126,23 +128,52 @@ public class Enemy : MonoBehaviour {
 
     public event Action<float> OnHealthChanged;
 
-	void Die()
-{
-    if (GameManager.Instance != null)
+    void Die()
     {
-        GameManager.Instance.EnemyDied(floorNumber);
+        // Notify game manager
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.EnemyDied(floorNumber);
+        }
+
+        // Give XP to player
+        if (PlayerExperience.Instance != null)
+        {
+            float xpToGive = 60f;
+            PlayerExperience.Instance.AddXP(xpToGive);
+        }
+
+        // === SAFETY: only trigger victory if this is the boss AND the player is still alive ===
+        if (isBoss)
+        {
+            // try PlayerHealth singleton/reference first if you have one
+            PlayerHealth ph = FindObjectOfType<PlayerHealth>();
+
+            // If there's no Player object, don't trigger victory
+            if (ph == null)
+            {
+                Debug.LogWarning("Enemy.Die: PlayerHealth not found; skipping victory trigger.");
+            }
+            else
+            {
+                // Only show victory if player is NOT dead
+                if (!ph.IsDead)
+                {
+                    GameOverUI ui = FindObjectOfType<GameOverUI>();
+                    if (ui != null)
+                        ui.ShowVictory();
+                }
+                else
+                {
+                    // Player already dead → do not show victory
+                    Debug.Log("Enemy.Die: player already dead — skipping victory.");
+                }
+            }
+        }
+
+        Destroy(gameObject);
     }
 
-    // Give XP to player
-    if (PlayerExperience.Instance != null)
-    {
-        float xpToGive = 10f; // Base XP, could be modified based on enemy type
-        // Debug.Log($"🎯 Enemy died, giving {xpToGive} XP to player");
-        PlayerExperience.Instance.AddXP(xpToGive);
-    }
-
-    Destroy(gameObject);
-}
 
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -152,7 +183,7 @@ public class Enemy : MonoBehaviour {
             {
                 if (!playerHealth.IsInvincible)
                 {
-                    playerHealth.TakeDamage(damage);
+                    playerHealth.TakeDamage((int)damage);
                 }
             }
         }

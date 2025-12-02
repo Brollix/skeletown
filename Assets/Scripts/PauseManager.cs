@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PauseManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PauseManager : MonoBehaviour
     [Header("UI Panels")]
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private InputActionReference pauseInput;
 
     private void Start()
     {
@@ -21,68 +23,74 @@ public class PauseManager : MonoBehaviour
             settingsMenu.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        pauseInput.action.performed += togglePause;
+    }
+
+    private void OnDisable()
+    {
+        pauseInput.action.performed -= togglePause;
+    }
+
     private void Update()
     {
-        // Ignore ESC if settings menu is open
+        // Don't allow pause if settings menu is open
         if (settingsMenu != null && settingsMenu.activeSelf)
             return;
 
-        // Toggle pause with ESC
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (GamePaused)
-                ResumeGame();
-            else
-                PauseGame();
-        }
+
+    }
+
+    private void togglePause(InputAction.CallbackContext ctx)
+    {
+
+        if (GamePaused)
+            ResumeGame();
+        else
+            PauseGame();
+
     }
 
     public void PauseGame()
     {
         GamePaused = true;
 
-        if (pauseMenu != null)
-            pauseMenu.SetActive(true);
+        if (pauseMenu != null) pauseMenu.SetActive(true);
 
-        // Freeze gameplay but allow UI interactions
         Time.timeScale = 0f;
 
-        // Ensure EventSystem can still detect clicks
-        UnityEngine.EventSystems.EventSystem.current.sendNavigationEvents = true;
+        if (EventSystem.current != null)
+            EventSystem.current.sendNavigationEvents = true;
     }
 
     public void ResumeGame()
     {
         GamePaused = false;
 
-        if (pauseMenu != null)
-            pauseMenu.SetActive(false);
+        if (pauseMenu != null) pauseMenu.SetActive(false);
 
         Time.timeScale = 1f;
     }
 
     public void OpenSettings()
     {
-        if (pauseMenu != null)
-            pauseMenu.SetActive(false);
-
-        if (settingsMenu != null)
-            settingsMenu.SetActive(true);
+        if (pauseMenu != null) pauseMenu.SetActive(false);
+        if (settingsMenu != null) settingsMenu.SetActive(true);
     }
 
     public void CloseSettings()
     {
-        if (settingsMenu != null)
-            settingsMenu.SetActive(false);
-
-        if (pauseMenu != null)
-            pauseMenu.SetActive(true);
+        if (settingsMenu != null) settingsMenu.SetActive(false);
+        if (pauseMenu != null) pauseMenu.SetActive(true);
     }
 
+    // Return to Main Menu using SceneManager directly
     public void GoToMainMenu()
     {
         GamePaused = false;
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 }
