@@ -20,11 +20,54 @@ public class PlayerHealth : MonoBehaviour
     public event Action<float> OnHealthChanged;
     public event Action OnDeath;
 
+    public static PlayerHealth Instance { get; private set; }
+
+    private void Awake()
+    {
+        // Singleton Logic with Scene Priority
+        if (Instance != null && Instance != this)
+        {
+            // If the existing instance is in the MainMenu or Boot scene, and I am NOT,
+            // then I am the "real" player for the game world. Destroy the old one.
+            string oldScene = Instance.gameObject.scene.name;
+            string myScene = gameObject.scene.name;
+
+            if ((oldScene == "MainMenu" || oldScene == "Boot") && myScene != oldScene)
+            {
+                Debug.Log($"[PlayerHealth] Overwriting Singleton. Old: {oldScene}, New: {myScene}");
+                Destroy(Instance.gameObject);
+                Instance = this;
+            }
+            else
+            {
+                // Otherwise, I am the duplicate (or we are in the same scene)
+                Destroy(gameObject);
+                return;
+            }
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
     private void Start()
     {
         currentHealth = MaxHealth;
         OnHealthChanged?.Invoke(currentHealth);
     }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip deathSound;
 
     public void TakeDamage(float damage)
     {
@@ -40,6 +83,10 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
+            if (AudioManager.Instance != null && hitSound != null)
+            {
+                AudioManager.Instance.PlaySFX(hitSound);
+            }
             StartCoroutine(InvincibilityCoroutine());
         }
     }
@@ -58,6 +105,11 @@ public class PlayerHealth : MonoBehaviour
 
         IsDead = true;
         OnDeath?.Invoke();
+        
+        if (AudioManager.Instance != null && deathSound != null)
+        {
+            AudioManager.Instance.PlaySFX(deathSound);
+        }
         // GameOverUI handles the game over screen
     }
 

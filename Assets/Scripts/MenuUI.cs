@@ -15,12 +15,47 @@ public class MenuUI : MonoBehaviour
         settingsPanel.SetActive(false);
         upgradesPanel.SetActive(false);
         creditsPanel.SetActive(false);
+
+        // Enforce UI Scaling
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas != null)
+        {
+            UnityEngine.UI.CanvasScaler scaler = canvas.GetComponent<UnityEngine.UI.CanvasScaler>();
+            if (scaler == null)
+            {
+                scaler = canvas.gameObject.AddComponent<UnityEngine.UI.CanvasScaler>();
+            }
+
+            scaler.uiScaleMode = UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.matchWidthOrHeight = 0.5f;
+        }
+
+        // Force Canvas to Overlay to ensure visibility
+        if (canvas != null)
+        {
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
     }
 
     public void StartGame()
     {
-        SceneManager.LoadScene("DungeonScene");
+        Debug.Log("[MenuUI] StartGame() called!");
+        
+        if (SceneLoader.Instance != null)
+        {
+            Debug.Log($"[MenuUI] SceneLoader exists. worldScene = '{SceneLoader.Instance.worldScene}'");
+            SceneLoader.Instance.LoadWorld();
+            Debug.Log("[MenuUI] LoadWorld() called!");
+        }
+        else
+        {
+            Debug.LogError("[MenuUI] SceneLoader.Instance is NULL!");
+            // Fallback for direct play from MainMenu
+            SceneManager.LoadScene("DungeonScene");
+        }
     }
+    
 
     public void QuitGame()
     {

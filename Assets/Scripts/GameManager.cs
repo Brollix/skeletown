@@ -1,52 +1,52 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    private Dictionary<int, int> enemiesRemaining = new Dictionary<int, int>();
+    // State Tracking
+    public Dictionary<int, int> enemiesRemaining = new Dictionary<int, int>();
     private Dictionary<int, List<Door>> doorsPerFloor = new Dictionary<int, List<Door>>();
 
-    void Awake()
+    private void Awake()
     {
+        // Singleton Logic
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
+        // Prevent duplicate subscriptions by unsubscribing first
+        EnemySpawn.OnEnemiesSpawned -= AddEnemies;
         EnemySpawn.OnEnemiesSpawned += AddEnemies;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         EnemySpawn.OnEnemiesSpawned -= AddEnemies;
     }
 
-    // ------------------------------------------------------
-    // REGISTER DOORS
-    // ------------------------------------------------------
-    public void RegisterDoor(int floor, Door door)
-    {
-        if (!doorsPerFloor.ContainsKey(floor))
-        {
-            doorsPerFloor.Add(floor, new List<Door>());
-        }
+    // --- Level State Management ---
 
-        doorsPerFloor[floor].Add(door);
+    public void ResetLevelState()
+    {
+        enemiesRemaining.Clear();
+        doorsPerFloor.Clear();
+        Debug.Log("[GameManager] 🔄 Level State Reset (Enemies and Doors cleared).");
     }
 
-    // ------------------------------------------------------
-    // REGISTER ENEMIES FROM SPAWNER
-    // ------------------------------------------------------
+    // --- Enemy Logic ---
+
     private void AddEnemies(int floor, int amount)
     {
         if (!enemiesRemaining.ContainsKey(floor))
@@ -55,107 +55,66 @@ public class GameManager : MonoBehaviour
         }
 
         enemiesRemaining[floor] += amount;
+        Debug.Log($"[GameManager] 💀 Floor {floor}: Added {amount} enemies. Total: {enemiesRemaining[floor]}");
     }
 
-    // ------------------------------------------------------
-    // CALLED BY ENEMY WHEN IT DIES
-    // ------------------------------------------------------
     public void EnemyDied(int floor)
     {
-        if (!enemiesRemaining.ContainsKey(floor))
+        if (enemiesRemaining.ContainsKey(floor))
         {
-            
-            return;
-        }
+            enemiesRemaining[floor]--;
+            Debug.Log($"[GameManager] ⚔️ Enemy died on Floor {floor}. Remaining: {enemiesRemaining[floor]}");
 
-        enemiesRemaining[floor] = Mathf.Max(0, enemiesRemaining[floor] - 1);
-
-        if (enemiesRemaining[floor] == 0)
-        {
-
-            if (doorsPerFloor.ContainsKey(floor))
+            if (enemiesRemaining[floor] <= 0)
             {
-                foreach (Door d in doorsPerFloor[floor])
-                {
-                    if (d != null)
-                    {
-                        d.SetOpen(true);
-                    }
-                }
+                enemiesRemaining[floor] = 0; // Safety clamp
+                OpenDoors(floor);
             }
         }
     }
 
-    // ------------------------------------------------------
-    // DEBUG: PRESS K TO KILL ALL ENEMIES
-    // ------------------------------------------------------
-    void Update()
+    // --- Door Logic ---
+
+    public void RegisterDoor(int floor, Door door)
     {
-        //if (Input.GetKeyDown(KeyCode.K))
-        //{
-        //    KillAllEnemiesOnAllFloors();
-        //}
-        //
-        // if (Input.GetKeyDown(KeyCode.L))
-        // {
-        //     PrintFloorStates();
-        // }
+        if (!doorsPerFloor.ContainsKey(floor))
+        {
+            doorsPerFloor.Add(floor, new List<Door>());
+        }
+
+        if (!doorsPerFloor[floor].Contains(door))
+        {
+            doorsPerFloor[floor].Add(door);
+            Debug.Log($"[GameManager] 🚪 Registered Door on Floor {floor}.");
+        }
     }
 
-    // ------------------------------------------------------
-    // KILL ALL ENEMIES
-    // ------------------------------------------------------
-    // private void KillAllEnemiesOnAllFloors()
-    // {
-    //     Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+    private void OpenDoors(int floor)
+    {
+        if (doorsPerFloor.ContainsKey(floor))
+        {
+            Debug.Log($"[GameManager] 🔓 Opening {doorsPerFloor[floor].Count} doors on Floor {floor}!");
+            foreach (var door in doorsPerFloor[floor])
+            {
+                if (door != null) door.SetOpen(true);
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[GameManager] Floor {floor} cleared, but no doors registered!");
+        }
+    }
 
-    //     int totalKilled = 0;
+    // --- Cheats / Debug ---
 
-    //     foreach (Enemy e in enemies)
-    //     {
-    //         if (e != null)
-    //         {
-    //             e.TakeDamage(999999f);
-    //             totalKilled++;
-    //         }
-    //     }
-
-    //     Debug.Log("DEBUG: Killed all enemies. Total killed: " + totalKilled);
-    // }
-
-    // ------------------------------------------------------
-    // DEBUG: PRINT FLOOR STATES
-    // ------------------------------------------------------
-    // public void PrintFloorStates()
-    // {
-    //     Debug.Log("----- FLOOR STATES -----");
-
-    //     // Collect all floors that exist either in doors or enemies
-    //     HashSet<int> allFloors = new HashSet<int>();
-    //     foreach (var floor in doorsPerFloor.Keys) allFloors.Add(floor);
-    //     foreach (var floor in enemiesRemaining.Keys) allFloors.Add(floor);
-
-    //     foreach (int floor in allFloors)
-    //     {
-    //         int enemies = enemiesRemaining.ContainsKey(floor) ? enemiesRemaining[floor] : 0;
-
-    //         string doorStates = "";
-    //         if (doorsPerFloor.ContainsKey(floor))
-    //         {
-    //             foreach (Door d in doorsPerFloor[floor])
-    //             {
-    //                 if (d != null)
-    //                     doorStates += d.isOpen ? "OPEN " : "CLOSED ";
-    //             }
-    //         }
-    //         else
-    //         {
-    //             doorStates = "No doors";
-    //         }
-
-    //         Debug.Log($"Floor {floor}: Enemies remaining = {enemies}, Doors = {doorStates}");
-    //     }
-
-    //     Debug.Log("------------------------");
-    // }
+    public void KillAllEnemies()
+    {
+        Debug.Log("[GameManager] 🕵️ CHEAT: Killing all enemies...");
+        var keys = new List<int>(enemiesRemaining.Keys);
+        foreach (var floor in keys)
+        {
+            enemiesRemaining[floor] = 0;
+            OpenDoors(floor);
+        }
+    }
 }

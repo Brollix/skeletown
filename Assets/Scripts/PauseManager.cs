@@ -85,12 +85,20 @@ public class PauseManager : MonoBehaviour
         if (pauseMenu != null) pauseMenu.SetActive(true);
     }
 
-    // Return to Main Menu using SceneManager directly
+    // Return to Main Menu using SceneLoader to preserve Managers
     public void GoToMainMenu()
     {
         GamePaused = false;
         Time.timeScale = 1f;
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        if (SceneLoader.Instance != null)
+        {
+            SceneLoader.Instance.LoadMainMenu();
+        }
+        else
+        {
+            // Fallback if SceneLoader is missing (shouldn't happen if started from Boot)
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        }
     }
 }

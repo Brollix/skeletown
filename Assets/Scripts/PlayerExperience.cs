@@ -24,14 +24,30 @@ public class PlayerExperience : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            LoadProgress();
+             // If the existing instance is in the MainMenu or Boot scene, and I am NOT,
+            // then I am the "real" manager for the game world. Destroy the old one.
+            string oldScene = Instance.gameObject.scene.name;
+            string myScene = gameObject.scene.name;
+
+            if ((oldScene == "MainMenu" || oldScene == "Boot") && myScene != oldScene)
+            {
+                Debug.Log($"[PlayerExperience] Overwriting Singleton. Old: {oldScene}, New: {myScene}");
+                Destroy(Instance.gameObject);
+                Instance = this;
+                LoadProgress();
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
         }
         else
         {
-            Destroy(gameObject);
+            Instance = this;
+            LoadProgress();
         }
     }
 

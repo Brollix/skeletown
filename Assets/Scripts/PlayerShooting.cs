@@ -33,6 +33,8 @@ public class PlayerShooting : Player
         }
     }
 
+    [SerializeField] private AudioClip shootSound;
+
     private void Shoot()
     {
         if (bowController == null || arrowTemplate == null) 
@@ -40,6 +42,12 @@ public class PlayerShooting : Player
             if (bowController == null) Debug.LogError("No BowController found!");
             if (arrowTemplate == null) Debug.LogError("No arrow template assigned!");
             return;
+        }
+
+        // Play Shoot Sound
+        if (shootSound != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(shootSound, 0.9f, 1.1f);
         }
 
         Vector2 mousePos = GetMousePosition();
@@ -57,6 +65,11 @@ public class PlayerShooting : Player
 
             // Pass player damage into the arrow
             arrowScript.SetDamage(damage);
+        }
+
+        if (AudioManager.Instance != null && shootSound != null)
+        {
+            AudioManager.Instance.PlaySFX(shootSound);
         }
     }
 }

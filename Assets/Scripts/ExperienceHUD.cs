@@ -19,6 +19,14 @@ public class ExperienceHUD : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(InitializeHUD());
+    }
+
+    private System.Collections.IEnumerator InitializeHUD()
+    {
+        // Wait a frame to ensure singletons are ready
+        yield return null;
+
         UpdateUI();
 
         if (PlayerExperience.Instance != null)
@@ -27,19 +35,19 @@ public class ExperienceHUD : MonoBehaviour
             PlayerExperience.Instance.OnXPChanged += OnXPChanged;
         }
 
-        // Suscribirse a cambios de salud del jugador (only if enabled)
+        // Wait for PlayerHealth singleton
         if (showHealthInHUD)
         {
-            PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
-            if (playerHealth != null)
+            while (PlayerHealth.Instance == null)
             {
-                playerHealth.OnHealthChanged += OnHealthChanged;
-                // Debug.Log("🎧 ExperienceHUD subscribed to player health changes");
+                yield return null;
             }
-            else
-            {
-                Debug.LogWarning("⚠️ No PlayerHealth found for ExperienceHUD");
-            }
+
+            PlayerHealth playerHealth = PlayerHealth.Instance;
+            playerHealth.OnHealthChanged += OnHealthChanged;
+            // Force an update now that we have the player
+            OnHealthChanged(playerHealth.CurrentHealth);
+            Debug.Log("🎧 ExperienceHUD subscribed to player health changes via Singleton");
         }
     }
 

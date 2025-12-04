@@ -43,9 +43,16 @@ public class Player : MonoBehaviour
     // Métodos de utilidad
     public Vector2 GetMousePosition()
     {
+        if (cam == null)
+        {
+            _cam = Camera.main;
+            if (_cam == null) _cam = FindFirstObjectByType<Camera>(); // Fallback to any camera
+        }
+        
         if (cam == null) return Vector2.zero;
+
         Vector2 mousePos = Mouse.current?.position.ReadValue() ?? Vector2.zero;
-        return cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, -cam.transform.position.z));
+        return cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 10f)); // Use fixed Z distance for 2D
     }
 
     public bool IsFacingRight() => facing != null && facing.IsFacingRight();

@@ -7,7 +7,14 @@ public class UIButtonSound : MonoBehaviour
 
     public void PlayClick()
     {
-        if (audioSource != null && clickSound != null)
+        if (AudioManager.Instance != null && clickSound != null)
+        {
+            AudioManager.Instance.PlaySFX(clickSound);
+        }
+        else if (audioSource != null && clickSound != null)
+        {
+            // Fallback if AudioManager is missing
             audioSource.PlayOneShot(clickSound);
+        }
     }
 }

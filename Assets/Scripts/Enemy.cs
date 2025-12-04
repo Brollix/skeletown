@@ -40,6 +40,12 @@ public class Enemy : MonoBehaviour {
                 player = playerObj.transform;
             }
         }
+
+        FloorID id = GetComponentInParent<FloorID>();
+        if (id != null)
+        {
+            floorNumber = id.floorNumber;
+        }
     }
 
     private void ScaleStatsByLevel() {
@@ -159,7 +165,7 @@ public class Enemy : MonoBehaviour {
                 // Only show victory if player is NOT dead
                 if (!ph.IsDead)
                 {
-                    GameOverUI ui = FindObjectOfType<GameOverUI>();
+                    VictoryUI ui = FindObjectOfType<VictoryUI>();
                     if (ui != null)
                         ui.ShowVictory();
                 }

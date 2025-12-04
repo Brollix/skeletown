@@ -25,12 +25,13 @@ public class PlayerMovement : Player
     }
 
 
-        private void Awake()
+    private void Awake()
     {
         base.Awake();
         controls = new PlayerControls();
         _animator = GetComponent<Animator>();
         _mainCamera = Camera.main;
+        Time.timeScale = 1f; // Ensure time is running
     }
 
     private void OnEnable()
@@ -93,7 +94,7 @@ public class PlayerMovement : Player
             return;
         }
         
-        Move(input.moveInput, moveSpeed);
+        // Movement is handled in FixedUpdate
         facing?.UpdateFacingDirection();
     }
 }

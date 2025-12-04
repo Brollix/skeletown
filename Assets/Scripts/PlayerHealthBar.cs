@@ -12,12 +12,18 @@ public class PlayerHealthBar : MonoBehaviour
 
     private void Start()
     {
-        playerHealth = FindObjectOfType<PlayerHealth>();
-        if (playerHealth == null)
+        StartCoroutine(InitializeHealthBar());
+    }
+
+    private System.Collections.IEnumerator InitializeHealthBar()
+    {
+        // Wait until PlayerHealth.Instance is available
+        while (PlayerHealth.Instance == null)
         {
-            Debug.LogError("❌ No PlayerHealth found in scene!");
-            return;
+            yield return null;
         }
+
+        playerHealth = PlayerHealth.Instance;
 
         if (healthBarFill != null)
         {
@@ -27,7 +33,7 @@ public class PlayerHealthBar : MonoBehaviour
         playerHealth.OnHealthChanged += UpdateHealthBar;
         UpdateHealthBar(playerHealth.CurrentHealth);
 
-        Debug.Log("❤️ PlayerHealthBar initialized");
+        Debug.Log("❤️ PlayerHealthBar initialized with Singleton");
     }
 
     private void UpdateHealthBar(float currentHealth)

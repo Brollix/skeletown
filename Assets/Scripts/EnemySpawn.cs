@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class EnemySpawn : MonoBehaviour
@@ -21,8 +22,15 @@ public class EnemySpawn : MonoBehaviour
     public bool isBossSpawner = false;
 
 
-    void Start()
+    IEnumerator Start()
     {
+        // Wait until this scene is the active scene
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == gameObject.scene.name);
+
+        // Wait until old scenes are unloaded (Boot + ThisScene = 2 scenes)
+        // This prevents collisions with objects from the previous scene (like MainMenu)
+        yield return new WaitUntil(() => SceneManager.sceneCount <= 2);
+
         FloorID id = GetComponentInParent<FloorID>();
         if (id != null) {
             floorNumber = id.floorNumber;
@@ -30,6 +38,10 @@ public class EnemySpawn : MonoBehaviour
 
         StartCoroutine(SpawnEnemies());
     }
+
+    [Header("Spawn Settings")]
+    public LayerMask obstacleLayer; // Assign "Environment" or "Walls" layer here
+    public float spawnRadius = 3.0f;
 
     IEnumerator SpawnEnemies()
     {
@@ -43,12 +55,29 @@ public class EnemySpawn : MonoBehaviour
             yield break;
         }
 
-        for (int i = 0; i < numberToSpawn; i++)
+        int spawnedCount = 0;
+        int attempts = 0;
+        int maxAttempts = numberToSpawn * 10; // More attempts
+
+        while (spawnedCount < numberToSpawn && attempts < maxAttempts)
         {
-            Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
+            attempts++;
+            
+            // Random point within radius
+            Vector2 randomOffset = Random.insideUnitCircle * spawnRadius;
             Vector2 spawnPos = (Vector2)spawnPoint.position + randomOffset;
 
+            // Check if position is valid (not inside a wall)
+            // We check for a collider with the obstacle layer
+            Collider2D hit = Physics2D.OverlapCircle(spawnPos, 0.4f, obstacleLayer); 
+            if (hit != null)
+            {
+                // Hit a wall, try again
+                continue;
+            }
+
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            Debug.Log($"[EnemySpawn] Spawning enemy {spawnedCount+1}/{numberToSpawn} at {spawnPos}");
 
             Enemy e = newEnemy.GetComponent<Enemy>();
             if (e != null)
@@ -63,12 +92,32 @@ public class EnemySpawn : MonoBehaviour
                 if (isBossSpawner)
                     e.isBoss = true;
             }
+            else
+            {
+                Debug.LogError($"[EnemySpawn] Spawned object {newEnemy.name} does not have an Enemy component!");
+            }
 
-            yield return null;
+            spawnedCount++;
+            yield return null; 
+        }
+
+        if (spawnedCount < numberToSpawn)
+        {
+            Debug.LogWarning($"[EnemySpawn] Could only spawn {spawnedCount}/{numberToSpawn} enemies after {attempts} attempts. Try increasing radius or moving the spawner.");
         }
 
         if (OnEnemiesSpawned != null) {
-            OnEnemiesSpawned(floorNumber, numberToSpawn);
+            OnEnemiesSpawned(floorNumber, spawnedCount); // Use actual spawned count, not target
+            Debug.Log($"[EnemySpawn] Registered {spawnedCount} enemies with GameManager for Floor {floorNumber}");
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (spawnPoint != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(spawnPoint.position, spawnRadius);
         }
     }
 }

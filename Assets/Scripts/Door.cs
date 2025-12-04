@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using System.Collections;
 
@@ -41,10 +42,18 @@ public class Door : MonoBehaviour
 
     private IEnumerator RegisterWhenReady()
     {
+        // Wait until GameManager is ready
         while (GameManager.Instance == null)
             yield return null;
 
+        // Wait until the scene is fully loaded and active to ensure ResetLevelState has finished
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == gameObject.scene.name);
+        
+        // Extra frame to be safe
+        yield return null;
+
         GameManager.Instance.RegisterDoor(floorNumber, this);
+        Debug.Log($"[Door] Registered door for Floor {floorNumber}");
     }
 
     public void SetOpen(bool open)

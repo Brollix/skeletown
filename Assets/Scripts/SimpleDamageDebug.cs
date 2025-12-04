@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SimpleDamageDebug : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class SimpleDamageDebug : MonoBehaviour
     private void Update()
     {
         // Check for manual damage test (press D key)
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Keyboard.current != null && Keyboard.current.dKey.wasPressedThisFrame)
         {
             ForceDamageTest();
         }
