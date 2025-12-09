@@ -12,7 +12,7 @@ Skeletown is an action game with roguelike elements where the player must fight 
 - **Upgradable Attributes**: Increase your health, damage, and speed to match your playstyle.
 
 ## Game Documentation
-- [Game Design Document (GDD)](GDD_Skeletown.md): Complete document with all game mechanics, balance, and progression.
+- [Game Design Document (GDD)](GDD.md): Complete document with all game mechanics, balance, and progression.
 - [Game Pitch](PITCH.md): High-level overview, market analysis, and value proposition.
 - [Tasks Distribution & Planning (Trello Board)](https://trello.com/invite/b/691174d48638114949877017/ATTIdab99954a1e6c19e68bfb4771944db5cB1CBC7BE/skeletown): Task planning and progress tracking board.
 
