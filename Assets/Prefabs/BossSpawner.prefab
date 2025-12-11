@@ -53,3 +53,4 @@ MonoBehaviour:
   separationRadius: 1
   separationForce: 2
   isBossSpawner: 1
+  hitSound: {fileID: 8300000, guid: 0b4cb8731bb88db47a2894bd9f1dec91, type: 3}

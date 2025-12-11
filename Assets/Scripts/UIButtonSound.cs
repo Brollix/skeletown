@@ -7,7 +7,14 @@ public class UIButtonSound : MonoBehaviour
 
     public void PlayClick()
     {
-        if (audioSource != null && clickSound != null)
+        // Try global first, fall back to local
+        if (AudioManager.Instance != null && AudioManager.Instance.GetInstanceID() != 0) // Extra safety check
+        {
+            AudioManager.Instance.PlayClickSound();
+        }
+        else if (audioSource != null && clickSound != null)
+        {
             audioSource.PlayOneShot(clickSound);
+        }
     }
 }

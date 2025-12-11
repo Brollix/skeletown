@@ -21,15 +21,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnEnable()
-    {
-        EnemySpawn.OnEnemiesSpawned += AddEnemies;
-    }
 
-    void OnDisable()
-    {
-        EnemySpawn.OnEnemiesSpawned -= AddEnemies;
-    }
 
     // ------------------------------------------------------
     // REGISTER DOORS
@@ -47,7 +39,7 @@ public class GameManager : MonoBehaviour
     // ------------------------------------------------------
     // REGISTER ENEMIES FROM SPAWNER
     // ------------------------------------------------------
-    private void AddEnemies(int floor, int amount)
+    public void AddEnemies(int floor, int amount)
     {
         if (!enemiesRemaining.ContainsKey(floor))
         {

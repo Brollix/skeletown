@@ -52,3 +52,5 @@ MonoBehaviour:
   enemyDamage: 1
   separationRadius: 0.4
   separationForce: 0.2
+  isBossSpawner: 0
+  hitSound: {fileID: 8300000, guid: 0b4cb8731bb88db47a2894bd9f1dec91, type: 3}

@@ -19,6 +19,7 @@ public class MenuUI : MonoBehaviour
 
     public void StartGame()
     {
+        Time.timeScale = 1f; // Ensure game is unpaused
         SceneManager.LoadScene("DungeonScene");
     }
 

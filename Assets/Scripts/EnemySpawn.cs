@@ -13,7 +13,7 @@ public class EnemySpawn : MonoBehaviour
     public float separationRadius = 1f;
     public float separationForce = 2f;
 
-    public static event System.Action<int, int> OnEnemiesSpawned;
+
     
     private int floorNumber;
 
@@ -24,24 +24,33 @@ public class EnemySpawn : MonoBehaviour
     void Start()
     {
         FloorID id = GetComponentInParent<FloorID>();
-        if (id != null) {
+        if (id != null)
+        {
             floorNumber = id.floorNumber;
         }
-
+        else
+        {
+            Debug.LogWarning("EnemySpawn: No FloorID found in parent!");
+        }
+        
         StartCoroutine(SpawnEnemies());
     }
 
     IEnumerator SpawnEnemies()
     {
-        if (enemyPrefab == null) {
-            Debug.LogWarning("Enemy prefab missing");
-            yield break;
+        // DIRECT REGISTRATION TO FIX RACE CONDITION
+        // We register BEFORE spawning so that if the player kills them instantly,
+        // the Game Manager already knows they exist.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddEnemies(floorNumber, numberToSpawn);
+        }
+        else
+        {
+            Debug.LogError("EnemySpawn: GameManager not found! Doors will not open!");
         }
 
-        if (spawnPoint == null) {
-            Debug.LogWarning("Spawn point missing");
-            yield break;
-        }
+        // ... (existing checks)
 
         for (int i = 0; i < numberToSpawn; i++)
         {
@@ -67,8 +76,6 @@ public class EnemySpawn : MonoBehaviour
             yield return null;
         }
 
-        if (OnEnemiesSpawned != null) {
-            OnEnemiesSpawned(floorNumber, numberToSpawn);
-        }
+
     }
 }

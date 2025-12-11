@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour {
         // Update current health to match max health
         health = maxHealth;
 
-        Debug.Log($"Enemy stats scaled - Enemy Level: {enemyLevel}, Speed: {originalSpeed} → {speed}, Health: {maxHealth}, Damage: {damage}");
+        //Debug.Log($"Enemy stats scaled - Enemy Level: {enemyLevel}, Speed: {originalSpeed} → {speed}, Health: {maxHealth}, Damage: {damage}");
     }
 
     void Update() {
@@ -159,9 +159,11 @@ public class Enemy : MonoBehaviour {
                 // Only show victory if player is NOT dead
                 if (!ph.IsDead)
                 {
-                    GameOverUI ui = FindObjectOfType<GameOverUI>();
+                    VictoryUI ui = FindObjectOfType<VictoryUI>(true);
                     if (ui != null)
                         ui.ShowVictory();
+                    else
+                        Debug.LogWarning("IsBoss defeated, but no VictoryUI found in scene!");
                 }
                 else
                 {
@@ -176,16 +178,25 @@ public class Enemy : MonoBehaviour {
 
 
 
-    void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Player")) {
-            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+    private void HandlePlayerCollision(GameObject other)
+    {
+        // Removed strict Tag check to allow damage on any object with PlayerHealth
+        PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+        
+        if (playerHealth != null)
+        {
+            if (!playerHealth.IsInvincible)
             {
-                if (!playerHealth.IsInvincible)
-                {
-                    playerHealth.TakeDamage((int)damage);
-                }
+                playerHealth.TakeDamage(damage);
             }
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision) {
+        HandlePlayerCollision(collision.gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D collider) {
+        HandlePlayerCollision(collider.gameObject);
     }
 }
