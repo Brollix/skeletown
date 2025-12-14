@@ -91,9 +91,9 @@ public class PauseManager : MonoBehaviour
         GamePaused = false;
         Time.timeScale = 1f;
 
-        if (SceneManager.Instance != null)
+        if (SceneLoader.Instance != null)
         {
-            SceneManager.Instance.LoadScene("MainMenu");
+            SceneLoader.Instance.LoadScene("MainMenu");
         }
     }
 }

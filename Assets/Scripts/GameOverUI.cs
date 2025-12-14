@@ -41,9 +41,9 @@ public class GameOverUI : MonoBehaviour
     public void AcceptAndGoToMenu()
     {
         Time.timeScale = 1f; // Resume time before changing scene
-        if (SceneManager.Instance != null)
+        if (SceneLoader.Instance != null)
         {
-            SceneManager.Instance.LoadScene("MainMenu");
+            SceneLoader.Instance.LoadScene("MainMenu");
         }
     }
 }

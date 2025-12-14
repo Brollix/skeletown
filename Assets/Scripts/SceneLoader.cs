@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class SceneManager : MonoBehaviour
+public class SceneLoader : MonoBehaviour
 {
-    public static SceneManager Instance;
+    public static SceneLoader Instance;
 
     private void Awake()
     {

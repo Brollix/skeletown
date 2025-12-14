@@ -54,9 +54,9 @@ public class VictoryUI : MonoBehaviour
         }
 
         // 3. Load Main Menu
-        if (SceneManager.Instance != null)
+        if (SceneLoader.Instance != null)
         {
-            SceneManager.Instance.LoadScene("MainMenu");
+            SceneLoader.Instance.LoadScene("MainMenu");
         }
     }
 }
