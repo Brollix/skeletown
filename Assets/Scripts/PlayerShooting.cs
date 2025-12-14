@@ -33,8 +33,12 @@ public class PlayerShooting : Player
         }
     }
 
+    public static event System.Action OnShoot;
+
     private void Shoot()
     {
+        OnShoot?.Invoke();
+
         if (bowController == null || arrowTemplate == null) 
         {
             if (bowController == null) Debug.LogError("No BowController found!");

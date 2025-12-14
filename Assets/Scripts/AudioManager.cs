@@ -5,28 +5,33 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    [Header("Audio Sources")]
+    [Header("Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
 
     [Header("Music Clips")]
     [SerializeField] private AudioClip dungeonMusic;
 
-    [Header("UI Sounds")]
-    [SerializeField] private AudioClip globalClickSound;
-
-    public void PlayClickSound()
+    [System.Serializable]
+    public class SoundConfig
     {
-        if (globalClickSound != null && sfxSource != null)
-        {
-            sfxSource.pitch = 1.0f; 
-            sfxSource.PlayOneShot(globalClickSound);
-        }
+        public AudioClip clip;
+        [Range(0f, 2f)] public float minPitch = 0.9f;
+        [Range(0f, 2f)] public float maxPitch = 1.1f;
     }
+
+    [Header("UI Sounds")]
+    [SerializeField] private SoundConfig clickSound;
+    [SerializeField] private SoundConfig hoverSound;
+
+    [Header("Gameplay Sounds")]
+    [SerializeField] private SoundConfig shootSound;
+    [SerializeField] private SoundConfig playerHitSound;
+    [SerializeField] private SoundConfig enemyHitSound;
+    [SerializeField] private SoundConfig playerDeathSound;
 
     private void Awake()
     {
-        // Singleton pattern
         if (Instance == null)
         {
             Instance = this;
@@ -35,58 +40,85 @@ public class AudioManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
 
     private void Start()
     {
-        // Subscribe to scene changes to handle music
         UnityEngine.SceneManagement.SceneManager.activeSceneChanged += OnSceneChanged;
         
         // Initial check
         PlayMusicForScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+
+        // Subscribe to Gameplay Events
+        SubscribeToEvents();
     }
-    
-    private void OnDestroy() 
+
+    private void OnDestroy()
     {
-        // Vital check: duplicate instances being destroyed should NOT unsubscribe the main instance's events!
         if (Instance == this)
         {
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= OnSceneChanged;
+            UnsubscribeFromEvents();
         }
+    }
+
+    private void SubscribeToEvents()
+    {
+        PlayerShooting.OnShoot += PlayShootSound;
+        Arrow.OnEnemyHit += PlayEnemyHitSound;
+        PlayerHealth.OnPlayerDamage += PlayPlayerHitSound;
+        PlayerHealth.OnPlayerDeath += PlayPlayerDeathSound;
+    }
+    
+    // Safety unsubscribe
+    private void UnsubscribeFromEvents()
+    {
+        PlayerShooting.OnShoot -= PlayShootSound;
+        Arrow.OnEnemyHit -= PlayEnemyHitSound;
+        PlayerHealth.OnPlayerDamage -= PlayPlayerHitSound;
+        PlayerHealth.OnPlayerDeath -= PlayPlayerDeathSound;
     }
 
     private void OnSceneChanged(Scene current, Scene next)
     {
         PlayMusicForScene(next.name);
     }
-
+    
+    // ... rest of file logic is fine, ensured PlayPlayerDeathSound is private action-compatible or just method.
+    // I defined it as public previously, but I can match the others.
+    
     private void PlayMusicForScene(string sceneName)
     {
         if (sceneName == "DungeonScene")
         {
-            if (dungeonMusic != null && musicSource.clip != dungeonMusic)
+            if (dungeonMusic != null && (musicSource.clip != dungeonMusic || !musicSource.isPlaying))
             {
                 musicSource.clip = dungeonMusic;
                 musicSource.loop = true;
                 musicSource.Play();
             }
         }
-        else if (sceneName == "MainMenu")
+        else
         {
-            // Stop music in menu (or play something else)
+            // Stop music in MainMenu or others
             musicSource.Stop();
         }
     }
 
-    public void PlaySFX(AudioClip clip, float volume = 1f)
+    private void PlaySound(SoundConfig config)
     {
-        if (clip != null && sfxSource != null)
-        {
-            // Randomize pitch slightly for variety
-            sfxSource.pitch = Random.Range(0.9f, 1.1f);
-            sfxSource.PlayOneShot(clip, volume);
-        }
+        if (config == null || config.clip == null || sfxSource == null) return;
+
+        sfxSource.pitch = Random.Range(config.minPitch, config.maxPitch);
+        sfxSource.PlayOneShot(config.clip);
     }
+
+    public void PlayClick() => PlaySound(clickSound);
+    public void PlayHover() => PlaySound(hoverSound);
+    
+    private void PlayShootSound() => PlaySound(shootSound);
+    private void PlayPlayerHitSound() => PlaySound(playerHitSound);
+    private void PlayEnemyHitSound() => PlaySound(enemyHitSound);
+    private void PlayPlayerDeathSound() => PlaySound(playerDeathSound);
 }

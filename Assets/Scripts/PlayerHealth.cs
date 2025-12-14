@@ -19,6 +19,8 @@ public class PlayerHealth : MonoBehaviour
 
     public event Action<float> OnHealthChanged;
     public event Action OnDeath;
+    public static event Action OnPlayerDamage;
+    public static event Action OnPlayerDeath; // Global static event for Audio
 
     private void Start()
     {
@@ -33,6 +35,7 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth = Mathf.Max(0, currentHealth - damage);
         OnHealthChanged?.Invoke(currentHealth);
+        OnPlayerDamage?.Invoke();
 
         if (currentHealth <= 0)
         {
@@ -58,6 +61,7 @@ public class PlayerHealth : MonoBehaviour
 
         IsDead = true;
         OnDeath?.Invoke();
+        OnPlayerDeath?.Invoke();
         // GameOverUI handles the game over screen
     }
 

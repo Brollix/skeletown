@@ -58,6 +58,8 @@ public class Arrow : MonoBehaviour
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
     }
 
+    public static event System.Action OnEnemyHit;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Skip if this is a player-related object
@@ -75,6 +77,7 @@ public class Arrow : MonoBehaviour
         {
             // Enemy hit - deal damage
             enemy.TakeDamage(damage);
+            OnEnemyHit?.Invoke();
         }
 
         // Destroy the arrow upon any collision

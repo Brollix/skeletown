@@ -1,20 +1,21 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class UIButtonSound : MonoBehaviour
+public class UIButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
 {
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip clickSound;
-
-    public void PlayClick()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        // Try global first, fall back to local
-        if (AudioManager.Instance != null && AudioManager.Instance.GetInstanceID() != 0) // Extra safety check
+        if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlayClickSound();
+            AudioManager.Instance.PlayHover();
         }
-        else if (audioSource != null && clickSound != null)
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (AudioManager.Instance != null)
         {
-            audioSource.PlayOneShot(clickSound);
+            AudioManager.Instance.PlayClick();
         }
     }
 }
