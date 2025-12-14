@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+// using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -41,6 +41,9 @@ public class GameOverUI : MonoBehaviour
     public void AcceptAndGoToMenu()
     {
         Time.timeScale = 1f; // Resume time before changing scene
-        SceneManager.LoadScene("MainMenu");
+        if (SceneManager.Instance != null)
+        {
+            SceneManager.Instance.LoadScene("MainMenu");
+        }
     }
 }

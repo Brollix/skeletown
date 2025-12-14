@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+// using UnityEngine.SceneManagement;
 
 public class VictoryUI : MonoBehaviour
 {
@@ -54,6 +54,9 @@ public class VictoryUI : MonoBehaviour
         }
 
         // 3. Load Main Menu
-        SceneManager.LoadScene("MainMenu");
+        if (SceneManager.Instance != null)
+        {
+            SceneManager.Instance.LoadScene("MainMenu");
+        }
     }
 }

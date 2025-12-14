@@ -42,10 +42,10 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         // Subscribe to scene changes to handle music
-        SceneManager.activeSceneChanged += OnSceneChanged;
+        UnityEngine.SceneManagement.SceneManager.activeSceneChanged += OnSceneChanged;
         
         // Initial check
-        PlayMusicForScene(SceneManager.GetActiveScene().name);
+        PlayMusicForScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
     
     private void OnDestroy() 
@@ -53,7 +53,7 @@ public class AudioManager : MonoBehaviour
         // Vital check: duplicate instances being destroyed should NOT unsubscribe the main instance's events!
         if (Instance == this)
         {
-            SceneManager.activeSceneChanged -= OnSceneChanged;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= OnSceneChanged;
         }
     }
 

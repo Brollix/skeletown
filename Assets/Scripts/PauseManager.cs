@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -91,6 +91,9 @@ public class PauseManager : MonoBehaviour
         GamePaused = false;
         Time.timeScale = 1f;
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        if (SceneManager.Instance != null)
+        {
+            SceneManager.Instance.LoadScene("MainMenu");
+        }
     }
 }

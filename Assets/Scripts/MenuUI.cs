@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+// using UnityEngine.SceneManagement;
 
 public class MenuUI : MonoBehaviour
 {
@@ -20,7 +20,10 @@ public class MenuUI : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1f; // Ensure game is unpaused
-        SceneManager.LoadScene("DungeonScene");
+        if (SceneManager.Instance != null)
+        {
+            SceneManager.Instance.LoadScene("DungeonScene");
+        }
     }
 
     public void QuitGame()
