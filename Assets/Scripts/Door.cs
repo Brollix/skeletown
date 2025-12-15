@@ -10,7 +10,7 @@ public class Door : MonoBehaviour
     public TileBase[] openTiles;
 
     [Header("Door Size & Position")]
-    public Vector2Int topLeft; // Top-left corner of the door in tile coordinates
+    public Vector2Int topLeft;
     public int width = 2;
     public int height = 3;
     public int floorNumber;
@@ -21,12 +21,12 @@ public class Door : MonoBehaviour
     private TilemapCollider2D tilemapCollider;
 
 
-    // Initializes tilemap and collider references.
+    //This method initializes tilemap and collider references and applies the initial door state to be closed.
     void Awake()
     {
         if (tilemap == null)
         {
-            Debug.LogError("Tilemap is missing on Door!", this);
+            Debug.LogError("Tilemap is missing on Door!", this); //This was a debug made to check that each room had a door.
             return;
         }
 
@@ -37,10 +37,9 @@ public class Door : MonoBehaviour
     }
 
 
-    // Auto-detects floor ID and registers with GameManager.
+    //This method detects the correct floor number and registers the door with the GameManager. A fix was made that overrides the manual setting in the inspector in case there was a mistake in the editor.
     void Start()
     {
-        // Fix: Auto-detect floor ID from parent if available, overriding manual setting
         FloorID id = GetComponentInParent<FloorID>();
         if (id != null)
         {
@@ -55,7 +54,7 @@ public class Door : MonoBehaviour
     }
 
 
-    // Waits for GameManager to exist before registering.
+    //This method first waits until the GameManager exists, then registers a door. This is called above in start in order to register all the doors in the map.
     private IEnumerator RegisterWhenReady()
     {
         while (GameManager.Instance == null)
@@ -65,7 +64,7 @@ public class Door : MonoBehaviour
     }
 
 
-    // Opens or closes the door and updates visuals/collision.
+    //Once all enemies die, doors should open, so this method makes sure to set isOpen to its corresponding value and then it updates the tiles and the collision of the door.
     public void SetOpen(bool open)
     {
         if (isOpen == open)
@@ -85,14 +84,14 @@ public class Door : MonoBehaviour
     }
 
 
-    // Flips the current state of the door.
+    //This is the method that toggles the state of the door between open and closed.
     public void ToggleDoor()
     {
         SetOpen(!isOpen);
     }
 
 
-    // Updates the Tilemap to show open or closed tiles.
+    //This method updates the door visuals depending on whether it's open or closed.
     private void ApplyTiles()
     {
         if (tilemap == null)
@@ -108,10 +107,8 @@ public class Door : MonoBehaviour
             tilesToUse = closedTiles;
         }
 
-        // Clear previous tiles
         tilemap.ClearAllTiles();
 
-        // Fill door area based on width and height starting from top-left
         int index = 0;
         for (int y = 0; y < height; y++)
         {
@@ -132,18 +129,18 @@ public class Door : MonoBehaviour
     }
 
 
-    // Enables or disables the collider based on state.
+    //Here it enables or disables the door's collider based on the state it's in.
     private void ApplyCollision()
     {
         if (tilemapCollider != null)
         {
             if (isOpen)
             {
-                tilemapCollider.enabled = false; // Door open → collider off
+                tilemapCollider.enabled = false;
             }
             else
             {
-                tilemapCollider.enabled = true;  // Door closed → collider on
+                tilemapCollider.enabled = true;
             }
         }
     }

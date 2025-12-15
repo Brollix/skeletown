@@ -42,9 +42,7 @@ public class EnemySpawn : MonoBehaviour
     // Spawns enemies sequentially and registers them with the manager.
     IEnumerator SpawnEnemies()
     {
-        // DIRECT REGISTRATION TO FIX RACE CONDITION
-        // We register BEFORE spawning so that if the player kills them instantly,
-        // the Game Manager already knows they exist.
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.AddEnemies(floorNumber, numberToSpawn);
@@ -54,14 +52,12 @@ public class EnemySpawn : MonoBehaviour
             Debug.LogError("EnemySpawn: GameManager not found! Doors will not open!");
         }
 
-        // ... (existing checks)
 
         for (int i = 0; i < numberToSpawn; i++)
         {
             Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
             Vector2 spawnPos = (Vector2)spawnPoint.position + randomOffset;
 
-            // Instantiating as child of EnemySpawn to ensure destruction on scene unload
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity, transform);
 
             Enemy e = newEnemy.GetComponent<Enemy>();
