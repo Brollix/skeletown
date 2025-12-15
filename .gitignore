@@ -77,3 +77,4 @@ crashlytics-build.properties
 # User Requested Ignores
 .vsconfig
 .idea/
+.vscode/
