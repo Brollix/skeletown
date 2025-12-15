@@ -10,6 +10,8 @@ public class SettingsMenu : MonoBehaviour
     [Header("Optional (Gameplay Only)")]
     [SerializeField] private GameObject pauseMenu; // Only used in DungeonScene
 
+
+    // Loads saved preferences and initializes UI listeners.
     private void Start()
     {
         // Load saved volume or default
@@ -23,6 +25,8 @@ public class SettingsMenu : MonoBehaviour
         settingsPanel.SetActive(false);
     }
 
+
+    // Shows the settings panel and hides the pause menu if active.
     public void OpenSettings()
     {
         // If the pause menu exists (DungeonScene), hide it when entering settings
@@ -32,6 +36,8 @@ public class SettingsMenu : MonoBehaviour
         settingsPanel.SetActive(true);
     }
 
+
+    // Hides the settings panel and restores the pause menu.
     public void CloseSettings()
     {
         settingsPanel.SetActive(false);
@@ -41,6 +47,8 @@ public class SettingsMenu : MonoBehaviour
             pauseMenu.SetActive(true);
     }
 
+
+    // Updates master volume and saves to PlayerPrefs.
     private void OnVolumeChanged(float value)
     {
         // Save for future

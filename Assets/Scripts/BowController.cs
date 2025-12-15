@@ -9,11 +9,13 @@ public class BowController : MonoBehaviour
     private PlayerFacing playerFacing;
     [SerializeField] private float radius = 0.5f;
 
+
     //This method ensures the game's time scale is reset when the bow initializes, so that the bow doesn't end up frozen once the gameplay scene starts.
     private void Start()
     {
         Time.timeScale = 1f;
     }
+
 
     //This method initiaizes a reference to the camera, it initializes PlayerFacing and it detatched the bow from the player so the bow's sprite doesn't flip along with the player sprite.
     private void Awake()
@@ -26,13 +28,14 @@ public class BowController : MonoBehaviour
         transform.SetParent(null, true);
     }
 
-    //This method first checks if the game is paused. If it isn't, it calls the method that allows the bow to rotate, updating every frame.
+    //This method first checks if the game is paused. If it isn't, it calls the method that allows the bow to rotate, updating every frame so it loops rotation logic.
     private void Update()
     {
         if (PauseManager.GamePaused) return;
 
         RotateAroundPlayer();
     }
+
 
     //This method is what allows the bow to rotate around the player based on the mouse cursor position. It gets the mouse position relative to the player, then uses that to set the bow's position to orbit around the player, and it makes an angle to follow the mouse cursor that is used to make the bow rotate around.
     private void RotateAroundPlayer()

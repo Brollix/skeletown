@@ -7,6 +7,8 @@ public class SceneLoader : MonoBehaviour
     private string _currentSceneName;
     private bool _isLoading = false;
 
+
+    // Initializes the Singleton and ensures it persists across scene loads.
     private void Awake()
     {
         if (Instance == null)
@@ -20,6 +22,8 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+
+    // Checks if starting in Boot scene and loads MainMenu if so.
     private void Start()
     {
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Boot")
@@ -29,12 +33,16 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+
+    // Initiates the scene loading process if not already loading.
     public void LoadScene(string sceneName)
     {
         if (_isLoading) return;
         StartCoroutine(PerformSceneSwitch(sceneName));
     }
 
+
+    // Handles the asynchronous unloading and additive loading of scenes.
     private System.Collections.IEnumerator PerformSceneSwitch(string newSceneName)
     {
         _isLoading = true;

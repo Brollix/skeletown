@@ -6,6 +6,8 @@ public class VictoryUI : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject victoryPanel;
 
+
+    // Hides the victory panel on startup.
     private void Start()
     {
         if (victoryPanel != null)
@@ -14,6 +16,8 @@ public class VictoryUI : MonoBehaviour
         }
     }
 
+
+    // Displays the victory screen and pauses the game.
     public void ShowVictory()
     {
         if (victoryPanel != null)
@@ -30,6 +34,8 @@ public class VictoryUI : MonoBehaviour
         }
     }
 
+
+    // Resets run progress and returns to the main menu.
     public void AcceptVictoryAndGoToMenu()
     {
         Time.timeScale = 1f; // Unpause

@@ -21,6 +21,8 @@ public class EnemySpawn : MonoBehaviour
     public bool isBossSpawner = false;
 
 
+
+    // Identifies floor number and begins spawning.
     void Start()
     {
         FloorID id = GetComponentInParent<FloorID>();
@@ -36,6 +38,8 @@ public class EnemySpawn : MonoBehaviour
         StartCoroutine(SpawnEnemies());
     }
 
+
+    // Spawns enemies sequentially and registers them with the manager.
     IEnumerator SpawnEnemies()
     {
         // DIRECT REGISTRATION TO FIX RACE CONDITION

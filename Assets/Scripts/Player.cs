@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
 
     public static Player Instance { get; private set; }
 
+
+    // Initializes the Singleton instance and identifies duplicate players.
     protected virtual void Awake()
     {
         if (Instance != null && Instance.gameObject != gameObject)
@@ -58,7 +60,8 @@ public class Player : MonoBehaviour
         _cam = Camera.main;
     }
 
-    // Métodos de utilidad
+
+    // Converts the screen mouse position to a world position.
     public Vector2 GetMousePosition()
     {
         if (cam == null) return Vector2.zero;
@@ -66,14 +69,20 @@ public class Player : MonoBehaviour
         return cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, -cam.transform.position.z));
     }
 
+
+    // Checks the visual facing direction of the player.
     public bool IsFacingRight() => facing != null && facing.IsFacingRight();
     
+
+    // Applies velocity to the Rigidbody.
     public void Move(Vector2 direction, float speed)
     {
         if (rb == null) return;
         rb.linearVelocity = direction.normalized * speed;
     }
 
+
+    // Halts player movement instantly.
     public void Stop()
     {
         if (rb != null) rb.linearVelocity = Vector2.zero;

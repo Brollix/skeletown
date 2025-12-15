@@ -11,6 +11,8 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private InputActionReference pauseInput;
 
+
+    // Resets pause state and UI on start.
     private void Start()
     {
         GamePaused = false;
@@ -23,11 +25,15 @@ public class PauseManager : MonoBehaviour
             settingsMenu.SetActive(false);
     }
 
+
+    // Subscribes to the pause input action.
     private void OnEnable()
     {
         pauseInput.action.performed += togglePause;
     }
 
+
+    // Unsubscribes from the pause input action.
     private void OnDisable()
     {
         pauseInput.action.performed -= togglePause;
@@ -37,6 +43,8 @@ public class PauseManager : MonoBehaviour
     {
     }
 
+
+    // Toggles between paused/resumed or closes settings if open.
     private void togglePause(InputAction.CallbackContext ctx)
     {
         if (GameManager.Instance != null && GameManager.Instance.IsGameOver) return;
@@ -54,6 +62,8 @@ public class PauseManager : MonoBehaviour
             PauseGame();
     }
 
+
+    // Freezes game time and shows the pause menu.
     public void PauseGame()
     {
         GamePaused = true;
@@ -66,6 +76,8 @@ public class PauseManager : MonoBehaviour
             EventSystem.current.sendNavigationEvents = true;
     }
 
+
+    // Unfreezes game time and hides the pause menu.
     public void ResumeGame()
     {
         GamePaused = false;
@@ -75,12 +87,16 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+
+    // Switches from pause menu to settings menu.
     public void OpenSettings()
     {
         if (pauseMenu != null) pauseMenu.SetActive(false);
         if (settingsMenu != null) settingsMenu.SetActive(true);
     }
 
+
+    // Switches from settings menu back to pause menu.
     public void CloseSettings()
     {
         if (settingsMenu != null) settingsMenu.SetActive(false);
@@ -88,6 +104,8 @@ public class PauseManager : MonoBehaviour
     }
 
     // Return to Main Menu using SceneManager directly
+
+    // Resumes time and loads the Main Menu scene.
     public void GoToMainMenu()
     {
         GamePaused = false;

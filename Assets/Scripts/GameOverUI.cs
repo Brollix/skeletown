@@ -6,6 +6,8 @@ public class GameOverUI : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject gameOverPanel;
 
+
+    // Subscribes to player death events and hides panel.
     private void Start()
     {
         PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
@@ -20,6 +22,8 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
+
+    // Unsubscribes from player death events.
     private void OnDestroy()
     {
         PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
@@ -29,6 +33,8 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
+
+    // Pauses game and shows defeat screen.
     private void ShowGameOver()
     {
         if (gameOverPanel != null)
@@ -56,6 +62,8 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
+
+    // Resumes time and returns to main menu.
     public void AcceptAndGoToMenu()
     {
         Time.timeScale = 1f; // Resume time before changing scene

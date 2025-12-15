@@ -23,6 +23,8 @@ public class PlayerExperience : MonoBehaviour
     public event Action<int> OnLevelUp;
     public event Action<float> OnXPChanged;
 
+
+    // Initializes Singleton and loads persistent experience data.
     private void Awake()
     {
         if (Instance == null)
@@ -36,6 +38,8 @@ public class PlayerExperience : MonoBehaviour
         }
     }
 
+
+    // Grants experience points and checks for level ups.
     public void AddXP(float amount)
     {
         // If max level reached, we can optionally stop gaining XP or just stop leveling up.
@@ -54,6 +58,8 @@ public class PlayerExperience : MonoBehaviour
         SaveProgress();
     }
 
+
+    // Spends a skill point if available.
     public bool ConsumeSkillPoint()
     {
         if (skillPoints > 0)
@@ -65,12 +71,16 @@ public class PlayerExperience : MonoBehaviour
         return false;
     }
 
+
+    // Grants skill points directly (used for cheats or resets).
     public void AddSkillPoints(int amount)
     {
         skillPoints += amount;
         SaveProgress();
     }
 
+
+    // Increments player level and grants a skill point.
     private void LevelUp()
     {
         currentLevel++;
@@ -78,6 +88,8 @@ public class PlayerExperience : MonoBehaviour
         OnLevelUp?.Invoke(currentLevel);
     }
 
+
+    // Calculates the XP required to reach the next level.
     private float CalculateXPForLevel(int level)
     {
         float xp = baseXPPerLevel * Mathf.Pow(xpMultiplier, level - 1);
@@ -85,6 +97,8 @@ public class PlayerExperience : MonoBehaviour
     }
 
 
+
+    // Loads experience stats from PlayerPrefs.
     public void LoadProgress()
     {
         currentLevel = PlayerPrefs.GetInt("PlayerLevel", 1);
@@ -95,6 +109,8 @@ public class PlayerExperience : MonoBehaviour
     }
 
 
+
+    // Saves experience stats to PlayerPrefs.
     public void SaveProgress()
     {
         PlayerPrefs.SetInt("PlayerLevel", currentLevel);
@@ -103,6 +119,8 @@ public class PlayerExperience : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+
+    // Helper to return skill points during a reset.
     public void RefundAllSkillPoints(int amount)
     {
         skillPoints += amount;

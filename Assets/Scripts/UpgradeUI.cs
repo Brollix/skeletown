@@ -16,34 +16,46 @@ public class UpgradeUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI damageLevelValue;
     [SerializeField] private TextMeshProUGUI speedLevelValue;
 
+
+    // Initializes the UI display.
     private void Start()
     {
         UpdateUI();
     }
 
+
+    // Continually refreshes valid button states.
     private void Update()
     {
         UpdateUI();
     }
 
+
+    // Attempts to upgrade health via manager.
     public void UpgradeHealth()
     {
         if (UpgradeManager.Instance.UpgradeHealth())
             UpdateUI();
     }
 
+
+    // Attempts to upgrade damage via manager.
     public void UpgradeDamage()
     {
         if (UpgradeManager.Instance.UpgradeDamage())
             UpdateUI();
     }
 
+
+    // Attempts to upgrade speed via manager.
     public void UpgradeSpeed()
     {
         if (UpgradeManager.Instance.UpgradeSpeed())
             UpdateUI();
     }
 
+
+    // Refunds all spent points and resets upgrades.
     public void ResetUpgrades()
     {
         int total = UpgradeManager.Instance.GetHealthUpgrades()
@@ -59,6 +71,8 @@ public class UpgradeUI : MonoBehaviour
         UpdateUI();
     }
 
+
+    // Updates text fields and button interactivity.
     private void UpdateUI()
     {
         skillPointsText.text = "Skill Points: " + PlayerExperience.Instance.SkillPoints;

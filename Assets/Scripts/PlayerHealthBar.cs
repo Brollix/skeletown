@@ -10,6 +10,8 @@ public class PlayerHealthBar : MonoBehaviour
     private PlayerHealth playerHealth;
     private Vector3 originalScale;
 
+
+    // Finds player health component and subscribes to changes.
     private void Start()
     {
         playerHealth = FindObjectOfType<PlayerHealth>();
@@ -30,6 +32,8 @@ public class PlayerHealthBar : MonoBehaviour
         Debug.Log("❤️ PlayerHealthBar initialized");
     }
 
+
+    // Updates health bar image fill based on current health.
     private void UpdateHealthBar(float currentHealth)
     {
         if (playerHealth == null || healthBarFill == null) return;
@@ -48,6 +52,8 @@ public class PlayerHealthBar : MonoBehaviour
         Debug.Log($"❤️ Health bar updated: {currentHealth}/{playerHealth.MaxHealth} ({healthPercent * 100:F0}%)");
     }
 
+
+    // Unsubscribes from events.
     private void OnDestroy()
     {
         if (playerHealth != null)

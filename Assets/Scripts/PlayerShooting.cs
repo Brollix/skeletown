@@ -11,6 +11,8 @@ public class PlayerShooting : Player
     private float cooldownTimer;
     private BowController bowController;
 
+
+    // Finds child references like the Bow Controller.
     protected override void Awake()
     {
         base.Awake();
@@ -20,6 +22,8 @@ public class PlayerShooting : Player
             Debug.LogError("Assign the arrow prefab in the Inspector!");
     }
 
+
+    // Checks for shooting input and manages cooldown.
     private void Update()
     {
         if (PauseManager.GamePaused) return;
@@ -35,6 +39,8 @@ public class PlayerShooting : Player
 
     public static event System.Action OnShoot;
 
+
+    // Instantiates an arrow projectile and aims it at the mouse.
     private void Shoot()
     {
         OnShoot?.Invoke();

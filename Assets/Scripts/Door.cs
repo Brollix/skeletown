@@ -20,6 +20,8 @@ public class Door : MonoBehaviour
 
     private TilemapCollider2D tilemapCollider;
 
+
+    // Initializes tilemap and collider references.
     void Awake()
     {
         if (tilemap == null)
@@ -34,6 +36,8 @@ public class Door : MonoBehaviour
         ApplyCollision();
     }
 
+
+    // Auto-detects floor ID and registers with GameManager.
     void Start()
     {
         // Fix: Auto-detect floor ID from parent if available, overriding manual setting
@@ -50,6 +54,8 @@ public class Door : MonoBehaviour
         StartCoroutine(RegisterWhenReady());
     }
 
+
+    // Waits for GameManager to exist before registering.
     private IEnumerator RegisterWhenReady()
     {
         while (GameManager.Instance == null)
@@ -58,6 +64,8 @@ public class Door : MonoBehaviour
         GameManager.Instance.RegisterDoor(floorNumber, this);
     }
 
+
+    // Opens or closes the door and updates visuals/collision.
     public void SetOpen(bool open)
     {
         if (isOpen == open)
@@ -76,11 +84,15 @@ public class Door : MonoBehaviour
         ApplyCollision();
     }
 
+
+    // Flips the current state of the door.
     public void ToggleDoor()
     {
         SetOpen(!isOpen);
     }
 
+
+    // Updates the Tilemap to show open or closed tiles.
     private void ApplyTiles()
     {
         if (tilemap == null)
@@ -119,6 +131,8 @@ public class Door : MonoBehaviour
         }
     }
 
+
+    // Enables or disables the collider based on state.
     private void ApplyCollision()
     {
         if (tilemapCollider != null)

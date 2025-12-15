@@ -18,6 +18,8 @@ public class PlayerMovement : Player
     private PlayerControls controls;
     private Vector2 moveInput;
 
+
+    // Debugs current speed stats on start.
     private void Start()
     {
         Time.timeScale = 1f; // safety reset
@@ -25,7 +27,9 @@ public class PlayerMovement : Player
     }
 
 
-        private void Awake()
+
+    // Initializes input controls and component references.
+    private void Awake()
     {
         base.Awake();
         controls = new PlayerControls();
@@ -33,6 +37,8 @@ public class PlayerMovement : Player
         _mainCamera = Camera.main;
     }
 
+
+    // Enables input listening.
     private void OnEnable()
     {
         if (controls == null) controls = new PlayerControls();
@@ -41,6 +47,8 @@ public class PlayerMovement : Player
         controls.Player.Move.canceled += OnMove;
     }
 
+
+    // Disables input listening.
     private void OnDisable()
     {
         if (controls != null)
@@ -51,6 +59,8 @@ public class PlayerMovement : Player
         }
     }
 
+
+    // Reads input vector from the Input System.
     private void OnMove(InputAction.CallbackContext ctx)
     {
         if (PauseManager.GamePaused)
@@ -66,6 +76,8 @@ public class PlayerMovement : Player
             animator.SetBool("isMoving", moveInput != Vector2.zero);
     }
 
+
+    // Applies physics-based movement to the Rigidbody.
     private void FixedUpdate()
     {
         if (PauseManager.GamePaused) return;
@@ -85,6 +97,8 @@ public class PlayerMovement : Player
         }
     }
 
+
+    // Updates visual facing direction and stops if paused.
     private void Update()
     {
         if (PauseManager.GamePaused) 

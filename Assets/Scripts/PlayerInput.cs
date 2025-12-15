@@ -10,6 +10,8 @@ public class PlayerInput : Player
     private BowController _bowController;
     private Transform bowTransform => _bowController != null ? _bowController.transform : (_bowController = GetComponentInChildren<BowController>())?.transform;
 
+
+    // Initializes input controls and references.
     protected override void Awake()
     {
         base.Awake();
@@ -18,6 +20,8 @@ public class PlayerInput : Player
         _bowController = GetComponentInChildren<BowController>();
     }
 
+
+    // Enables the input system.
     private void OnEnable()
     {
         if (controls == null) controls = new PlayerControls();
@@ -26,6 +30,8 @@ public class PlayerInput : Player
         controls.Player.Move.canceled += OnMove;
     }
 
+
+    // Disables the input system.
     private void OnDisable()
     {
         if (controls != null)
@@ -36,6 +42,8 @@ public class PlayerInput : Player
         }
     }
 
+
+    // Callback for movement input events.
     private void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();

@@ -14,6 +14,7 @@ public class Arrow : MonoBehaviour
     private Collider2D arrowCollider;
 
     //This Start method initializes the reference to the player and configures the collision to make sure the arrow ignores any collision with the player if it happens. It then auto destroys the arrow object if it never hits anything to make sure it doesn't float around forever.
+    // Initializes collision ignores and lifetime destruction.
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -34,6 +35,7 @@ public class Arrow : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
     //This method ensures the arrow always heads out in the correct direction, forcing the sprite to face the direction in which the player was facing when they shot the arrow.
+    // Sets the arrow's flight direction and rotation.
     public void setDirection(Vector2 dir)
     {
         direction = dir.normalized;
@@ -42,13 +44,15 @@ public class Arrow : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle + rotationOffset);
     }
 
-    //This method just sets the player damage.
+
+    //This method assigns the damage value for this projectile.
     public void SetDamage(float value)
     {
         damage = value;
     }
 
     //This method here uses transform to change the arrow's direction, making it move forward across the screen in the direction it was shot in.
+
     private void Update()
     {
         transform.Translate(direction * speed * Time.deltaTime, Space.World);

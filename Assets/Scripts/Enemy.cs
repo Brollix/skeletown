@@ -27,16 +27,22 @@ public class Enemy : MonoBehaviour {
     // Optimization: Cache enemies list to avoid FindGameObjectsWithTag in Update
     public static System.Collections.Generic.List<Enemy> ActiveEnemies = new System.Collections.Generic.List<Enemy>();
 
+
+    // Adds this enemy to the global active list.
     private void OnEnable()
     {
         ActiveEnemies.Add(this);
     }
 
+
+    // Removes this enemy from the global active list.
     private void OnDisable()
     {
         ActiveEnemies.Remove(this);
     }
 
+
+    // Initializes stats, cache, and player reference.
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
 
@@ -55,6 +61,8 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+
+    // Adjusts enemy stats based on floor level.
     private void ScaleStatsByLevel() {
         // For now, start enemies at level 1 - they will scale with player progress during gameplay
         // TODO: Add proper level progression system for enemies
@@ -75,6 +83,8 @@ public class Enemy : MonoBehaviour {
         //Debug.Log($"Enemy stats scaled - Enemy Level: {enemyLevel}, Speed: {originalSpeed} → {speed}, Health: {maxHealth}, Damage: {damage}");
     }
 
+
+    // Executes AI movement and flocking logic.
     void Update() {
         // Retry finding player if null (handles race condition where Enemy spawns before Player)
         if (player == null) {
@@ -102,6 +112,8 @@ public class Enemy : MonoBehaviour {
         rb.linearVelocity = finalDirection * speed;
     }
 
+
+    // Calculates a vector to separate this enemy from neighbours.
     Vector2 CalculateSeparation() {
         Vector2 separationMove = Vector2.zero;
 
@@ -121,6 +133,8 @@ public class Enemy : MonoBehaviour {
         return separationMove * separationForce;
     }
 
+
+    // Reduces health and checks for death.
     public void TakeDamage(float amount) {
         float oldHealth = health;
         float newHealth = health - amount;
@@ -142,6 +156,8 @@ public class Enemy : MonoBehaviour {
 
     public event Action<float> OnHealthChanged;
 
+
+    // Handles XP grant, Game Manager notification, and destruction.
     void Die()
     {
         // Notify game manager
@@ -192,6 +208,8 @@ public class Enemy : MonoBehaviour {
 
 
 
+
+    // Applies damage to the player if collision occurs.
     private void HandlePlayerCollision(GameObject other)
     {
         // Removed strict Tag check to allow damage on any object with PlayerHealth
@@ -206,10 +224,14 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+
+    // Triggered on physical collision.
     void OnCollisionEnter2D(Collision2D collision) {
         HandlePlayerCollision(collision.gameObject);
     }
 
+
+    // Triggered on trigger collision.
     void OnTriggerEnter2D(Collider2D collider) {
         HandlePlayerCollision(collider.gameObject);
     }

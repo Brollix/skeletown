@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, int> enemiesRemaining = new Dictionary<int, int>();
     private Dictionary<int, List<Door>> doorsPerFloor = new Dictionary<int, List<Door>>();
 
+
+    // Initializes the Singleton instance.
     void Awake()
     {
         if (Instance == null)
@@ -24,6 +26,8 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver = false;
 
+
+    // Resets the game state, clearing enemy and door tracking.
     public void ResetGame()
     {
         IsGameOver = false; // Reset game over state
@@ -37,6 +41,8 @@ public class GameManager : MonoBehaviour
     // ------------------------------------------------------
     // REGISTER DOORS
     // ------------------------------------------------------
+
+    // Registers a door for a specific floor and ensures it is closed if enemies are present.
     public void RegisterDoor(int floor, Door door)
     {
         if (!doorsPerFloor.ContainsKey(floor))
@@ -57,6 +63,8 @@ public class GameManager : MonoBehaviour
     // ------------------------------------------------------
     // REGISTER ENEMIES FROM SPAWNER
     // ------------------------------------------------------
+
+    // Adds a number of enemies to a specific floor's count and locks the doors.
     public void AddEnemies(int floor, int amount)
     {
         if (!enemiesRemaining.ContainsKey(floor))
@@ -82,6 +90,8 @@ public class GameManager : MonoBehaviour
     // ------------------------------------------------------
     // CALLED BY ENEMY WHEN IT DIES
     // ------------------------------------------------------
+
+    // Notifies the manager that an enemy on a specific floor has died, potentially opening doors.
     public void EnemyDied(int floor)
     {
         if (!enemiesRemaining.ContainsKey(floor))
@@ -111,6 +121,8 @@ public class GameManager : MonoBehaviour
     // ------------------------------------------------------
     // CHEAT: F1 TO KILL ALL ENEMIES EXCEPT FINAL BOSS
     // ------------------------------------------------------
+
+    // Checks for debug inputs (F1, F2).
     void Update()
     {
         if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame)
@@ -124,6 +136,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    // Kills all enemies except the final boss and teleports the player.
     private void KillAllEnemiesExceptBoss()
     {
         Debug.Log("CHEAT: Killing all enemies except Floor 20 Boss...");
@@ -152,6 +166,8 @@ public class GameManager : MonoBehaviour
         TeleportToFloor(20);
     }
 
+
+    // Maxes out all upgrade stats and heals the player.
     private void MaxStatsCheat()
     {
         Debug.Log("CHEAT: Maxing Stats...");
@@ -171,6 +187,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    // Moves the player to the spawn point of the specified floor.
     private void TeleportToFloor(int floor)
     {
         EnemySpawn[] spawners = FindObjectsOfType<EnemySpawn>();

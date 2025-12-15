@@ -6,11 +6,15 @@ public class PlayerFacing : MonoBehaviour
     private Player player;
     private bool facingRight = true;
 
+
+    // Gets reference to the main player script.
     private void Awake()
     {
         player = GetComponent<Player>();
     }
 
+
+    // Calculates mouse position and flips the character if needed.
     public void UpdateFacingDirection()
     {
         if (player == null || player.cam == null) return;
@@ -24,6 +28,8 @@ public class PlayerFacing : MonoBehaviour
             Flip();
     }
 
+
+    // Inverts the X scale of the transform.
     private void Flip()
     {
         facingRight = !facingRight;
@@ -32,5 +38,7 @@ public class PlayerFacing : MonoBehaviour
         transform.localScale = scale;
     }
 
+
+    // Returns true if the character is looking to the right.
     public bool IsFacingRight() => facingRight;
 }

@@ -17,6 +17,8 @@ public class ExperienceHUD : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private bool showHealthInHUD = true;
 
+
+    // Subscribes to XP, Level, and Health events.
     private void Start()
     {
         UpdateUI();
@@ -43,6 +45,8 @@ public class ExperienceHUD : MonoBehaviour
         }
     }
 
+
+    // Unsubscribes from events.
     private void OnDestroy()
     {
         if (PlayerExperience.Instance != null)
@@ -61,21 +65,29 @@ public class ExperienceHUD : MonoBehaviour
         }
     }
 
+
+    // Handler for Level Up events.
     private void OnLevelUp(int newLevel)
     {
         UpdateUI();
     }
 
+
+    // Handler for Experience Change events.
     private void OnXPChanged(float newXP)
     {
         UpdateUI();
     }
 
+
+    // Handler for Health Change events.
     private void OnHealthChanged(float newHealth)
     {
         UpdateUI();
     }
 
+
+    // Refreshes all HUD text and bars.
     private void UpdateUI()
     {
         if (PlayerExperience.Instance == null) return;

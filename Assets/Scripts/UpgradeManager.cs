@@ -36,6 +36,8 @@ public class UpgradeManager : MonoBehaviour
     public bool IsDamageMaxed() => damageUpgrades >= maxDamageUpgrades;
     public bool IsSpeedMaxed() => speedUpgrades >= maxSpeedUpgrades;
 
+
+    // Initializes Singleton and loads saved upgrades.
     private void Awake()
     {
         if (Instance == null)
@@ -49,6 +51,8 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+
+    // Consumes a skill point to increase health level, if not maxed.
     public bool UpgradeHealth()
     {
         if (IsHealthMaxed()) return false;
@@ -62,6 +66,8 @@ public class UpgradeManager : MonoBehaviour
         return false;
     }
 
+
+    // Consumes a skill point to increase damage level, if not maxed.
     public bool UpgradeDamage()
     {
         if (IsDamageMaxed()) return false;
@@ -75,6 +81,8 @@ public class UpgradeManager : MonoBehaviour
         return false;
     }
 
+
+    // Consumes a skill point to increase speed level, if not maxed.
     public bool UpgradeSpeed()
     {
         if (IsSpeedMaxed()) return false;
@@ -88,6 +96,8 @@ public class UpgradeManager : MonoBehaviour
         return false;
     }
 
+
+    // Resets all upgrade levels to zero and saves.
     public void ResetAllUpgrades()
     {
         healthUpgrades = 0;
@@ -97,6 +107,8 @@ public class UpgradeManager : MonoBehaviour
         SaveUpgrades();
     }
 
+
+    // Sets all upgrades to their maximum possible level (Cheat).
     public void CheatMaxOutStats()
     {
         healthUpgrades = maxHealthUpgrades;
@@ -107,6 +119,8 @@ public class UpgradeManager : MonoBehaviour
     }
 
 
+
+    // Loads upgrade counts from PlayerPrefs.
     public void LoadUpgrades()
     {
         healthUpgrades = PlayerPrefs.GetInt("HealthUpgrades", 0);
@@ -116,6 +130,8 @@ public class UpgradeManager : MonoBehaviour
         Debug.Log($"⬆️ Upgrades loaded - Health: {healthUpgrades}, Damage: {damageUpgrades}, Speed: {speedUpgrades}");
     }
 
+
+    // Saves current upgrade counts to PlayerPrefs.
     public void SaveUpgrades()
     {
         PlayerPrefs.SetInt("HealthUpgrades", healthUpgrades);
