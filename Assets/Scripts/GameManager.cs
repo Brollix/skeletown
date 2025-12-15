@@ -41,7 +41,14 @@ public class GameManager : MonoBehaviour
         }
 
         doorsPerFloor[floor].Add(door);
+
+        // Fix: If enemies are already registered for this floor, ensure the door is closed.
+        if (enemiesRemaining.ContainsKey(floor) && enemiesRemaining[floor] > 0)
+        {
+            door.SetOpen(false);
+        }
     }
+
 
     // ------------------------------------------------------
     // REGISTER ENEMIES FROM SPAWNER
@@ -54,6 +61,18 @@ public class GameManager : MonoBehaviour
         }
 
         enemiesRemaining[floor] += amount;
+
+        // Fix: Force doors closed when enemies are added
+        if (doorsPerFloor.ContainsKey(floor))
+        {
+            foreach (Door d in doorsPerFloor[floor])
+            {
+                if (d != null)
+                {
+                    d.SetOpen(false);
+                }
+            }
+        }
     }
 
     // ------------------------------------------------------

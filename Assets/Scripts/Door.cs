@@ -36,6 +36,17 @@ public class Door : MonoBehaviour
 
     void Start()
     {
+        // Fix: Auto-detect floor ID from parent if available, overriding manual setting
+        FloorID id = GetComponentInParent<FloorID>();
+        if (id != null)
+        {
+            if (floorNumber != id.floorNumber)
+            {
+                Debug.Log($"[Door] Correcting Floor ID from {floorNumber} to {id.floorNumber} based on parent FloorID.");
+                floorNumber = id.floorNumber;
+            }
+        }
+
         StartCoroutine(RegisterWhenReady());
     }
 
