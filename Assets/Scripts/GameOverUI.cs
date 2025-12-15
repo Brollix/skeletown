@@ -46,6 +46,13 @@ public class GameOverUI : MonoBehaviour
                 SpriteRenderer sr = playerHealth.GetComponent<SpriteRenderer>();
                 if (sr != null) sr.enabled = false;
             }
+
+            // Hide Bow
+            BowController bow = FindObjectOfType<BowController>();
+            if (bow != null)
+            {
+                bow.gameObject.SetActive(false);
+            }
         }
     }
 
