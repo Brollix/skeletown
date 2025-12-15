@@ -51,7 +51,17 @@ public class AudioManager : MonoBehaviour
         PlayMusicForScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
         // Subscribe to Gameplay Events
+        // Subscribe to Gameplay Events
         SubscribeToEvents();
+
+        // Initialize Volume
+        float savedVol = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        AudioListener.volume = savedVol;
+    }
+
+    public void SetMasterVolume(float volume)
+    {
+        AudioListener.volume = volume;
     }
 
     private void OnDestroy()

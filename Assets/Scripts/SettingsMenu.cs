@@ -46,8 +46,16 @@ public class SettingsMenu : MonoBehaviour
         // Save for future
         PlayerPrefs.SetFloat("MasterVolume", value);
 
+
         // Later we plug this into real audio
-        Debug.Log("Volume slider changed: " + value);
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetMasterVolume(value);
+        }
+        else
+        {
+            Debug.LogWarning("AudioManager Instance is null. Volume not updated.");
+        }
     }
 }
 
