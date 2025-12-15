@@ -21,8 +21,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool IsGameOver = false;
+
     public void ResetGame()
     {
+        IsGameOver = false; // Reset game over state
         enemiesRemaining.Clear();
         doorsPerFloor.Clear();
         Debug.Log("GameManager: Game state reset.");

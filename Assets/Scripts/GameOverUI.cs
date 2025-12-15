@@ -35,12 +35,26 @@ public class GameOverUI : MonoBehaviour
         {
             gameOverPanel.SetActive(true);
             Time.timeScale = 0f; // Pause the game
+            
+            if (GameManager.Instance != null) GameManager.Instance.IsGameOver = true;
+            PauseManager.GamePaused = true;
+
+            // Hide player to simulate death
+            PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                SpriteRenderer sr = playerHealth.GetComponent<SpriteRenderer>();
+                if (sr != null) sr.enabled = false;
+            }
         }
     }
 
     public void AcceptAndGoToMenu()
     {
         Time.timeScale = 1f; // Resume time before changing scene
+        PauseManager.GamePaused = false;
+        if (GameManager.Instance != null) GameManager.Instance.IsGameOver = false;
+
         if (SceneLoader.Instance != null)
         {
             SceneLoader.Instance.LoadScene("MainMenu");

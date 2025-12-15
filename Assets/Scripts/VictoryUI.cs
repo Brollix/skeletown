@@ -20,6 +20,9 @@ public class VictoryUI : MonoBehaviour
         {
             victoryPanel.SetActive(true);
             Time.timeScale = 0f; // Pause game
+            
+            if (GameManager.Instance != null) GameManager.Instance.IsGameOver = true;
+            PauseManager.GamePaused = true;
         }
         else
         {
@@ -30,6 +33,8 @@ public class VictoryUI : MonoBehaviour
     public void AcceptVictoryAndGoToMenu()
     {
         Time.timeScale = 1f; // Unpause
+        PauseManager.GamePaused = false;
+        if (GameManager.Instance != null) GameManager.Instance.IsGameOver = false;
 
         // 1. Reset Upgrades (if manager exists)
         if (UpgradeManager.Instance != null)

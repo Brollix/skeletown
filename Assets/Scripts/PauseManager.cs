@@ -44,6 +44,7 @@ public class PauseManager : MonoBehaviour
 
     private void togglePause(InputAction.CallbackContext ctx)
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver) return;
 
         if (GamePaused)
             ResumeGame();
