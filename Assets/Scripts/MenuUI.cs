@@ -20,6 +20,10 @@ public class MenuUI : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1f; // Ensure game is unpaused
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ResetGame();
+        }
         if (SceneLoader.Instance != null)
         {
             SceneLoader.Instance.LoadScene("DungeonScene");

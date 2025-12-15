@@ -57,7 +57,11 @@ public class SceneLoader : MonoBehaviour
         }
 
         // 3. Mark the new scene as active (crucial for instantiation and lighting)
-        UnityEngine.SceneManagement.SceneManager.SetActiveScene(UnityEngine.SceneManagement.SceneManager.GetSceneByName(newSceneName));
+        UnityEngine.SceneManagement.Scene activeScene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(newSceneName);
+        if (activeScene.IsValid())
+        {
+            UnityEngine.SceneManagement.SceneManager.SetActiveScene(activeScene);
+        }
 
         // 4. Cleanup
         _currentSceneName = newSceneName;

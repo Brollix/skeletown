@@ -21,6 +21,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ResetGame()
+    {
+        enemiesRemaining.Clear();
+        doorsPerFloor.Clear();
+        Debug.Log("GameManager: Game state reset.");
+    }
+
 
 
     // ------------------------------------------------------

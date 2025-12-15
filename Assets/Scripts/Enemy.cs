@@ -24,8 +24,24 @@ public class Enemy : MonoBehaviour {
 
     private Rigidbody2D rb;
 
+    // Optimization: Cache enemies list to avoid FindGameObjectsWithTag in Update
+    public static System.Collections.Generic.List<Enemy> ActiveEnemies = new System.Collections.Generic.List<Enemy>();
+
+    private void OnEnable()
+    {
+        ActiveEnemies.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        ActiveEnemies.Remove(this);
+    }
+
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
+
+        // Debug log to track duplicate spawning
+        Debug.Log($"Enemy spawned at {transform.position} (Floor {floorNumber})");
 
         // Apply level-based scaling (based on player level, but no player upgrades)
         ScaleStatsByLevel();
@@ -33,12 +49,9 @@ public class Enemy : MonoBehaviour {
         // Set health to full
         health = maxHealth;
 
-        // Find player if missing
-        if (player == null) {
-            GameObject playerObj = GameObject.FindWithTag("Player");
-            if (playerObj != null) {
-                player = playerObj.transform;
-            }
+        // Try to finding player via Singleton
+        if (Player.Instance != null) {
+            player = Player.Instance.transform;
         }
     }
 
@@ -63,9 +76,14 @@ public class Enemy : MonoBehaviour {
     }
 
     void Update() {
+        // Retry finding player if null (handles race condition where Enemy spawns before Player)
         if (player == null) {
-            rb.linearVelocity = Vector2.zero;
-            return;
+            if (Player.Instance != null) {
+                player = Player.Instance.transform;
+            } else {
+                rb.linearVelocity = Vector2.zero;
+                return;
+            }
         }
 
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
@@ -87,13 +105,9 @@ public class Enemy : MonoBehaviour {
     Vector2 CalculateSeparation() {
         Vector2 separationMove = Vector2.zero;
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        foreach (GameObject other in enemies) {
-
-            if (other == gameObject) {
-                continue;
-            }
+        // Use cached list instead of FindGameObjectsWithTag
+        foreach (Enemy other in ActiveEnemies) {
+            if (other == this) continue;
 
             float distance = Vector2.Distance(transform.position, other.transform.position);
 

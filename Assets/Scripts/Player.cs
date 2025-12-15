@@ -17,8 +17,22 @@ public class Player : MonoBehaviour
     public Camera cam => _cam != null ? _cam : _cam = Camera.main;
     public PlayerHealth health => _health != null ? _health : _health = GetComponent<PlayerHealth>();
 
+    public static Player Instance { get; private set; }
+
     protected virtual void Awake()
     {
+        if (Instance != null && Instance.gameObject != gameObject)
+        {
+            Debug.LogError($"[Player] Duplicate detected! Destroying new instance on {gameObject.name}. Existing instance on {Instance.gameObject.name} in scene {Instance.gameObject.scene.name}");
+            Destroy(gameObject);
+            return;
+        }
+        if (Instance == null)
+        {
+            Instance = this;
+            Debug.Log($"[Player] Instance set on {gameObject.name} in scene {gameObject.scene.name} (Type: {this.GetType().Name})");
+        }
+
         // Configure Rigidbody if it exists
         if (TryGetComponent<Rigidbody2D>(out var rbComponent))
         {

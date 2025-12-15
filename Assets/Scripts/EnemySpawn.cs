@@ -57,7 +57,8 @@ public class EnemySpawn : MonoBehaviour
             Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
             Vector2 spawnPos = (Vector2)spawnPoint.position + randomOffset;
 
-            GameObject newEnemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            // Instantiating as child of EnemySpawn to ensure destruction on scene unload
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity, transform);
 
             Enemy e = newEnemy.GetComponent<Enemy>();
             if (e != null)
