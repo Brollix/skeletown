@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
             _rb = rbComponent;
             rb.gravityScale = 0;
             rb.freezeRotation = true;
+            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         }
         else
         {
@@ -46,6 +48,8 @@ public class Player : MonoBehaviour
             _rb = gameObject.AddComponent<Rigidbody2D>();
             rb.gravityScale = 0;
             rb.freezeRotation = true;
+            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         }
 
         // Get other components if they exist

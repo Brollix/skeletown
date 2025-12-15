@@ -93,7 +93,7 @@ public class PlayerMovement : Player
             return;
         }
         
-        Move(input.moveInput, moveSpeed);
+        // Move(input.moveInput, moveSpeed); // Removed to prevent conflict with FixedUpdate
         facing?.UpdateFacingDirection();
     }
 }
