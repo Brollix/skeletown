@@ -69,9 +69,9 @@ public class UpgradeUI : MonoBehaviour
 
         bool hasPoints = PlayerExperience.Instance.SkillPoints > 0;
 
-        healthButton.interactable = hasPoints;
-        damageButton.interactable = hasPoints;
-        speedButton.interactable = hasPoints;
+        healthButton.interactable = hasPoints && !UpgradeManager.Instance.IsHealthMaxed();
+        damageButton.interactable = hasPoints && !UpgradeManager.Instance.IsDamageMaxed();
+        speedButton.interactable = hasPoints && !UpgradeManager.Instance.IsSpeedMaxed();
 
         bool hasUpgrades =
             (UpgradeManager.Instance.GetHealthUpgrades()

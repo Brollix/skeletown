@@ -11,6 +11,7 @@ public class PlayerExperience : MonoBehaviour
 
     [Header("Current Stats")]
     [SerializeField] private int currentLevel = 1;
+    [SerializeField] private int maxLevel = 121; // Cap level to limit total skill points
     [SerializeField] private float currentXP = 0f;
     [SerializeField] private int skillPoints = 0;
 
@@ -37,6 +38,10 @@ public class PlayerExperience : MonoBehaviour
 
     public void AddXP(float amount)
     {
+        // If max level reached, we can optionally stop gaining XP or just stop leveling up.
+        // User asked for "limit for total XP points", implying hitting a ceiling.
+        if (currentLevel >= maxLevel) return;
+
         currentXP += amount;
         OnXPChanged?.Invoke(currentXP);
 

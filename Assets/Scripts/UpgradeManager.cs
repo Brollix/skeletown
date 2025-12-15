@@ -19,6 +19,11 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private int damageUpgrades = 0;
     [SerializeField] private int speedUpgrades = 0;
 
+    [Header("Upgrade Limits")]
+    [SerializeField] private int maxHealthUpgrades = 60;
+    [SerializeField] private int maxDamageUpgrades = 50;
+    [SerializeField] private int maxSpeedUpgrades = 10;
+
     public float MaxHealth => baseHealth + (healthUpgrades * healthPerUpgrade);
     public float Damage => baseDamage + (damageUpgrades * damagePerUpgrade);
     public float Speed => baseSpeed + (speedUpgrades * speedPerUpgrade);
@@ -26,6 +31,10 @@ public class UpgradeManager : MonoBehaviour
     public int GetHealthUpgrades() => healthUpgrades;
     public int GetDamageUpgrades() => damageUpgrades;
     public int GetSpeedUpgrades() => speedUpgrades;
+
+    public bool IsHealthMaxed() => healthUpgrades >= maxHealthUpgrades;
+    public bool IsDamageMaxed() => damageUpgrades >= maxDamageUpgrades;
+    public bool IsSpeedMaxed() => speedUpgrades >= maxSpeedUpgrades;
 
     private void Awake()
     {
@@ -42,6 +51,8 @@ public class UpgradeManager : MonoBehaviour
 
     public bool UpgradeHealth()
     {
+        if (IsHealthMaxed()) return false;
+
         if (PlayerExperience.Instance.ConsumeSkillPoint())
         {
             healthUpgrades++;
@@ -53,6 +64,8 @@ public class UpgradeManager : MonoBehaviour
 
     public bool UpgradeDamage()
     {
+        if (IsDamageMaxed()) return false;
+
         if (PlayerExperience.Instance.ConsumeSkillPoint())
         {
             damageUpgrades++;
@@ -64,6 +77,8 @@ public class UpgradeManager : MonoBehaviour
 
     public bool UpgradeSpeed()
     {
+        if (IsSpeedMaxed()) return false;
+
         if (PlayerExperience.Instance.ConsumeSkillPoint())
         {
             speedUpgrades++;
