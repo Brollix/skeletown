@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -108,41 +109,40 @@ public class GameManager : MonoBehaviour
     }
 
     // ------------------------------------------------------
-    // DEBUG: PRESS K TO KILL ALL ENEMIES
+    // CHEAT: F1 TO KILL ALL ENEMIES EXCEPT FINAL BOSS
     // ------------------------------------------------------
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.K))
-        //{
-        //    KillAllEnemiesOnAllFloors();
-        //}
-        //
-        // if (Input.GetKeyDown(KeyCode.L))
-        // {
-        //     PrintFloorStates();
-        // }
+        if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame)
+        {
+            KillAllEnemiesExceptBoss();
+        }
     }
 
-    // ------------------------------------------------------
-    // KILL ALL ENEMIES
-    // ------------------------------------------------------
-    // private void KillAllEnemiesOnAllFloors()
-    // {
-    //     Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+    private void KillAllEnemiesExceptBoss()
+    {
+        Debug.Log("CHEAT: Killing all enemies except Floor 20 Boss...");
+        
+        // Create a copy of the list to avoid modification errors during iteration
+        List<Enemy> enemiesToKill = new List<Enemy>(Enemy.ActiveEnemies);
 
-    //     int totalKilled = 0;
+        int count = 0;
+        foreach (Enemy e in enemiesToKill)
+        {
+            if (e == null) continue;
 
-    //     foreach (Enemy e in enemies)
-    //     {
-    //         if (e != null)
-    //         {
-    //             e.TakeDamage(999999f);
-    //             totalKilled++;
-    //         }
-    //     }
+            // Skip Floor 20 Boss
+            if (e.floorNumber == 20 && e.isBoss)
+            {
+                continue;
+            }
 
-    //     Debug.Log("DEBUG: Killed all enemies. Total killed: " + totalKilled);
-    // }
+            e.TakeDamage(999999f);
+            count++;
+        }
+        
+        Debug.Log($"CHEAT: Killed {count} enemies.");
+    }
 
     // ------------------------------------------------------
     // DEBUG: PRINT FLOOR STATES
