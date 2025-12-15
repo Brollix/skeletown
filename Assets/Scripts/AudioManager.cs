@@ -29,7 +29,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private SoundConfig playerHitSound;
     [SerializeField] private SoundConfig enemyHitSound;
     [SerializeField] private SoundConfig playerDeathSound;
-
+    //This makes sure that there is only one audio manager present across all scenes so there are no duplicates and it makes sure it isn't destroyed when changing scenes.
     private void Awake()
     {
         if (Instance == null)
@@ -42,28 +42,24 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    //This method ensures that the audio clips play when certain events in the game happen. When an event happens, the manager catches it and plays the corresponding sound.
     private void Start()
     {
         UnityEngine.SceneManagement.SceneManager.activeSceneChanged += OnSceneChanged;
         
-        // Initial check
         PlayMusicForScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
-        // Subscribe to Gameplay Events
-        // Subscribe to Gameplay Events
         SubscribeToEvents();
 
-        // Initialize Volume
         float savedVol = PlayerPrefs.GetFloat("MasterVolume", 1f);
         AudioListener.volume = savedVol;
     }
-
+    //This method sets the master volume for all game audio. SFX and Music.
     public void SetMasterVolume(float volume)
     {
         AudioListener.volume = volume;
     }
-
+    //When the audio manager is destroyed, it unsubscribes from events.
     private void OnDestroy()
     {
         if (Instance == this)
@@ -81,7 +77,7 @@ public class AudioManager : MonoBehaviour
         PlayerHealth.OnPlayerDeath += PlayPlayerDeathSound;
     }
     
-    // Safety unsubscribe
+    //This method unsubscribes the manager from the game events. It's called above when the manager is destroyed.
     private void UnsubscribeFromEvents()
     {
         PlayerShooting.OnShoot -= PlayShootSound;
@@ -89,15 +85,14 @@ public class AudioManager : MonoBehaviour
         PlayerHealth.OnPlayerDamage -= PlayPlayerHitSound;
         PlayerHealth.OnPlayerDeath -= PlayPlayerDeathSound;
     }
-
+    
+    //This method updates the background music when the active scene changes.
     private void OnSceneChanged(Scene current, Scene next)
     {
         PlayMusicForScene(next.name);
     }
     
-    // ... rest of file logic is fine, ensured PlayPlayerDeathSound is private action-compatible or just method.
-    // I defined it as public previously, but I can match the others.
-    
+    //This method is called in OnSceneChanged and it makes sure to play the background music when the DungeonScene is active. And it makes sure to stop playing the music when the Main Menu scene is active.
     private void PlayMusicForScene(string sceneName)
     {
         if (sceneName == "DungeonScene")
@@ -111,11 +106,11 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            // Stop music in MainMenu or others
             musicSource.Stop();
         }
     }
 
+    //This method makes the sound effects play with the pitch configuartions, making the pitch shift between the minimum and maximum values at random every time.
     private void PlaySound(SoundConfig config)
     {
         if (config == null || config.clip == null || sfxSource == null) return;

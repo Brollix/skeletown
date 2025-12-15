@@ -397,6 +397,9 @@ MonoBehaviour:
   healthUpgrades: 0
   damageUpgrades: 0
   speedUpgrades: 0
+  maxHealthUpgrades: 60
+  maxDamageUpgrades: 50
+  maxSpeedUpgrades: 10
 --- !u!114 &131568979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,6 +415,7 @@ MonoBehaviour:
   baseXPPerLevel: 100
   xpMultiplier: 1.2
   currentLevel: 1
+  maxLevel: 121
   currentXP: 0
   skillPoints: 0
 --- !u!4 &131568980
@@ -1965,7 +1969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
