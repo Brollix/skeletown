@@ -97,6 +97,15 @@ public class UpgradeManager : MonoBehaviour
         SaveUpgrades();
     }
 
+    public void CheatMaxOutStats()
+    {
+        healthUpgrades = maxHealthUpgrades;
+        damageUpgrades = maxDamageUpgrades;
+        speedUpgrades = maxSpeedUpgrades;
+        SaveUpgrades();
+        Debug.Log("CHEAT: Stats Maxed Out!");
+    }
+
 
     public void LoadUpgrades()
     {

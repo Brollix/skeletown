@@ -117,6 +117,11 @@ public class GameManager : MonoBehaviour
         {
             KillAllEnemiesExceptBoss();
         }
+
+        if (Keyboard.current != null && Keyboard.current.f2Key.wasPressedThisFrame)
+        {
+            MaxStatsCheat();
+        }
     }
 
     private void KillAllEnemiesExceptBoss()
@@ -141,7 +146,56 @@ public class GameManager : MonoBehaviour
             count++;
         }
         
-        Debug.Log($"CHEAT: Killed {count} enemies.");
+        Debug.Log($"CHEAT: Killed {count} enemies. Teleporting to Floor 20...");
+
+        // Teleport to Floor 20
+        TeleportToFloor(20);
+    }
+
+    private void MaxStatsCheat()
+    {
+        Debug.Log("CHEAT: Maxing Stats...");
+        if (UpgradeManager.Instance != null)
+        {
+            UpgradeManager.Instance.CheatMaxOutStats();
+        }
+
+        // Heal player to new max health
+        if (Player.Instance != null)
+        {
+            PlayerHealth health = Player.Instance.GetComponent<PlayerHealth>();
+            if (health != null)
+            {
+                health.Heal(9999f); // Full heal
+            }
+        }
+    }
+
+    private void TeleportToFloor(int floor)
+    {
+        EnemySpawn[] spawners = FindObjectsOfType<EnemySpawn>();
+        foreach (EnemySpawn spawner in spawners)
+        {
+            // Assuming the script exposes floorNumber publicly, or we access via reflection/GetComponent
+            // Based on previous file read, floorNumber is private but set from FloorID.
+            // However, EnemySpawn has 'floorNumber' as private field.
+            // But wait, I saw 'public int floorNumber' in Door.cs, but in EnemySpawn.cs it was 'private int floorNumber'.
+            // Let's check FloorID component on the spawner's parent instead, which is safer.
+            
+            FloorID textID = spawner.GetComponentInParent<FloorID>();
+            if (textID != null && textID.floorNumber == floor)
+            {
+                if (Player.Instance != null)
+                {
+                    // Use spawner position or its defined spawn point
+                    Vector3 targetPos = spawner.spawnPoint != null ? spawner.spawnPoint.position : spawner.transform.position;
+                    Player.Instance.transform.position = targetPos;
+                    Debug.Log($"CHEAT: Teleported to Floor {floor} at {targetPos}");
+                    return;
+                }
+            }
+        }
+        Debug.LogWarning($"CHEAT: Could not find spawner for Floor {floor}");
     }
 
     // ------------------------------------------------------
