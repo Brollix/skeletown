@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SceneLoader : MonoBehaviour
@@ -23,7 +24,7 @@ public class SceneLoader : MonoBehaviour
     }
 
 
-    // Checks if starting in Boot scene and loads MainMenu if so.
+    /// <summary /> Checks if starting in Boot scene and loads MainMenu if so.
     private void Start()
     {
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Boot")
@@ -47,15 +48,7 @@ public class SceneLoader : MonoBehaviour
     {
         _isLoading = true;
 
-        // 1. Unload the current scene if one is loaded
-        if (!string.IsNullOrEmpty(_currentSceneName))
-        {
-            AsyncOperation unloadOp = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(_currentSceneName);
-            while (unloadOp != null && !unloadOp.isDone)
-            {
-                yield return null;
-            }
-        }
+        yield return UnloadCurrentSceneIfAnyLoaded(_currentSceneName);
 
         // 2. Load the new scene additively
         AsyncOperation loadOp = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(newSceneName, UnityEngine.SceneManagement.LoadSceneMode.Additive);
@@ -74,5 +67,17 @@ public class SceneLoader : MonoBehaviour
         // 4. Cleanup
         _currentSceneName = newSceneName;
         _isLoading = false;
+
+        IEnumerator UnloadCurrentSceneIfAnyLoaded(string currentSceneName)
+        {
+            if (!string.IsNullOrEmpty(currentSceneName))
+            {
+                AsyncOperation unloadOp = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(currentSceneName);
+                while (unloadOp != null && !unloadOp.isDone)
+                {
+                    yield return null;
+                }
+            }
+        }
     }
 }
