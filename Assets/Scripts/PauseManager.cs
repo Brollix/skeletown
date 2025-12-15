@@ -35,22 +35,23 @@ public class PauseManager : MonoBehaviour
 
     private void Update()
     {
-        // Don't allow pause if settings menu is open
-        if (settingsMenu != null && settingsMenu.activeSelf)
-            return;
-
-
     }
 
     private void togglePause(InputAction.CallbackContext ctx)
     {
         if (GameManager.Instance != null && GameManager.Instance.IsGameOver) return;
 
+        // If settings menu is open, ESC should close it (go back) instead of unpausing
+        if (settingsMenu != null && settingsMenu.activeSelf)
+        {
+            CloseSettings();
+            return;
+        }
+
         if (GamePaused)
             ResumeGame();
         else
             PauseGame();
-
     }
 
     public void PauseGame()
