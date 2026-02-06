@@ -69,7 +69,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 1
     externalNormalMap: 0
-    heightScale: 0.1
+    heightScale: 0
     normalMapFilter: 0
     flipGreenChannel: 0
   isReadable: 0
