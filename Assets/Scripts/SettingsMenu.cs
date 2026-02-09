@@ -5,7 +5,15 @@ public class SettingsMenu : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private Slider volumeSlider;
+
+    [Header("Video Settings")]
+    [SerializeField] private Toggle fullscreenToggle;
+
+    [Header("Audio Settings")]
+    [SerializeField] private Toggle musicToggle;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Toggle sfxToggle;
+    [SerializeField] private Slider sfxSlider;
 
     [Header("Optional (Gameplay Only)")]
     [SerializeField] private GameObject pauseMenu; // Only used in DungeonScene
@@ -14,12 +22,53 @@ public class SettingsMenu : MonoBehaviour
     // Loads saved preferences and initializes UI listeners.
     private void Start()
     {
-        // Load saved volume or default
-        float vol = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        volumeSlider.value = vol;
+        // --- Video ---
+        // Load fullscreen preference (default true = 1)
+        bool isFullscreen = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
+        if (fullscreenToggle != null)
+        {
+            fullscreenToggle.isOn = isFullscreen;
+            fullscreenToggle.onValueChanged.AddListener(SetFullscreen);
+        }
+        // Apply immediately in case resolution changed or first run
+        Screen.fullScreen = isFullscreen;
 
-        // Assign listener
-        volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+
+        // --- Audio: Music ---
+        float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        bool musicMute = PlayerPrefs.GetInt("MusicMuted", 0) == 1; // 1 means muted
+
+        if (musicSlider != null)
+        {
+            musicSlider.value = musicVol;
+            musicSlider.onValueChanged.AddListener(SetMusicVolume);
+        }
+
+        if (musicToggle != null)
+        {
+            // Toggle shows "Music On" status. So if mute is true, toggle is OFF.
+            musicToggle.isOn = !musicMute;
+            musicToggle.onValueChanged.AddListener(ToggleMusic);
+        }
+
+
+        // --- Audio: SFX ---
+        float sfxVol = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        bool sfxMute = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
+
+        if (sfxSlider != null)
+        {
+            sfxSlider.value = sfxVol;
+            sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+        }
+
+        if (sfxToggle != null)
+        {
+            // Toggle shows "SFX On" status. So if mute is true, toggle is OFF.
+            sfxToggle.isOn = !sfxMute; 
+            sfxToggle.onValueChanged.AddListener(ToggleSFX);
+        }
+
 
         // Keep panel hidden at start
         settingsPanel.SetActive(false);
@@ -47,22 +96,47 @@ public class SettingsMenu : MonoBehaviour
             pauseMenu.SetActive(true);
     }
 
+    // --- Video Logic ---
 
-    // Updates master volume and saves to PlayerPrefs.
-    private void OnVolumeChanged(float value)
+    public void SetFullscreen(bool isFullscreen)
     {
-        // Save for future
-        PlayerPrefs.SetFloat("MasterVolume", value);
+        Screen.fullScreen = isFullscreen;
+        // Save preference: 1 for true, 0 for false
+        PlayerPrefs.SetInt("Fullscreen", isFullscreen ? 1 : 0);
+    }
 
 
-        // Later we plug this into real audio
+    // --- Audio Logic ---
+
+    public void SetMusicVolume(float value)
+    {
         if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.SetMasterVolume(value);
+            AudioManager.Instance.SetMusicVolume(value);
         }
-        else
+    }
+
+    public void ToggleMusic(bool isOn)
+    {
+        if (AudioManager.Instance != null)
         {
-            Debug.LogWarning("AudioManager Instance is null. Volume not updated.");
+            AudioManager.Instance.ToggleMusic(isOn);
+        }
+    }
+
+    public void SetSFXVolume(float value)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetSFXVolume(value);
+        }
+    }
+
+    public void ToggleSFX(bool isOn)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.ToggleSFX(isOn);
         }
     }
 }

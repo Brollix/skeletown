@@ -55,15 +55,66 @@ public class AudioManager : MonoBehaviour
 
         SubscribeToEvents();
 
-        float savedVol = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        AudioListener.volume = savedVol;
-    }
-    //This method sets the master volume for all game audio. SFX and Music.
+        // Load saved preferences
+        float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float sfxVol = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        bool musicMute = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
+        bool sfxMute = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
 
-    // Sets the global audio volume.
-    public void SetMasterVolume(float volume)
+        // Apply saved preferences
+        if (musicSource != null)
+        {
+            musicSource.volume = musicVol;
+            musicSource.mute = musicMute;
+        }
+
+        if (sfxSource != null)
+        {
+            sfxSource.volume = sfxVol;
+            sfxSource.mute = sfxMute;
+        }
+    }
+
+    // Sets the music volume.
+    public void SetMusicVolume(float volume)
     {
-        AudioListener.volume = volume;
+        if (musicSource != null)
+        {
+            musicSource.volume = volume;
+            PlayerPrefs.SetFloat("MusicVolume", volume);
+        }
+    }
+
+    // Sets the SFX volume.
+    public void SetSFXVolume(float volume)
+    {
+        if (sfxSource != null)
+        {
+            sfxSource.volume = volume;
+            PlayerPrefs.SetFloat("SFXVolume", volume);
+        }
+    }
+
+    // Toggles music mute state.
+    public void ToggleMusic(bool isOn)
+    {
+        if (musicSource != null)
+        {
+            // If toggle is ON, mute is OFF (false). If toggle is OFF, mute is ON (true).
+            // But usually "Music On" toggle means mute = false.
+            musicSource.mute = !isOn; 
+            PlayerPrefs.SetInt("MusicMuted", !isOn ? 1 : 0);
+        }
+    }
+
+    // Toggles SFX mute state.
+    public void ToggleSFX(bool isOn)
+    {
+        if (sfxSource != null)
+        {
+            sfxSource.mute = !isOn;
+            PlayerPrefs.SetInt("SFXMuted", !isOn ? 1 : 0);
+        }
     }
     //When the audio manager is destroyed, it unsubscribes from events.
 

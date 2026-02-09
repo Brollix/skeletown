@@ -966,7 +966,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsPanel: {fileID: 1129986967}
-  volumeSlider: {fileID: 209653385}
+  fullscreenToggle: {fileID: 1129986966}
+  musicToggle: {fileID: 1129986970}
+  musicSlider: {fileID: 209653385}
+  sfxToggle: {fileID: 1129986968}
+  sfxSlider: {fileID: 1129986969}
   pauseMenu: {fileID: 141782207}
 --- !u!114 &28645175
 MonoBehaviour:
@@ -94663,6 +94667,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 1135119463423259676, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2768974625266085412, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 382.711
@@ -94697,11 +94705,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3444531463206833852, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3611700372692342869, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3839707471779132497, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -94796,6 +94804,10 @@ PrefabInstance:
       value: -369
       objectReference: {fileID: 0}
     - target: {fileID: 7705572135228827135, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8266137466371117969, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -94915,11 +94927,55 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8492416109810522795, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
   m_PrefabInstance: {fileID: 1129986964}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1129986966 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1607550343798359175, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
+  m_PrefabInstance: {fileID: 1129986964}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1129986967 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8653667809297231017, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
   m_PrefabInstance: {fileID: 1129986964}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1129986968 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1639409368219316129, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
+  m_PrefabInstance: {fileID: 1129986964}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1129986969 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6413791817232486054, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
+  m_PrefabInstance: {fileID: 1129986964}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1129986970 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2814190691564348086, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
+  m_PrefabInstance: {fileID: 1129986964}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1137317576 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6452411482533945915, guid: 0a2613cb203b88644b201336653ca368, type: 3}
@@ -165513,7 +165569,7 @@ Tilemap:
       - {fileID: -70675201, guid: 28310e3e7a45ca6448f85737a6fd11d8, type: 3}
       - {fileID: 964081580, guid: 28310e3e7a45ca6448f85737a6fd11d8, type: 3}
       - {fileID: 457681787, guid: 28310e3e7a45ca6448f85737a6fd11d8, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
