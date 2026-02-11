@@ -70,6 +70,21 @@ public class Player : MonoBehaviour
     }
 
 
+    // Returns the normalized aim direction based on Input (Gamepad or Mouse).
+    public Vector2 GetAimDirection()
+    {
+        // 1. Try Gamepad Look Input (with deadzone check for stick drift)
+        if (input != null && input.lookInput.sqrMagnitude > 0.01f)
+        {
+            return input.lookInput.normalized;
+        }
+
+        // 2. Fallback to Mouse Position
+        Vector2 mousePos = GetMousePosition();
+        return (mousePos - (Vector2)transform.position).normalized;
+    }
+
+
     // Checks the visual facing direction of the player.
     public bool IsFacingRight() => facing != null && facing.IsFacingRight();
     

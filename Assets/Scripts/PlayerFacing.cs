@@ -19,13 +19,18 @@ public class PlayerFacing : MonoBehaviour
     {
         if (player == null || player.cam == null) return;
 
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector2 worldPos = player.cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, -player.cam.transform.position.z));
+        if (player == null || player.cam == null) return;
         
-        bool shouldFaceRight = worldPos.x > transform.position.x;
+        Vector2 aimDirection = player.GetAimDirection();
         
-        if (shouldFaceRight != facingRight)
-            Flip();
+        // Face right if aim X is positive, Left if negative
+        // If aim is perfectly vertical (x=0), keep current facing
+        if (Mathf.Abs(aimDirection.x) > 0.1f)
+        {
+            bool shouldFaceRight = aimDirection.x > 0;
+            if (shouldFaceRight != facingRight)
+                Flip();
+        }
     }
 
 

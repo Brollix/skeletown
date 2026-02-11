@@ -4,6 +4,10 @@ using UnityEngine.InputSystem;
 public class PlayerInput : Player
 {
     public Vector2 moveInput { get; private set; }
+    public Vector2 lookInput { get; private set; }
+    public InputAction AttackAction { get; private set; }
+    public InputAction PauseAction { get; private set; }
+
     private PlayerControls controls;
     private Animator _animator;
     private Animator animator => _animator != null ? _animator : _animator = GetComponent<Animator>();
@@ -26,8 +30,21 @@ public class PlayerInput : Player
     {
         if (controls == null) controls = new PlayerControls();
         controls.Player.Enable();
+        controls.UI.Enable(); // Ensure UI map is enabled for Pause
+
+        // Movement
         controls.Player.Move.performed += OnMove;
         controls.Player.Move.canceled += OnMove;
+
+        // Look
+        controls.Player.Look.performed += OnLook;
+        controls.Player.Look.canceled += OnLook;
+
+        // Attack (Exposed for polling)
+        AttackAction = controls.Player.Attack;
+        
+        // Pause (Exposed for polling if needed, but usually event driven)
+        PauseAction = controls.UI.PauseToggle;
     }
 
 
@@ -38,7 +55,10 @@ public class PlayerInput : Player
         {
             controls.Player.Move.performed -= OnMove;
             controls.Player.Move.canceled -= OnMove;
+            controls.Player.Look.performed -= OnLook;
+            controls.Player.Look.canceled -= OnLook;
             controls.Player.Disable();
+            controls.UI.Disable();
         }
     }
 
@@ -48,7 +68,14 @@ public class PlayerInput : Player
     {
         moveInput = ctx.ReadValue<Vector2>();
         animator?.SetBool("isMoving", moveInput != Vector2.zero);
-        
-        // Movimiento solo actualiza animación; el flip horizontal lo maneja PlayerFacing según el mouse
+    }
+
+    // Callback for look input events.
+    private void OnLook(InputAction.CallbackContext ctx)
+    {
+        // Ignore Mouse/Pointer delta because it conflicts with Mouse Position logic
+        if (ctx.control.device is Pointer) return;
+
+        lookInput = ctx.ReadValue<Vector2>();
     }
 }

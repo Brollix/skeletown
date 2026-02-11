@@ -30,7 +30,8 @@ public class PlayerShooting : Player
         
         cooldownTimer -= Time.deltaTime;
 
-        if (Mouse.current.leftButton.wasPressedThisFrame && cooldownTimer <= 0f)
+        // Check Input Action for Attack (works for both Mouse Click & Controller Button)
+        if (input != null && input.AttackAction != null && input.AttackAction.WasPerformedThisFrame() && cooldownTimer <= 0f)
         {
             Shoot();
             cooldownTimer = shootCooldown;
@@ -52,9 +53,7 @@ public class PlayerShooting : Player
             return;
         }
 
-        Vector2 mousePos = GetMousePosition();
-        // Get direction from player to mouse (for aiming)
-        Vector2 aimDirection = (mousePos - (Vector2)transform.position).normalized;
+        Vector2 aimDirection = GetAimDirection();
         
         // Create arrow at bow's position
         GameObject arrow = Instantiate(arrowTemplate, bowController.transform.position, Quaternion.identity);

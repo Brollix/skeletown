@@ -10,10 +10,14 @@ public class BowController : MonoBehaviour
     [SerializeField] private float radius = 0.5f;
 
 
+    private Player player;
+
     //This method ensures the game's time scale is reset when the bow initializes, so that the bow doesn't end up frozen once the gameplay scene starts.
     private void Start()
     {
         // Time.timeScale = 1f;
+        player = (playerFacing != null) ? playerFacing.GetComponent<Player>() : GetComponentInParent<Player>();
+        if (player == null) player = Player.Instance;
     }
 
 
@@ -40,16 +44,27 @@ public class BowController : MonoBehaviour
     //This method is what allows the bow to rotate around the player based on the mouse cursor position. It gets the mouse position relative to the player, then uses that to set the bow's position to orbit around the player, and it makes an angle to follow the mouse cursor that is used to make the bow rotate around.
     private void RotateAroundPlayer()
     {
-        if (mainCamera == null || playerTransform == null) return;
+        if (playerTransform == null && player == null) return;
+        
+        Vector3 centerPos = (playerTransform != null) ? playerTransform.position : player.transform.position;
 
-        float zDist = Mathf.Abs(mainCamera.transform.position.z - playerTransform.position.z);
-        Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(
-            new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, zDist)
-        );
+        Vector2 dir = Vector2.right; // Default
 
-        Vector2 dir = (mouseWorld - playerTransform.position).normalized;
+        if (player != null)
+        {
+            dir = player.GetAimDirection();
+        }
+        else
+        {
+            // Fallback if player reference missing (shouldn't happen)
+            float zDist = Mathf.Abs(mainCamera.transform.position.z - centerPos.z);
+            Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(
+                new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, zDist)
+            );
+            dir = (mouseWorld - centerPos).normalized;
+        }
 
-        transform.position = playerTransform.position + (Vector3)(dir * radius);
+        transform.position = centerPos + (Vector3)(dir * radius);
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         
