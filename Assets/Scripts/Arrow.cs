@@ -55,6 +55,8 @@ public class Arrow : MonoBehaviour
 
     private void Update()
     {
+        if (PauseManager.GamePaused) return;
+
         transform.Translate(direction * speed * Time.deltaTime, Space.World);
     }
 

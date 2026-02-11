@@ -86,6 +86,11 @@ public class Enemy : MonoBehaviour {
 
     // Executes AI movement and flocking logic.
     void Update() {
+        if (PauseManager.GamePaused) {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         // Retry finding player if null (handles race condition where Enemy spawns before Player)
         if (player == null) {
             if (Player.Instance != null) {

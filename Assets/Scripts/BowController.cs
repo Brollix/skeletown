@@ -13,7 +13,7 @@ public class BowController : MonoBehaviour
     //This method ensures the game's time scale is reset when the bow initializes, so that the bow doesn't end up frozen once the gameplay scene starts.
     private void Start()
     {
-        Time.timeScale = 1f;
+        // Time.timeScale = 1f;
     }
 
 

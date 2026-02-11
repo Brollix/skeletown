@@ -34,7 +34,7 @@ public class PlayerHealth : MonoBehaviour
     // Applies damage to the player, triggering death or invincibility if needed.
     public void TakeDamage(float damage)
     {
-        if (invincible || IsDead)
+        if (invincible || IsDead || PauseManager.GamePaused)
             return;
 
         currentHealth = Mathf.Max(0, currentHealth - damage);

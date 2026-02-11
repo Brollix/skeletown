@@ -75,6 +75,12 @@ public class EnemySpawn : MonoBehaviour
             }
 
             yield return null;
+
+            // Wait if game is paused
+            while (PauseManager.GamePaused)
+            {
+                yield return null;
+            }
         }
 
 

@@ -16,7 +16,7 @@ public class PauseManager : MonoBehaviour
     private void Start()
     {
         GamePaused = false;
-        Time.timeScale = 1f;
+        // Time.timeScale = 1f;
 
         if (pauseMenu != null)
             pauseMenu.SetActive(false);
@@ -70,7 +70,7 @@ public class PauseManager : MonoBehaviour
 
         if (pauseMenu != null) pauseMenu.SetActive(true);
 
-        Time.timeScale = 0f;
+        // Time.timeScale = 0f; // Disable time scale pause
 
         if (EventSystem.current != null)
             EventSystem.current.sendNavigationEvents = true;
@@ -84,7 +84,7 @@ public class PauseManager : MonoBehaviour
 
         if (pauseMenu != null) pauseMenu.SetActive(false);
 
-        Time.timeScale = 1f;
+        // Time.timeScale = 1f; // Disable time scale resume
     }
 
 
@@ -109,7 +109,7 @@ public class PauseManager : MonoBehaviour
     public void GoToMainMenu()
     {
         GamePaused = false;
-        Time.timeScale = 1f;
+        // Time.timeScale = 1f;
 
         if (SceneLoader.Instance != null)
         {
