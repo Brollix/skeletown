@@ -37,6 +37,9 @@ public class PlayerHealth : MonoBehaviour
         if (invincible || IsDead || PauseManager.GamePaused)
             return;
 
+        if (CheatManager.Instance != null && CheatManager.Instance.IsGodMode)
+            return;
+
         currentHealth = Mathf.Max(0, currentHealth - damage);
         OnHealthChanged?.Invoke(currentHealth);
         OnPlayerDamage?.Invoke();

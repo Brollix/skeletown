@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : Player
 {
     [Header("Movement")]
-    private float moveSpeed => UpgradeManager.Instance?.Speed ?? 5f;
+    private float moveSpeed => (UpgradeManager.Instance?.Speed ?? 5f) * (CheatManager.Instance != null && CheatManager.Instance.IsSuperSpeed ? CheatManager.Instance.SpeedMultiplier : 1f);
     
     // Automatic component references
     private Animator _animator;

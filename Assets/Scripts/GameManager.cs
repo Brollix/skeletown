@@ -105,9 +105,10 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //This checks for cheat inputs (F1, F2).
+    // This checks for cheat inputs (F1, F2).
     void Update()
     {
+        /* Old Cheats - Moved to CheatManager
         if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame)
         {
             KillAllEnemiesExceptBoss();
@@ -117,10 +118,11 @@ public class GameManager : MonoBehaviour
         {
             MaxStatsCheat();
         }
+        */
     }
 
 
-    //Kills all enemies except the final boss and teleports the player.
+    // Kills all enemies except the final boss and teleports the player.
     private void KillAllEnemiesExceptBoss()
     {
         Debug.Log("CHEAT: Killing all enemies except Floor 20 Boss...");
@@ -147,7 +149,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //Maxes out all upgrade stats and heals the player.
+    // Maxes out all upgrade stats and heals the player.
     private void MaxStatsCheat()
     {
         Debug.Log("CHEAT: Maxing Stats...");
@@ -166,10 +168,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int CurrentFloor { get; private set; } = 1;
 
-    //Moves the player to the spawn point of the specified floor, in this case Floor 20.
-    private void TeleportToFloor(int floor)
+    // Moves the player to the spawn point of the specified floor, in this case Floor 20.
+    public void TeleportToFloor(int floor)
     {
+        CurrentFloor = floor;
         EnemySpawn[] spawners = FindObjectsOfType<EnemySpawn>();
         foreach (EnemySpawn spawner in spawners)
         {   
