@@ -11,6 +11,10 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private InputActionReference pauseInput;
 
+    [Header("Navigation")]
+    [SerializeField] private GameObject resumeButton;
+    [SerializeField] private SettingsMenu settingsMenuScript;
+
 
     // Resets pause state and UI on start.
     private void Start()
@@ -23,6 +27,11 @@ public class PauseManager : MonoBehaviour
 
         if (settingsMenu != null)
             settingsMenu.SetActive(false);
+
+        if (settingsMenuScript != null)
+        {
+            settingsMenuScript.OnClose.AddListener(CloseSettings);
+        }
     }
 
 
@@ -74,6 +83,11 @@ public class PauseManager : MonoBehaviour
 
         if (EventSystem.current != null)
             EventSystem.current.sendNavigationEvents = true;
+
+        if (NavigationManager.Instance != null && resumeButton != null)
+        {
+            NavigationManager.Instance.SetDefaultSelection(resumeButton);
+        }
     }
 
 
@@ -92,7 +106,15 @@ public class PauseManager : MonoBehaviour
     public void OpenSettings()
     {
         if (pauseMenu != null) pauseMenu.SetActive(false);
-        if (settingsMenu != null) settingsMenu.SetActive(true);
+        if (settingsMenu != null) 
+        {
+            settingsMenu.SetActive(true);
+            
+            if (NavigationManager.Instance != null && settingsMenuScript != null)
+            {
+                NavigationManager.Instance.SetDefaultSelection(settingsMenuScript.GetFirstSelectable());
+            }
+        }
     }
 
 
@@ -100,7 +122,15 @@ public class PauseManager : MonoBehaviour
     public void CloseSettings()
     {
         if (settingsMenu != null) settingsMenu.SetActive(false);
-        if (pauseMenu != null) pauseMenu.SetActive(true);
+        if (pauseMenu != null) 
+        {
+            pauseMenu.SetActive(true);
+            
+            if (NavigationManager.Instance != null && resumeButton != null)
+            {
+                NavigationManager.Instance.SetDefaultSelection(resumeButton);
+            }
+        }
     }
 
     // Return to Main Menu using SceneManager directly

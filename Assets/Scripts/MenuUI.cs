@@ -9,6 +9,12 @@ public class MenuUI : MonoBehaviour
     public GameObject upgradesPanel;
     public GameObject creditsPanel;
 
+    [Header("Navigation")]
+    [SerializeField] private GameObject startGameButton;
+    [SerializeField] private GameObject upgradesFirstButton;
+    [SerializeField] private GameObject creditsFirstButton;
+    [SerializeField] private SettingsMenu settingsMenuScript;
+
 
     // Initializes panel visibility on startup.
     private void Start()
@@ -17,6 +23,16 @@ public class MenuUI : MonoBehaviour
         settingsPanel.SetActive(false);
         upgradesPanel.SetActive(false);
         creditsPanel.SetActive(false);
+
+        if (settingsMenuScript != null)
+        {
+            settingsMenuScript.OnClose.AddListener(CloseSettings);
+        }
+
+        if (NavigationManager.Instance != null && startGameButton != null)
+        {
+            NavigationManager.Instance.SetDefaultSelection(startGameButton);
+        }
     }
 
 
@@ -48,6 +64,11 @@ public class MenuUI : MonoBehaviour
     {
         mainMenuPanel.SetActive(false);
         settingsPanel.SetActive(true);
+
+        if (NavigationManager.Instance != null && settingsMenuScript != null)
+        {
+            NavigationManager.Instance.SetDefaultSelection(settingsMenuScript.GetFirstSelectable());
+        }
     }
 
 
@@ -56,6 +77,11 @@ public class MenuUI : MonoBehaviour
     {
         settingsPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
+        
+        if (NavigationManager.Instance != null && startGameButton != null)
+        {
+            NavigationManager.Instance.SetDefaultSelection(startGameButton);
+        }
     }
 
 
@@ -64,6 +90,11 @@ public class MenuUI : MonoBehaviour
     {
         mainMenuPanel.SetActive(false);
         upgradesPanel.SetActive(true);
+        
+        if (NavigationManager.Instance != null && upgradesFirstButton != null)
+        {
+            NavigationManager.Instance.SetDefaultSelection(upgradesFirstButton);
+        }
     }
 
 
@@ -72,6 +103,11 @@ public class MenuUI : MonoBehaviour
     {
         upgradesPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
+
+        if (NavigationManager.Instance != null && startGameButton != null)
+        {
+            NavigationManager.Instance.SetDefaultSelection(startGameButton);
+        }
     }
 
 
@@ -80,6 +116,11 @@ public class MenuUI : MonoBehaviour
     {
         mainMenuPanel.SetActive(false);
         creditsPanel.SetActive(true);
+
+        if (NavigationManager.Instance != null && creditsFirstButton != null)
+        {
+            NavigationManager.Instance.SetDefaultSelection(creditsFirstButton);
+        }
     }
 
 
@@ -88,5 +129,10 @@ public class MenuUI : MonoBehaviour
     {
         creditsPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
+
+        if (NavigationManager.Instance != null && startGameButton != null)
+        {
+            NavigationManager.Instance.SetDefaultSelection(startGameButton);
+        }
     }
 }

@@ -71,15 +71,15 @@ public class Player : MonoBehaviour
 
 
     // Returns the normalized aim direction based on Input (Gamepad or Mouse).
+    // Delegated to PlayerInput which manages the state.
     public Vector2 GetAimDirection()
     {
-        // 1. Try Gamepad Look Input (with deadzone check for stick drift)
-        if (input != null && input.lookInput.sqrMagnitude > 0.01f)
+        if (input != null)
         {
-            return input.lookInput.normalized;
+            return input.CurrentAimDirection;
         }
 
-        // 2. Fallback to Mouse Position
+        // Fallback if no input component (shouldn't happen)
         Vector2 mousePos = GetMousePosition();
         return (mousePos - (Vector2)transform.position).normalized;
     }

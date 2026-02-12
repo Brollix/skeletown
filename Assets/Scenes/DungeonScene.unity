@@ -966,6 +966,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsPanel: {fileID: 1129986967}
+  OnClose:
+    m_PersistentCalls:
+      m_Calls: []
   fullscreenToggle: {fileID: 1129986966}
   musicToggle: {fileID: 1129986970}
   musicSlider: {fileID: 209653385}
@@ -987,6 +990,8 @@ MonoBehaviour:
   pauseMenu: {fileID: 141782207}
   settingsMenu: {fileID: 1129986967}
   pauseInput: {fileID: -3816790174416334561, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  resumeButton: {fileID: 1968076776}
+  settingsMenuScript: {fileID: 28645174}
 --- !u!1001 &35411586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -67424,7 +67429,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_PressedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -94669,7 +94674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1135119463423259676, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2768974625266085412, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_SizeDelta.x
@@ -94705,11 +94710,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3444531463206833852, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3611700372692342869, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3839707471779132497, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -94809,7 +94814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8266137466371117969, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8339101442094075849, guid: 5f0980e8f9d82d3419820dbf5174218f, type: 3}
       propertyPath: m_IsActive
@@ -95040,6 +95045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverPanel: {fileID: 1157688668}
+  mainMenuButton: {fileID: 1279262118}
 --- !u!114 &1157688671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99445,7 +99451,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_PressedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -129560,7 +129566,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_PressedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -129573,8 +129579,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 28645174}
-        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+      - m_Target: {fileID: 28645175}
+        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
         m_MethodName: OpenSettings
         m_Mode: 1
         m_Arguments:
@@ -159394,7 +159400,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_PressedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -165776,6 +165782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   victoryPanel: {fileID: 2107168400}
+  mainMenuButton: {fileID: 560494823}
 --- !u!1001 &2118342690
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165961,7 +165968,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_PressedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 2986095105091660353, guid: 000896a406502f14893f2f0680fc47c1, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal

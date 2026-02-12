@@ -42,7 +42,7 @@ public class PlayerInput : Player
 
         // Attack (Exposed for polling)
         AttackAction = controls.Player.Attack;
-        
+
         // Pause (Exposed for polling if needed, but usually event driven)
         PauseAction = controls.UI.PauseToggle;
     }
@@ -77,5 +77,39 @@ public class PlayerInput : Player
         if (ctx.control.device is Pointer) return;
 
         lookInput = ctx.ReadValue<Vector2>();
+    }
+
+    // -- Aim Direction Logic moved here to be the Single Source of Truth --
+    public Vector2 CurrentAimDirection { get; private set; } = Vector2.right;
+    private bool usingGamepad = false;
+    private Vector2 lastGamepadDir = Vector2.right;
+
+    private void Update()
+    {
+        if (PauseManager.GamePaused) return;
+
+        // 1. Check for Gamepad Input
+        if (lookInput.sqrMagnitude > 0.01f)
+        {
+            usingGamepad = true;
+            lastGamepadDir = lookInput.normalized;
+        }
+
+        // 2. Check for Mouse Movement to switch back
+        if (Mouse.current != null && Mouse.current.delta.ReadValue().sqrMagnitude > 0.5f)
+        {
+            usingGamepad = false;
+        }
+
+        // 3. Update Current Aim Direction
+        if (usingGamepad)
+        {
+            CurrentAimDirection = lastGamepadDir;
+        }
+        else
+        {
+            Vector2 mousePos = GetMousePosition();
+            CurrentAimDirection = (mousePos - (Vector2)transform.position).normalized;
+        }
     }
 }

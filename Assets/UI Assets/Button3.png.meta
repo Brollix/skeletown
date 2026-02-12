@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4720bfe547ca5c940bea30273514f6c3
+guid: ed8f7fdfbaa050244b023455948cf272
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3356501270804388586
-    second: slider 1_0
+      213: -766422060036826523
+    second: Button3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: slider 1_0
+      name: Button3_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 848
-        height: 136
+        width: 678
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aea517e4f10b49e20800000000000000
-      internalID: 3356501270804388586
+      spriteID: 56a5b73723f1d55f0800000000000000
+      internalID: -766422060036826523
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      slider 1_0: 3356501270804388586
+      Button3_0: -766422060036826523
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

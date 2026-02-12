@@ -6,6 +6,9 @@ public class GameOverUI : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject gameOverPanel;
 
+    [Header("Navigation")]
+    [SerializeField] private GameObject mainMenuButton;
+
 
     // Subscribes to player death events and hides panel.
     private void Start()
@@ -44,6 +47,14 @@ public class GameOverUI : MonoBehaviour
             
             if (GameManager.Instance != null) GameManager.Instance.IsGameOver = true;
             PauseManager.GamePaused = true;
+
+            if (UnityEngine.EventSystems.EventSystem.current != null)
+                UnityEngine.EventSystems.EventSystem.current.sendNavigationEvents = true;
+
+            if (NavigationManager.Instance != null && mainMenuButton != null)
+            {
+                NavigationManager.Instance.SetDefaultSelection(mainMenuButton);
+            }
 
             // Hide player to simulate death
             PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();

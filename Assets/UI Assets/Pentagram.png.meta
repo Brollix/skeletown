@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9af283d451fcc7443a751d4cca1f6b51
+guid: a576855eed025e747a99291bd8b77943
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2404440621727022319
-    second: pentagram 1_0
+      213: -1114792242182068627
+    second: Pentagram_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pentagram 1_0
+      name: Pentagram_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 72
-        height: 72
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 113017a6ef5b1aed0800000000000000
-      internalID: -2404440621727022319
+      spriteID: d666066bc567780f0800000000000000
+      internalID: -1114792242182068627
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      pentagram 1_0: -2404440621727022319
+      Pentagram_0: -1114792242182068627
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -5,6 +5,7 @@ public class SettingsMenu : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private GameObject settingsPanel;
+    public UnityEngine.Events.UnityEvent OnClose; // Event fired when settings are closed
 
     [Header("Video Settings")]
     [SerializeField] private Toggle fullscreenToggle;
@@ -91,7 +92,11 @@ public class SettingsMenu : MonoBehaviour
     {
         settingsPanel.SetActive(false);
 
+        // Notify listeners (MenuUI or PauseManager)
+        if (OnClose != null) OnClose.Invoke();
+
         // If closing from gameplay, show the pause menu again
+        // (Legacy support, but listener preferred)
         if (pauseMenu != null && PauseManager.GamePaused)
             pauseMenu.SetActive(true);
     }
@@ -138,6 +143,11 @@ public class SettingsMenu : MonoBehaviour
         {
             AudioManager.Instance.ToggleSFX(isOn);
         }
+    }
+
+    public GameObject GetFirstSelectable()
+    {
+        return fullscreenToggle != null ? fullscreenToggle.gameObject : null;
     }
 }
 

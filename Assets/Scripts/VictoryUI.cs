@@ -6,6 +6,9 @@ public class VictoryUI : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject victoryPanel;
 
+    [Header("Navigation")]
+    [SerializeField] private GameObject mainMenuButton;
+
 
     // Hides the victory panel on startup.
     private void Start()
@@ -27,6 +30,14 @@ public class VictoryUI : MonoBehaviour
             
             if (GameManager.Instance != null) GameManager.Instance.IsGameOver = true;
             PauseManager.GamePaused = true;
+
+            if (UnityEngine.EventSystems.EventSystem.current != null)
+                UnityEngine.EventSystems.EventSystem.current.sendNavigationEvents = true;
+
+            if (NavigationManager.Instance != null && mainMenuButton != null)
+            {
+                NavigationManager.Instance.SetDefaultSelection(mainMenuButton);
+            }
         }
         else
         {
