@@ -15,12 +15,9 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private GameObject resumeButton;
     [SerializeField] private SettingsMenu settingsMenuScript;
 
-
-    // Resets pause state and UI on start.
     private void Start()
     {
         GamePaused = false;
-        // Time.timeScale = 1f;
 
         if (pauseMenu != null)
             pauseMenu.SetActive(false);
@@ -34,15 +31,11 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-
-    // Subscribes to the pause input action.
     private void OnEnable()
     {
         pauseInput.action.performed += togglePause;
     }
 
-
-    // Unsubscribes from the pause input action.
     private void OnDisable()
     {
         pauseInput.action.performed -= togglePause;
@@ -52,13 +45,10 @@ public class PauseManager : MonoBehaviour
     {
     }
 
-
-    // Toggles between paused/resumed or closes settings if open.
     private void togglePause(InputAction.CallbackContext ctx)
     {
         if (GameManager.Instance != null && GameManager.Instance.IsGameOver) return;
 
-        // If settings menu is open, ESC should close it (go back) instead of unpausing
         if (settingsMenu != null && settingsMenu.activeSelf)
         {
             CloseSettings();
@@ -71,15 +61,11 @@ public class PauseManager : MonoBehaviour
             PauseGame();
     }
 
-
-    // Freezes game time and shows the pause menu.
     public void PauseGame()
     {
         GamePaused = true;
 
         if (pauseMenu != null) pauseMenu.SetActive(true);
-
-        // Time.timeScale = 0f; // Disable time scale pause
 
         if (EventSystem.current != null)
             EventSystem.current.sendNavigationEvents = true;
@@ -90,19 +76,13 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-
-    // Unfreezes game time and hides the pause menu.
     public void ResumeGame()
     {
         GamePaused = false;
 
         if (pauseMenu != null) pauseMenu.SetActive(false);
-
-        // Time.timeScale = 1f; // Disable time scale resume
     }
 
-
-    // Switches from pause menu to settings menu.
     public void OpenSettings()
     {
         if (pauseMenu != null) pauseMenu.SetActive(false);
@@ -117,8 +97,6 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-
-    // Switches from settings menu back to pause menu.
     public void CloseSettings()
     {
         if (settingsMenu != null) settingsMenu.SetActive(false);
@@ -133,13 +111,9 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-    // Return to Main Menu using SceneManager directly
-
-    // Resumes time and loads the Main Menu scene.
     public void GoToMainMenu()
     {
         GamePaused = false;
-        // Time.timeScale = 1f;
 
         if (SceneLoader.Instance != null)
         {

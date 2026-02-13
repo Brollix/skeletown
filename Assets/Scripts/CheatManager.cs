@@ -12,7 +12,6 @@ public class CheatManager : MonoBehaviour
     [Header("Cheat Settings")]
     public float SpeedMultiplier = 3f;
 
-    // Cheat States
     public bool IsGodMode { get; private set; } = false;
     public bool IsSuperSpeed { get; private set; } = false;
 
@@ -31,7 +30,6 @@ public class CheatManager : MonoBehaviour
 
     private void Start()
     {
-        // Try to find UI if not assigned
         if (cheatUI == null)
             cheatUI = GetComponentInChildren<CheatUI>();
     }
@@ -40,37 +38,31 @@ public class CheatManager : MonoBehaviour
     {
         if (Keyboard.current == null) return;
 
-        // F1: Toggle UI
         if (Keyboard.current.f1Key.wasPressedThisFrame)
         {
             if (cheatUI != null) cheatUI.TogglePanel();
         }
 
-        // F2: God Mode
         if (Keyboard.current.f2Key.wasPressedThisFrame)
         {
             ToggleGodMode();
         }
 
-        // F3: Next Level
         if (Keyboard.current.f3Key.wasPressedThisFrame)
         {
             GoToNextLevel();
         }
 
-        // F4: Kill All Enemies
         if (Keyboard.current.f4Key.wasPressedThisFrame)
         {
             KillAllEnemies();
         }
 
-        // F5: Speed
         if (Keyboard.current.f5Key.wasPressedThisFrame)
         {
             ToggleSpeed();
         }
 
-        // F6: Give XP / Level Up
         if (Keyboard.current.f6Key.wasPressedThisFrame)
         {
             GiveXPCheat();
@@ -80,30 +72,24 @@ public class CheatManager : MonoBehaviour
     private void ToggleGodMode()
     {
         IsGodMode = !IsGodMode;
-        Debug.Log($"[Cheat] God Mode: {IsGodMode}");
         UpdateUI();
     }
 
     private void ToggleSpeed()
     {
         IsSuperSpeed = !IsSuperSpeed;
-        Debug.Log($"[Cheat] Super Speed: {IsSuperSpeed}");
         UpdateUI();
     }
 
     private void GoToNextLevel()
     {
-        Debug.Log("[Cheat] Advancing to Next Level...");
-        
         if (GameManager.Instance != null)
         {
-            // Use our smart detection to find where we actually are
             int currentFloor = GetCurrentFloor();
             int nextFloor = currentFloor + 1;
             
-            if (nextFloor > 20) nextFloor = 1; // Loop back
+            if (nextFloor > 20) nextFloor = 1;
             
-            Debug.Log($"[Cheat] Teleporting from {currentFloor} to {nextFloor}");
             GameManager.Instance.TeleportToFloor(nextFloor);
         }
     }
@@ -111,7 +97,6 @@ public class CheatManager : MonoBehaviour
     private void KillAllEnemies()
     {
         int currentFloor = GetCurrentFloor();
-        Debug.Log($"[Cheat] Killing all enemies on Floor {currentFloor}...");
         
         List<Enemy> enemies = new List<Enemy>(Enemy.ActiveEnemies);
         foreach (var e in enemies)
@@ -132,7 +117,6 @@ public class CheatManager : MonoBehaviour
         int closestFloor = 1;
         bool foundAny = false;
 
-        // Check Doors (they have public floorNumber)
         Door[] doors = FindObjectsOfType<Door>();
         foreach (var door in doors)
         {
@@ -145,7 +129,6 @@ public class CheatManager : MonoBehaviour
             }
         }
 
-        // Check EnemySpawns (they are inside the floor)
         EnemySpawn[] spawners = FindObjectsOfType<EnemySpawn>();
         foreach (var spawner in spawners)
         {
@@ -153,7 +136,6 @@ public class CheatManager : MonoBehaviour
             if (dist < minDistance)
             {
                 minDistance = dist;
-                // EnemySpawn floorNumber is private, so grab from parent FloorID
                 var floorsID = spawner.GetComponentInParent<FloorID>();
                 if (floorsID != null)
                 {
@@ -165,19 +147,17 @@ public class CheatManager : MonoBehaviour
 
         if (foundAny)
         {
-            Debug.Log($"[Cheat] Detected closest floor: {closestFloor} (Dist: {minDistance:F1})");
             return closestFloor;
         }
 
-        return 1; // Default
+        return 1;
     }
 
     private void GiveXPCheat()
     {
-        Debug.Log("[Cheat] Giving XP...");
         if (PlayerExperience.Instance != null)
         {
-            PlayerExperience.Instance.AddXP(100f); // Arbitrary amount
+            PlayerExperience.Instance.AddXP(100f);
         }
     }
 

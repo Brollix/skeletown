@@ -15,23 +15,19 @@ public class PlayerHealth : MonoBehaviour
     public float CurrentHealth => currentHealth;
     public float HealthPercentage => currentHealth / MaxHealth;
     public bool IsInvincible => invincible;
-    public bool IsDead { get; private set; } = false; // safer encapsulation
+    public bool IsDead { get; private set; } = false;
 
     public event Action<float> OnHealthChanged;
     public event Action OnDeath;
     public static event Action OnPlayerDamage;
-    public static event Action OnPlayerDeath; // Global static event for Audio
+    public static event Action OnPlayerDeath;
 
-
-    // Initializes health and notifies listeners.
     private void Start()
     {
         currentHealth = MaxHealth;
         OnHealthChanged?.Invoke(currentHealth);
     }
 
-
-    // Applies damage to the player, triggering death or invincibility if needed.
     public void TakeDamage(float damage)
     {
         if (invincible || IsDead || PauseManager.GamePaused)
@@ -54,8 +50,6 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-
-    // Restores health up to the maximum limit.
     public void Heal(float amount)
     {
         if (IsDead) return;
@@ -64,8 +58,6 @@ public class PlayerHealth : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth);
     }
 
-
-    // Triggers death events and disables the player.
     private void Die()
     {
         if (IsDead) return;
@@ -73,11 +65,8 @@ public class PlayerHealth : MonoBehaviour
         IsDead = true;
         OnDeath?.Invoke();
         OnPlayerDeath?.Invoke();
-        // GameOverUI handles the game over screen
     }
 
-
-    // Handles temporary invincibility duration.
     private System.Collections.IEnumerator InvincibilityCoroutine()
     {
         invincible = true;

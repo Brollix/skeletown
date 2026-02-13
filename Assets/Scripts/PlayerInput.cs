@@ -15,8 +15,6 @@ public class PlayerInput : Player
     private BowController _bowController;
     private Transform bowTransform => _bowController != null ? _bowController.transform : (_bowController = GetComponentInChildren<BowController>())?.transform;
 
-
-    // Initializes input controls and references.
     protected override void Awake()
     {
         base.Awake();
@@ -25,35 +23,26 @@ public class PlayerInput : Player
         _bowController = GetComponentInChildren<BowController>();
     }
 
-
-    // Enables the input system.
     private void OnEnable()
     {
         if (controls == null) controls = new PlayerControls();
         controls.Player.Enable();
-        controls.UI.Enable(); // Ensure UI map is enabled for Pause
+        controls.UI.Enable();
 
-        // Movement
         controls.Player.Move.performed += OnMove;
         controls.Player.Move.canceled += OnMove;
 
-        // Look
         controls.Player.Look.performed += OnLook;
         controls.Player.Look.canceled += OnLook;
 
-        // Attack (Exposed for polling)
         AttackAction = controls.Player.Attack;
 
-        // Dash (Exposed for polling)
         DashAction = controls.Player.Dash;
         controls.Player.Dash.performed += OnDash;
 
-        // Pause (Exposed for polling if needed, but usually event driven)
         PauseAction = controls.UI.PauseToggle;
     }
 
-
-    // Disables the input system.
     private void OnDisable()
     {
         if (controls != null)
@@ -68,8 +57,6 @@ public class PlayerInput : Player
         }
     }
 
-
-    // Callback for movement input events.
     private void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();
@@ -80,7 +67,6 @@ public class PlayerInput : Player
 
     private void OnDash(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Dash Input Detected in PlayerInput!");
         DashTriggered = true;
     }
 
@@ -89,16 +75,13 @@ public class PlayerInput : Player
         DashTriggered = false;
     }
 
-    // Callback for look input events.
     private void OnLook(InputAction.CallbackContext ctx)
     {
-        // Ignore Mouse/Pointer delta because it conflicts with Mouse Position logic
         if (ctx.control.device is Pointer) return;
 
         lookInput = ctx.ReadValue<Vector2>();
     }
 
-    // -- Aim Direction Logic moved here to be the Single Source of Truth --
     public Vector2 CurrentAimDirection { get; private set; } = Vector2.right;
     private bool usingGamepad = false;
     private Vector2 lastGamepadDir = Vector2.right;
@@ -107,20 +90,17 @@ public class PlayerInput : Player
     {
         if (PauseManager.GamePaused) return;
 
-        // 1. Check for Gamepad Input
         if (lookInput.sqrMagnitude > 0.01f)
         {
             usingGamepad = true;
             lastGamepadDir = lookInput.normalized;
         }
 
-        // 2. Check for Mouse Movement to switch back
         if (Mouse.current != null && Mouse.current.delta.ReadValue().sqrMagnitude > 0.5f)
         {
             usingGamepad = false;
         }
 
-        // 3. Update Current Aim Direction
         if (usingGamepad)
         {
             CurrentAimDirection = lastGamepadDir;

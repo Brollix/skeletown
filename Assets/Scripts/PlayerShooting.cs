@@ -11,26 +11,18 @@ public class PlayerShooting : Player
     private float cooldownTimer;
     private BowController bowController;
 
-
-    // Finds child references like the Bow Controller.
     protected override void Awake()
     {
         base.Awake();
         bowController = GetComponentInChildren<BowController>();
-        
-        if (arrowTemplate == null)
-            Debug.LogError("Assign the arrow prefab in the Inspector!");
     }
 
-
-    // Checks for shooting input and manages cooldown.
     private void Update()
     {
         if (PauseManager.GamePaused) return;
         
         cooldownTimer -= Time.deltaTime;
 
-        // Check Input Action for Attack (works for both Mouse Click & Controller Button)
         if (input != null && input.AttackAction != null && input.AttackAction.WasPerformedThisFrame() && cooldownTimer <= 0f)
         {
             Shoot();
@@ -40,31 +32,23 @@ public class PlayerShooting : Player
 
     public static event System.Action OnShoot;
 
-
-    // Instantiates an arrow projectile and aims it at the mouse.
     private void Shoot()
     {
         OnShoot?.Invoke();
 
         if (bowController == null || arrowTemplate == null) 
         {
-            if (bowController == null) Debug.LogError("No BowController found!");
-            if (arrowTemplate == null) Debug.LogError("No arrow template assigned!");
             return;
         }
 
         Vector2 aimDirection = GetAimDirection();
         
-        // Create arrow at bow's position
         GameObject arrow = Instantiate(arrowTemplate, bowController.transform.position, Quaternion.identity);
         arrow.SetActive(true);
 
         if (arrow.TryGetComponent(out Arrow arrowScript))
         {
-            // Set the direction based on player-to-mouse aiming, but spawn at bow position
             arrowScript.setDirection(aimDirection);
-
-            // Pass player damage into the arrow
             arrowScript.SetDamage(damage);
         }
     }

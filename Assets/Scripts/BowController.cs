@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public class BowController : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
@@ -9,19 +8,14 @@ public class BowController : MonoBehaviour
     private PlayerFacing playerFacing;
     [SerializeField] private float radius = 0.5f;
 
-
     private Player player;
 
-    //This method ensures the game's time scale is reset when the bow initializes, so that the bow doesn't end up frozen once the gameplay scene starts.
     private void Start()
     {
-        // Time.timeScale = 1f;
         player = (playerFacing != null) ? playerFacing.GetComponent<Player>() : GetComponentInParent<Player>();
         if (player == null) player = Player.Instance;
     }
 
-
-    //This method initiaizes a reference to the camera, it initializes PlayerFacing and it detatched the bow from the player so the bow's sprite doesn't flip along with the player sprite.
     private void Awake()
     {
         if (mainCamera == null)
@@ -32,7 +26,6 @@ public class BowController : MonoBehaviour
         transform.SetParent(null, true);
     }
 
-    //This method first checks if the game is paused. If it isn't, it calls the method that allows the bow to rotate, updating every frame so it loops rotation logic.
     private void Update()
     {
         if (PauseManager.GamePaused) return;
@@ -40,15 +33,13 @@ public class BowController : MonoBehaviour
         RotateAroundPlayer();
     }
 
-
-    //This method is what allows the bow to rotate around the player based on the mouse cursor position. It gets the mouse position relative to the player, then uses that to set the bow's position to orbit around the player, and it makes an angle to follow the mouse cursor that is used to make the bow rotate around.
     private void RotateAroundPlayer()
     {
         if (playerTransform == null && player == null) return;
         
         Vector3 centerPos = (playerTransform != null) ? playerTransform.position : player.transform.position;
 
-        Vector2 dir = Vector2.right; // Default
+        Vector2 dir = Vector2.right;
 
         if (player != null)
         {
@@ -56,7 +47,6 @@ public class BowController : MonoBehaviour
         }
         else
         {
-            // Fallback if player reference missing (shouldn't happen)
             float zDist = Mathf.Abs(mainCamera.transform.position.z - centerPos.z);
             Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(
                 new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, zDist)

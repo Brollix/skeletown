@@ -1,5 +1,4 @@
 using UnityEngine;
-// using UnityEngine.SceneManagement;
 
 public class MenuUI : MonoBehaviour
 {
@@ -15,8 +14,6 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private GameObject creditsFirstButton;
     [SerializeField] private SettingsMenu settingsMenuScript;
 
-
-    // Initializes panel visibility on startup.
     private void Start()
     {
         mainMenuPanel.SetActive(true);
@@ -35,11 +32,9 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-
-    // Resets game state and loads the main dungeon scene.
     public void StartGame()
     {
-        Time.timeScale = 1f; // Ensure game is unpaused
+        Time.timeScale = 1f;
         if (GameManager.Instance != null)
         {
             GameManager.Instance.ResetGame();
@@ -50,16 +45,11 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-
-    // Closes the application.
     public void QuitGame()
     {
-        Debug.Log("Quit pressed");
         Application.Quit();
     }
 
-
-    // Switches to the settings panel.
     public void OpenSettings()
     {
         mainMenuPanel.SetActive(false);
@@ -71,8 +61,6 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-
-    // Closes settings and returns to main menu.
     public void CloseSettings()
     {
         settingsPanel.SetActive(false);
@@ -84,8 +72,6 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-
-    // Switches to the upgrades panel.
     public void OpenUpgrades()
     {
         mainMenuPanel.SetActive(false);
@@ -97,8 +83,6 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-
-    // Closes upgrades and returns to main menu.
     public void CloseUpgrades()
     {
         upgradesPanel.SetActive(false);
@@ -110,8 +94,6 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-
-    // Switches to the credits panel.
     public void OpenCredits()
     {
         mainMenuPanel.SetActive(false);
@@ -123,8 +105,6 @@ public class MenuUI : MonoBehaviour
         }
     }
 
-
-    // Closes credits and returns to main menu.
     public void CloseCredits()
     {
         creditsPanel.SetActive(false);

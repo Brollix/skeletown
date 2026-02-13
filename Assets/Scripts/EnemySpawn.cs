@@ -13,16 +13,11 @@ public class EnemySpawn : MonoBehaviour
     public float separationRadius = 1f;
     public float separationForce = 2f;
 
-
-    
     private int floorNumber;
 
     [Header("Boss Settings")]
     public bool isBossSpawner = false;
 
-
-
-    // Identifies floor number and begins spawning.
     void Start()
     {
         FloorID id = GetComponentInParent<FloorID>();
@@ -30,28 +25,16 @@ public class EnemySpawn : MonoBehaviour
         {
             floorNumber = id.floorNumber;
         }
-        else
-        {
-            Debug.LogWarning("EnemySpawn: No FloorID found in parent!");
-        }
         
         StartCoroutine(SpawnEnemies());
     }
 
-
-    // Spawns enemies sequentially and registers them with the manager.
     IEnumerator SpawnEnemies()
     {
-
         if (GameManager.Instance != null)
         {
             GameManager.Instance.AddEnemies(floorNumber, numberToSpawn);
         }
-        else
-        {
-            Debug.LogError("EnemySpawn: GameManager not found! Doors will not open!");
-        }
-
 
         for (int i = 0; i < numberToSpawn; i++)
         {
@@ -76,13 +59,10 @@ public class EnemySpawn : MonoBehaviour
 
             yield return null;
 
-            // Wait if game is paused
             while (PauseManager.GamePaused)
             {
                 yield return null;
             }
         }
-
-
     }
 }

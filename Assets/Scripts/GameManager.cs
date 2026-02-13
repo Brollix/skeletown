@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, int> enemiesRemaining = new Dictionary<int, int>();
     private Dictionary<int, List<Door>> doorsPerFloor = new Dictionary<int, List<Door>>();
 
-
-    //Initializes the Singleton instance. Singleton so that it can be accessible from anywhere, and it centralizes logic so enemies and doors don't need to know about each other directly.
     void Awake()
     {
         if (Instance == null)
@@ -26,18 +24,13 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver = false;
 
-
-    //Resets the game state, clearing enemy and door tracking.
     public void ResetGame()
     {
         IsGameOver = false;
         enemiesRemaining.Clear();
         doorsPerFloor.Clear();
-        Debug.Log("GameManager: Game state reset.");
     }
 
-
-    //Registers a door for a specific floor and ensures it is closed if enemies are present.
     public void RegisterDoor(int floor, Door door)
     {
         if (!doorsPerFloor.ContainsKey(floor))
@@ -53,8 +46,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    //Adds the corresponding number of enemies to the specific floor's count and locks the doors. It forces doors to close when enemies are added to avoid any open doors on startup.
     public void AddEnemies(int floor, int amount)
     {
         if (!enemiesRemaining.ContainsKey(floor))
@@ -76,13 +67,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    //Notifies the gameManager that an enemy on a specific floor has died, opening doors once all are dead.
     public void EnemyDied(int floor)
     {
         if (!enemiesRemaining.ContainsKey(floor))
         {
-            
             return;
         }
 
@@ -90,7 +78,6 @@ public class GameManager : MonoBehaviour
 
         if (enemiesRemaining[floor] == 0)
         {
-
             if (doorsPerFloor.ContainsKey(floor))
             {
                 foreach (Door d in doorsPerFloor[floor])
@@ -104,29 +91,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    // This checks for cheat inputs (F1, F2).
     void Update()
     {
-        /* Old Cheats - Moved to CheatManager
-        if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame)
-        {
-            KillAllEnemiesExceptBoss();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.f2Key.wasPressedThisFrame)
-        {
-            MaxStatsCheat();
-        }
-        */
     }
 
-
-    // Kills all enemies except the final boss and teleports the player.
     private void KillAllEnemiesExceptBoss()
     {
-        Debug.Log("CHEAT: Killing all enemies except Floor 20 Boss...");
-        
         List<Enemy> enemiesToKill = new List<Enemy>(Enemy.ActiveEnemies);
 
         int count = 0;
@@ -142,17 +112,12 @@ public class GameManager : MonoBehaviour
             e.TakeDamage(999999f);
             count++;
         }
-        
-        Debug.Log($"CHEAT: Killed {count} enemies. Teleporting to Floor 20...");
 
         TeleportToFloor(20);
     }
 
-
-    // Maxes out all upgrade stats and heals the player.
     private void MaxStatsCheat()
     {
-        Debug.Log("CHEAT: Maxing Stats...");
         if (UpgradeManager.Instance != null)
         {
             UpgradeManager.Instance.CheatMaxOutStats();
@@ -170,7 +135,6 @@ public class GameManager : MonoBehaviour
 
     public int CurrentFloor { get; private set; } = 1;
 
-    // Moves the player to the spawn point of the specified floor, in this case Floor 20.
     public void TeleportToFloor(int floor)
     {
         CurrentFloor = floor;
@@ -184,11 +148,9 @@ public class GameManager : MonoBehaviour
                 {
                     Vector3 targetPos = spawner.spawnPoint != null ? spawner.spawnPoint.position : spawner.transform.position;
                     Player.Instance.transform.position = targetPos;
-                    Debug.Log($"CHEAT: Teleported to Floor {floor} at {targetPos}");
                     return;
                 }
             }
         }
-        Debug.LogWarning($"CHEAT: Could not find spawner for Floor {floor}");
     }
 }

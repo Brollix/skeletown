@@ -50,7 +50,6 @@ public class NavigationManager : MonoBehaviour
     {
         if (EventSystem.current == null) return;
 
-        // Keep track of the last valid selection
         if (EventSystem.current.currentSelectedGameObject != null)
         {
             lastSelectedGameObject = EventSystem.current.currentSelectedGameObject;
@@ -59,7 +58,6 @@ public class NavigationManager : MonoBehaviour
 
     private void OnNavigate(InputAction.CallbackContext context)
     {
-        // If nothing is selected, try to restore the last selection
         if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == null)
         {
             if (lastSelectedGameObject != null && lastSelectedGameObject.activeInHierarchy)
@@ -69,10 +67,6 @@ public class NavigationManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Sets a specific GameObject as selected and updates the last known selection.
-    /// </summary>
-    /// <param name="defaultObj">The UI element to select.</param>
     public void SetDefaultSelection(GameObject defaultObj)
     {
         if (defaultObj != null)
@@ -83,12 +77,11 @@ public class NavigationManager : MonoBehaviour
 
     private IEnumerator SelectInNextFrame(GameObject obj)
     {
-        // Wait for end of frame to ensure the object is active in hierarchy and ready
         yield return null; 
         
         if (EventSystem.current != null && obj != null && obj.activeInHierarchy)
         {
-            EventSystem.current.SetSelectedGameObject(null); // Clear first
+            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(obj);
             lastSelectedGameObject = obj;
         }

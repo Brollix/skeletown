@@ -1,34 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public class PlayerMovement : Player
 {
     [Header("Movement")]
     private float moveSpeed => (UpgradeManager.Instance?.Speed ?? 5f) * (CheatManager.Instance != null && CheatManager.Instance.IsSuperSpeed ? CheatManager.Instance.SpeedMultiplier : 1f);
     
-    // Automatic component references
     private Animator _animator;
     private Animator animator => _animator != null ? _animator : _animator = GetComponent<Animator>();
     private Camera _mainCamera;
     private Camera mainCamera => _mainCamera != null ? _mainCamera : _mainCamera = Camera.main;
 
-    // Movement only - shooting is handled by PlayerShooting
-
     private PlayerControls controls;
     private Vector2 moveInput;
 
-
-    // Debugs current speed stats on start.
     private void Start()
     {
-        // Time.timeScale = 1f; // safety reset
-        Debug.Log($"🏃 Player speed: {moveSpeed} (base: 5, upgrades: {UpgradeManager.Instance?.Speed ?? 5f})");
     }
 
-
-
-    // Initializes input controls and component references.
     private void Awake()
     {
         base.Awake();
@@ -37,8 +26,6 @@ public class PlayerMovement : Player
         _mainCamera = Camera.main;
     }
 
-
-    // Enables input listening.
     private void OnEnable()
     {
         if (controls == null) controls = new PlayerControls();
@@ -47,8 +34,6 @@ public class PlayerMovement : Player
         controls.Player.Move.canceled += OnMove;
     }
 
-
-    // Disables input listening.
     private void OnDisable()
     {
         if (controls != null)
@@ -59,8 +44,6 @@ public class PlayerMovement : Player
         }
     }
 
-
-    // Reads input vector from the Input System.
     private void OnMove(InputAction.CallbackContext ctx)
     {
         if (PauseManager.GamePaused)
@@ -76,20 +59,16 @@ public class PlayerMovement : Player
             animator.SetBool("isMoving", moveInput != Vector2.zero);
     }
 
-
-    // Applies physics-based movement to the Rigidbody.
     private void FixedUpdate()
     {
         if (PauseManager.GamePaused || isDashing) return;
 
-        // Move the player
         if (rb != null)
         {
             Vector2 movement = moveInput.normalized * moveSpeed;
             rb.linearVelocity = new Vector2(movement.x, movement.y);
         }
 
-        // Update animation
         if (animator != null)
         {
             bool isMoving = moveInput.magnitude > 0.1f;
@@ -97,8 +76,6 @@ public class PlayerMovement : Player
         }
     }
 
-
-    // Updates visual facing direction and stops if paused.
     private void Update()
     {
         if (PauseManager.GamePaused) 
@@ -107,12 +84,10 @@ public class PlayerMovement : Player
             return;
         }
         
-        // Move(input.moveInput, moveSpeed); // Removed to prevent conflict with FixedUpdate
         facing?.UpdateFacingDirection();
 
         if (input != null && input.DashTriggered)
         {
-            Debug.Log("Dash Triggered (Event)!");
             input.ResetDashTrigger();
             StartDash();
         }
@@ -137,11 +112,9 @@ public class PlayerMovement : Player
         isDashing = true;
         lastDashTime = Time.time;
 
-        // Determine dash direction: movement input or facing direction
         Vector2 dashDir = moveInput.normalized;
         if (dashDir == Vector2.zero)
         {
-            // If not moving, dash in the direction the player is looking/aiming
             dashDir = input.CurrentAimDirection;
         }
 

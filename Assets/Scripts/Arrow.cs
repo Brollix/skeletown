@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// This script controls the arrow or projectile movement, lifetime and collision with enemies and walls.
 public class Arrow : MonoBehaviour
 {
     [Header("Arrow Settings")]
@@ -13,8 +12,6 @@ public class Arrow : MonoBehaviour
     private GameObject player;
     private Collider2D arrowCollider;
 
-    //This Start method initializes the reference to the player and configures the collision to make sure the arrow ignores any collision with the player if it happens. It then auto destroys the arrow object if it never hits anything to make sure it doesn't float around forever.
-    // Initializes collision ignores and lifetime destruction.
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -34,8 +31,7 @@ public class Arrow : MonoBehaviour
         
         Destroy(gameObject, lifetime);
     }
-    //This method ensures the arrow always heads out in the correct direction, forcing the sprite to face the direction in which the player was facing when they shot the arrow.
-    // Sets the arrow's flight direction and rotation.
+
     public void setDirection(Vector2 dir)
     {
         direction = dir.normalized;
@@ -44,14 +40,10 @@ public class Arrow : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle + rotationOffset);
     }
 
-
-    //This method assigns the damage value for this projectile.
     public void SetDamage(float value)
     {
         damage = value;
     }
-
-    //This method here uses transform to change the arrow's direction, making it move forward across the screen in the direction it was shot in.
 
     private void Update()
     {
@@ -62,8 +54,6 @@ public class Arrow : MonoBehaviour
 
     public static event System.Action OnEnemyHit;
 
-    //This method starts by checking if the arrow is colliding with the player or the bow to ensure it doesn't actually count as a collision. Once that's done, assuming the arrow has collided with an enemy, it checks if the enemy is still present and if they are, it makes the enemy take damage.
-    //Finally, the arrow object is destroyed upon collision.
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") ||

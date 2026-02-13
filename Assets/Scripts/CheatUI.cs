@@ -7,13 +7,11 @@ public class CheatUI : MonoBehaviour
     [SerializeField] private GameObject cheatPanel;
 
     [Header("Status Text (Optional)")]
-    // Assign these if you want dynamic "ON/OFF" text updates.
     [SerializeField] private TextMeshProUGUI godModeStatus;
     [SerializeField] private TextMeshProUGUI speedStatus;
 
     private void Start()
     {
-        // Ensure panel is hidden on start
         if (cheatPanel != null)
             cheatPanel.SetActive(false);
             

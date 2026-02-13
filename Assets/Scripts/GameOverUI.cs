@@ -1,5 +1,4 @@
 using UnityEngine;
-// using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -9,8 +8,6 @@ public class GameOverUI : MonoBehaviour
     [Header("Navigation")]
     [SerializeField] private GameObject mainMenuButton;
 
-
-    // Subscribes to player death events and hides panel.
     private void Start()
     {
         PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
@@ -25,8 +22,6 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
-
-    // Unsubscribes from player death events.
     private void OnDestroy()
     {
         PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
@@ -36,14 +31,12 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
-
-    // Pauses game and shows defeat screen.
     private void ShowGameOver()
     {
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
-            Time.timeScale = 0f; // Pause the game
+            Time.timeScale = 0f;
             
             if (GameManager.Instance != null) GameManager.Instance.IsGameOver = true;
             PauseManager.GamePaused = true;
@@ -56,7 +49,6 @@ public class GameOverUI : MonoBehaviour
                 NavigationManager.Instance.SetDefaultSelection(mainMenuButton);
             }
 
-            // Hide player to simulate death
             PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
             if (playerHealth != null)
             {
@@ -64,7 +56,6 @@ public class GameOverUI : MonoBehaviour
                 if (sr != null) sr.enabled = false;
             }
 
-            // Hide Bow
             BowController bow = FindObjectOfType<BowController>();
             if (bow != null)
             {
@@ -73,11 +64,9 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
-
-    // Resumes time and returns to main menu.
     public void AcceptAndGoToMenu()
     {
-        Time.timeScale = 1f; // Resume time before changing scene
+        Time.timeScale = 1f;
         PauseManager.GamePaused = false;
         if (GameManager.Instance != null) GameManager.Instance.IsGameOver = false;
 
