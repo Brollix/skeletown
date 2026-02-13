@@ -9,6 +9,7 @@ public class PauseManager : MonoBehaviour
     [Header("UI Panels")]
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private GameObject hudPanel;
     [SerializeField] private InputActionReference pauseInput;
 
     [Header("Navigation")]
@@ -81,11 +82,13 @@ public class PauseManager : MonoBehaviour
         GamePaused = false;
 
         if (pauseMenu != null) pauseMenu.SetActive(false);
+        if (hudPanel != null) hudPanel.SetActive(true);
     }
 
     public void OpenSettings()
     {
         if (pauseMenu != null) pauseMenu.SetActive(false);
+        if (hudPanel != null) hudPanel.SetActive(false);
         if (settingsMenu != null) 
         {
             settingsMenu.SetActive(true);
@@ -100,6 +103,7 @@ public class PauseManager : MonoBehaviour
     public void CloseSettings()
     {
         if (settingsMenu != null) settingsMenu.SetActive(false);
+        if (hudPanel != null) hudPanel.SetActive(true);
         if (pauseMenu != null) 
         {
             pauseMenu.SetActive(true);

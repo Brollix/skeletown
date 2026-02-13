@@ -989,6 +989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 141782207}
   settingsMenu: {fileID: 1129986967}
+  hudPanel: {fileID: 1510574628}
   pauseInput: {fileID: -3816790174416334561, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   resumeButton: {fileID: 1968076776}
   settingsMenuScript: {fileID: 28645174}
