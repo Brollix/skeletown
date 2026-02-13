@@ -80,7 +80,7 @@ public class PlayerMovement : Player
     // Applies physics-based movement to the Rigidbody.
     private void FixedUpdate()
     {
-        if (PauseManager.GamePaused) return;
+        if (PauseManager.GamePaused || isDashing) return;
 
         // Move the player
         if (rb != null)
@@ -109,5 +109,56 @@ public class PlayerMovement : Player
         
         // Move(input.moveInput, moveSpeed); // Removed to prevent conflict with FixedUpdate
         facing?.UpdateFacingDirection();
+
+        if (input != null && input.DashTriggered)
+        {
+            Debug.Log("Dash Triggered (Event)!");
+            input.ResetDashTrigger();
+            StartDash();
+        }
+    }
+
+    [Header("Dash Settings")]
+    [SerializeField] private float dashSpeed = 15f;
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
+    private float lastDashTime = -999f;
+    private bool isDashing = false;
+
+    private void StartDash()
+    {
+        if (isDashing || Time.time < lastDashTime + dashCooldown) return;
+        
+        StartCoroutine(DashCoroutine());
+    }
+
+    private System.Collections.IEnumerator DashCoroutine()
+    {
+        isDashing = true;
+        lastDashTime = Time.time;
+
+        // Determine dash direction: movement input or facing direction
+        Vector2 dashDir = moveInput.normalized;
+        if (dashDir == Vector2.zero)
+        {
+            // If not moving, dash in the direction the player is looking/aiming
+            dashDir = input.CurrentAimDirection;
+        }
+
+        float elapsed = 0f;
+        while (elapsed < dashDuration)
+        {
+            if (PauseManager.GamePaused)
+            {
+                isDashing = false;
+                yield break;
+            }
+
+            rb.linearVelocity = dashDir * dashSpeed;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        isDashing = false;
     }
 }

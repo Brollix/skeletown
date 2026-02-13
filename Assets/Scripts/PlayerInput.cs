@@ -6,6 +6,7 @@ public class PlayerInput : Player
     public Vector2 moveInput { get; private set; }
     public Vector2 lookInput { get; private set; }
     public InputAction AttackAction { get; private set; }
+    public InputAction DashAction { get; private set; }
     public InputAction PauseAction { get; private set; }
 
     private PlayerControls controls;
@@ -43,6 +44,10 @@ public class PlayerInput : Player
         // Attack (Exposed for polling)
         AttackAction = controls.Player.Attack;
 
+        // Dash (Exposed for polling)
+        DashAction = controls.Player.Dash;
+        controls.Player.Dash.performed += OnDash;
+
         // Pause (Exposed for polling if needed, but usually event driven)
         PauseAction = controls.UI.PauseToggle;
     }
@@ -57,6 +62,7 @@ public class PlayerInput : Player
             controls.Player.Move.canceled -= OnMove;
             controls.Player.Look.performed -= OnLook;
             controls.Player.Look.canceled -= OnLook;
+            controls.Player.Dash.performed -= OnDash;
             controls.Player.Disable();
             controls.UI.Disable();
         }
@@ -68,6 +74,19 @@ public class PlayerInput : Player
     {
         moveInput = ctx.ReadValue<Vector2>();
         animator?.SetBool("isMoving", moveInput != Vector2.zero);
+    }
+
+    public bool DashTriggered { get; private set; }
+
+    private void OnDash(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("Dash Input Detected in PlayerInput!");
+        DashTriggered = true;
+    }
+
+    public void ResetDashTrigger()
+    {
+        DashTriggered = false;
     }
 
     // Callback for look input events.
