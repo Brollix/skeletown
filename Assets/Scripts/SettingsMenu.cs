@@ -82,7 +82,16 @@ public class SettingsMenu : MonoBehaviour
 
     public void SetFullscreen(bool isFullscreen)
     {
-        Screen.fullScreen = isFullscreen;
+        if (isFullscreen)
+        {
+            Resolution currentRes = Screen.currentResolution;
+            Screen.SetResolution(currentRes.width, currentRes.height, true);
+        }
+        else
+        {
+            Screen.fullScreen = false;
+        }
+
         PlayerPrefs.SetInt("Fullscreen", isFullscreen ? 1 : 0);
     }
 
