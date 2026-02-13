@@ -121,7 +121,7 @@ public class PauseManager : MonoBehaviour
 
         if (SceneLoader.Instance != null)
         {
-            SceneLoader.Instance.LoadScene("MainMenu");
+            SceneLoader.Instance.LoadScene(GameConstants.SCENE_MAIN_MENU);
         }
     }
 }

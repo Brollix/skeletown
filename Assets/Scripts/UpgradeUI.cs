@@ -61,7 +61,7 @@ public class UpgradeUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        skillPointsText.text = "Skill Points: " + PlayerExperience.Instance.SkillPoints;
+        skillPointsText.text = $"{GameConstants.UI_SKILL_POINTS_PREFIX}{PlayerExperience.Instance.SkillPoints}";
 
         healthLevelValue.text = UpgradeManager.Instance.GetHealthUpgrades().ToString();
         damageLevelValue.text = UpgradeManager.Instance.GetDamageUpgrades().ToString();

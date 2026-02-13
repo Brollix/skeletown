@@ -21,7 +21,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void Start()
     {
-        bool isFullscreen = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
+        bool isFullscreen = PlayerPrefs.GetInt(GameConstants.PREF_FULLSCREEN, 1) == 1;
         if (fullscreenToggle != null)
         {
             fullscreenToggle.isOn = isFullscreen;
@@ -29,8 +29,8 @@ public class SettingsMenu : MonoBehaviour
         }
         Screen.fullScreen = isFullscreen;
 
-        float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        bool musicMute = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
+        float musicVol = PlayerPrefs.GetFloat(GameConstants.PREF_MUSIC_VOLUME, 1f);
+        bool musicMute = PlayerPrefs.GetInt(GameConstants.PREF_MUSIC_MUTED, 0) == 1;
 
         if (musicSlider != null)
         {
@@ -44,8 +44,8 @@ public class SettingsMenu : MonoBehaviour
             musicToggle.onValueChanged.AddListener(ToggleMusic);
         }
 
-        float sfxVol = PlayerPrefs.GetFloat("SFXVolume", 1f);
-        bool sfxMute = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
+        float sfxVol = PlayerPrefs.GetFloat(GameConstants.PREF_SFX_VOLUME, 1f);
+        bool sfxMute = PlayerPrefs.GetInt(GameConstants.PREF_SFX_MUTED, 0) == 1;
 
         if (sfxSlider != null)
         {
@@ -92,7 +92,7 @@ public class SettingsMenu : MonoBehaviour
             Screen.fullScreen = false;
         }
 
-        PlayerPrefs.SetInt("Fullscreen", isFullscreen ? 1 : 0);
+        PlayerPrefs.SetInt(GameConstants.PREF_FULLSCREEN, isFullscreen ? 1 : 0);
     }
 
     public void SetMusicVolume(float value)

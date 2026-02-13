@@ -75,13 +75,13 @@ public class ExperienceHUD : MonoBehaviour
         if (PlayerExperience.Instance == null) return;
 
         if (levelText != null)
-            levelText.text = $"Level {PlayerExperience.Instance.CurrentLevel}";
+            levelText.text = $"{GameConstants.UI_LEVEL_PREFIX}{PlayerExperience.Instance.CurrentLevel}";
 
         if (xpText != null)
         {
             float currentXP = PlayerExperience.Instance.CurrentXP;
             float maxXP = PlayerExperience.Instance.XPForNextLevel;
-            xpText.text = $"{Mathf.FloorToInt(currentXP)} / {Mathf.FloorToInt(maxXP)} XP";
+            xpText.text = $"{Mathf.FloorToInt(currentXP)}{GameConstants.UI_SLASH_SPACED}{Mathf.FloorToInt(maxXP)}{GameConstants.UI_XP_SUFFIX}";
         }
 
         if (xpBar != null)
@@ -91,7 +91,7 @@ public class ExperienceHUD : MonoBehaviour
         }
 
         if (skillPointsText != null)
-            skillPointsText.text = $"Skill Points: {PlayerExperience.Instance.SkillPoints}";
+            skillPointsText.text = $"{GameConstants.UI_SKILL_POINTS_PREFIX}{PlayerExperience.Instance.SkillPoints}";
 
         if (showHealthInHUD)
         {
@@ -100,7 +100,7 @@ public class ExperienceHUD : MonoBehaviour
             {
                 if (healthText != null)
                 {
-                    healthText.text = $"{Mathf.CeilToInt(playerHealth.CurrentHealth)} / {Mathf.CeilToInt(playerHealth.MaxHealth)} HP";
+                    healthText.text = $"{Mathf.CeilToInt(playerHealth.CurrentHealth)}{GameConstants.UI_SLASH_SPACED}{Mathf.CeilToInt(playerHealth.MaxHealth)}{GameConstants.UI_HP_SUFFIX}";
                 }
 
                 if (healthBar != null)

@@ -49,9 +49,9 @@ public class VictoryUI : MonoBehaviour
 
         if (PlayerExperience.Instance != null)
         {
-            PlayerPrefs.DeleteKey("PlayerLevel");
-            PlayerPrefs.DeleteKey("PlayerXP");
-            PlayerPrefs.DeleteKey("SkillPoints");
+            PlayerPrefs.DeleteKey(GameConstants.PREF_PLAYER_LEVEL);
+            PlayerPrefs.DeleteKey(GameConstants.PREF_PLAYER_XP);
+            PlayerPrefs.DeleteKey(GameConstants.PREF_SKILL_POINTS);
             PlayerPrefs.Save();
             
             PlayerExperience.Instance.LoadProgress();
@@ -59,7 +59,7 @@ public class VictoryUI : MonoBehaviour
 
         if (SceneLoader.Instance != null)
         {
-            SceneLoader.Instance.LoadScene("MainMenu");
+            SceneLoader.Instance.LoadScene(GameConstants.SCENE_MAIN_MENU);
         }
     }
 }

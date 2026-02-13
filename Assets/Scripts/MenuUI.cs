@@ -41,7 +41,7 @@ public class MenuUI : MonoBehaviour
         }
         if (SceneLoader.Instance != null)
         {
-            SceneLoader.Instance.LoadScene("DungeonScene");
+            SceneLoader.Instance.LoadScene(GameConstants.SCENE_DUNGEON);
         }
     }
 

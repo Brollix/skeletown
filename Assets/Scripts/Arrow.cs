@@ -14,7 +14,7 @@ public class Arrow : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag(GameConstants.TAG_PLAYER);
         arrowCollider = GetComponent<Collider2D>();
         
         if (player != null)
@@ -56,7 +56,7 @@ public class Arrow : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") ||
+        if (collision.gameObject.CompareTag(GameConstants.TAG_PLAYER) ||
             collision.gameObject.GetComponent<PlayerMovement>() != null ||
             collision.gameObject.GetComponent<BowController>() != null ||
             (player != null && collision.gameObject.transform.IsChildOf(player.transform)))

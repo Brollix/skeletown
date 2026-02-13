@@ -23,9 +23,9 @@ public class SceneLoader : MonoBehaviour
 
     private void Start()
     {
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Boot")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == GameConstants.SCENE_BOOT)
         {
-            LoadScene("MainMenu");
+            LoadScene(GameConstants.SCENE_MAIN_MENU);
         }
     }
 

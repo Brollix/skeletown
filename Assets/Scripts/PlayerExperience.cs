@@ -84,16 +84,16 @@ public class PlayerExperience : MonoBehaviour
 
     public void LoadProgress()
     {
-        currentLevel = PlayerPrefs.GetInt("PlayerLevel", 1);
-        currentXP = PlayerPrefs.GetFloat("PlayerXP", 0f);
-        skillPoints = PlayerPrefs.GetInt("SkillPoints", 0);
+        currentLevel = PlayerPrefs.GetInt(GameConstants.PREF_PLAYER_LEVEL, 1);
+        currentXP = PlayerPrefs.GetFloat(GameConstants.PREF_PLAYER_XP, 0f);
+        skillPoints = PlayerPrefs.GetInt(GameConstants.PREF_SKILL_POINTS, 0);
     }
 
     public void SaveProgress()
     {
-        PlayerPrefs.SetInt("PlayerLevel", currentLevel);
-        PlayerPrefs.SetFloat("PlayerXP", currentXP);
-        PlayerPrefs.SetInt("SkillPoints", skillPoints);
+        PlayerPrefs.SetInt(GameConstants.PREF_PLAYER_LEVEL, currentLevel);
+        PlayerPrefs.SetFloat(GameConstants.PREF_PLAYER_XP, currentXP);
+        PlayerPrefs.SetInt(GameConstants.PREF_SKILL_POINTS, skillPoints);
         PlayerPrefs.Save();
     }
 

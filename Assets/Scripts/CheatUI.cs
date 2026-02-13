@@ -27,9 +27,9 @@ public class CheatUI : MonoBehaviour
     public void UpdateStatus(bool isGodMode, bool isSpeedActive)
     {
         if (godModeStatus != null)
-            godModeStatus.text = isGodMode ? "<color=green>[ON]</color>" : "<color=red>[OFF]</color>";
+            godModeStatus.text = isGodMode ? GameConstants.UI_ON : GameConstants.UI_OFF;
             
         if (speedStatus != null)
-            speedStatus.text = isSpeedActive ? "<color=green>[ON]</color>" : "<color=red>[OFF]</color>";
+            speedStatus.text = isSpeedActive ? GameConstants.UI_ON : GameConstants.UI_OFF;
     }
 }

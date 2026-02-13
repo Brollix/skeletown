@@ -107,16 +107,16 @@ public class UpgradeManager : MonoBehaviour
 
     public void LoadUpgrades()
     {
-        healthUpgrades = PlayerPrefs.GetInt("HealthUpgrades", 0);
-        damageUpgrades = PlayerPrefs.GetInt("DamageUpgrades", 0);
-        speedUpgrades = PlayerPrefs.GetInt("SpeedUpgrades", 0);
+        healthUpgrades = PlayerPrefs.GetInt(GameConstants.PREF_HEALTH_UPGRADES, 0);
+        damageUpgrades = PlayerPrefs.GetInt(GameConstants.PREF_DAMAGE_UPGRADES, 0);
+        speedUpgrades = PlayerPrefs.GetInt(GameConstants.PREF_SPEED_UPGRADES, 0);
     }
 
     public void SaveUpgrades()
     {
-        PlayerPrefs.SetInt("HealthUpgrades", healthUpgrades);
-        PlayerPrefs.SetInt("DamageUpgrades", damageUpgrades);
-        PlayerPrefs.SetInt("SpeedUpgrades", speedUpgrades);
+        PlayerPrefs.SetInt(GameConstants.PREF_HEALTH_UPGRADES, healthUpgrades);
+        PlayerPrefs.SetInt(GameConstants.PREF_DAMAGE_UPGRADES, damageUpgrades);
+        PlayerPrefs.SetInt(GameConstants.PREF_SPEED_UPGRADES, speedUpgrades);
         PlayerPrefs.Save();
     }
 }

@@ -50,13 +50,13 @@ public class PlayerMovement : Player
         {
             moveInput = Vector2.zero;
             if (animator != null)
-                animator.SetBool("isMoving", false);
+                animator.SetBool(GameConstants.ANIM_IS_MOVING, false);
             return;
         }
 
         moveInput = ctx.ReadValue<Vector2>();
         if (animator != null)
-            animator.SetBool("isMoving", moveInput != Vector2.zero);
+            animator.SetBool(GameConstants.ANIM_IS_MOVING, moveInput != Vector2.zero);
     }
 
     private void FixedUpdate()
@@ -72,7 +72,7 @@ public class PlayerMovement : Player
         if (animator != null)
         {
             bool isMoving = moveInput.magnitude > 0.1f;
-            animator.SetBool("isMoving", isMoving);
+            animator.SetBool(GameConstants.ANIM_IS_MOVING, isMoving);
         }
     }
 

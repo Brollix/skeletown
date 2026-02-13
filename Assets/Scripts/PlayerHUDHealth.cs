@@ -31,7 +31,7 @@ public class PlayerHUDHealth : MonoBehaviour
 
         if (healthText != null)
         {
-            healthText.text = $"{Mathf.CeilToInt(currentHealth)}/{Mathf.CeilToInt(playerHealth.MaxHealth)}";
+            healthText.text = $"{Mathf.CeilToInt(currentHealth)}{GameConstants.UI_SLASH}{Mathf.CeilToInt(playerHealth.MaxHealth)}";
         }
     }
 

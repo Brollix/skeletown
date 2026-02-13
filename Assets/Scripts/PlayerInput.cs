@@ -60,7 +60,7 @@ public class PlayerInput : Player
     private void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();
-        animator?.SetBool("isMoving", moveInput != Vector2.zero);
+        animator?.SetBool(GameConstants.ANIM_IS_MOVING, moveInput != Vector2.zero);
     }
 
     public bool DashTriggered { get; private set; }

@@ -51,10 +51,10 @@ public class AudioManager : MonoBehaviour
 
         SubscribeToEvents();
 
-        float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        float sfxVol = PlayerPrefs.GetFloat("SFXVolume", 1f);
-        bool musicMute = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
-        bool sfxMute = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
+        float musicVol = PlayerPrefs.GetFloat(GameConstants.PREF_MUSIC_VOLUME, 1f);
+        float sfxVol = PlayerPrefs.GetFloat(GameConstants.PREF_SFX_VOLUME, 1f);
+        bool musicMute = PlayerPrefs.GetInt(GameConstants.PREF_MUSIC_MUTED, 0) == 1;
+        bool sfxMute = PlayerPrefs.GetInt(GameConstants.PREF_SFX_MUTED, 0) == 1;
 
         if (musicSource != null)
         {
@@ -74,7 +74,7 @@ public class AudioManager : MonoBehaviour
         if (musicSource != null)
         {
             musicSource.volume = volume;
-            PlayerPrefs.SetFloat("MusicVolume", volume);
+            PlayerPrefs.SetFloat(GameConstants.PREF_MUSIC_VOLUME, volume);
         }
     }
 
@@ -83,7 +83,7 @@ public class AudioManager : MonoBehaviour
         if (sfxSource != null)
         {
             sfxSource.volume = volume;
-            PlayerPrefs.SetFloat("SFXVolume", volume);
+            PlayerPrefs.SetFloat(GameConstants.PREF_SFX_VOLUME, volume);
         }
     }
 
@@ -92,7 +92,7 @@ public class AudioManager : MonoBehaviour
         if (musicSource != null)
         {
             musicSource.mute = !isOn; 
-            PlayerPrefs.SetInt("MusicMuted", !isOn ? 1 : 0);
+            PlayerPrefs.SetInt(GameConstants.PREF_MUSIC_MUTED, !isOn ? 1 : 0);
         }
     }
 
@@ -101,7 +101,7 @@ public class AudioManager : MonoBehaviour
         if (sfxSource != null)
         {
             sfxSource.mute = !isOn;
-            PlayerPrefs.SetInt("SFXMuted", !isOn ? 1 : 0);
+            PlayerPrefs.SetInt(GameConstants.PREF_SFX_MUTED, !isOn ? 1 : 0);
         }
     }
 
@@ -137,7 +137,7 @@ public class AudioManager : MonoBehaviour
     
     private void PlayMusicForScene(string sceneName)
     {
-        if (sceneName == "DungeonScene")
+        if (sceneName == GameConstants.SCENE_DUNGEON)
         {
             if (dungeonMusic != null && (musicSource.clip != dungeonMusic || !musicSource.isPlaying))
             {
